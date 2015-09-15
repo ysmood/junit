@@ -5,7 +5,7 @@ export default (task) => {
         await kit.spawn("babel", ["src", "--out-dir", "lib"]);
         await kit.spawn("webpack", [
             "lib/index.js",
-            "dist/ken.js", "-p"
+            "dist/junit.js", "-p"
         ]);
     });
 

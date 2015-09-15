@@ -1,6 +1,6 @@
-import ken from "../src";
+import junit from "../src";
 
-let it = ken({ isThrowOnFinal: false });
+let it = junit({ isThrowOnFinal: false });
 
 // Async tests
 it.async([

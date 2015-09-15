@@ -1,14 +1,15 @@
 {
-  "name": "ken",
+  "name": "junit",
   "version": "0.0.1",
   "description": "A simple promise based module for unit tests.",
   "main": "lib/index.js",
   "scripts": {
+    "no": "no",
     "test": "no test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ysmood/ken.git"
+    "url": "git+https://github.com/ysmood/junit.git"
   },
   "keywords": [
     "unit",
@@ -20,9 +21,9 @@
   "author": "http://ysmood.org",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ysmood/ken/issues"
+    "url": "https://github.com/ysmood/junit/issues"
   },
-  "homepage": "https://github.com/ysmood/ken#readme",
+  "homepage": "https://github.com/ysmood/junit#readme",
   "files": [
     "lib"
   ],

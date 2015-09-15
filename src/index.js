@@ -22,8 +22,8 @@ import br from "./brush";
  * The function it generates has a string property `msg`.
  * @example
  * ```js
- * import ken from "ken";
- * let it = ken();
+ * import junit from "junit";
+ * let it = junit();
  *
  * // Async tests
  * it.async([
@@ -48,8 +48,8 @@ import br from "./brush";
  * @example
  * Filter the tests, only it the odd ones.
  * ```js
- * import ken from "ken";
- * let it = ken();
+ * import junit from "junit";
+ * let it = junit();
  *
  * // Async tests
  * it.async(
@@ -73,8 +73,8 @@ import br from "./brush";
  * );
  * ```
  */
-let ken = (opts = {}) => {
-    let title = br.underline(br.grey("ken >"));
+let junit = (opts = {}) => {
+    let title = br.underline(br.grey("junit >"));
 
     opts = utils.extend({
         isBail: true,
@@ -165,4 +165,4 @@ let ken = (opts = {}) => {
     });
 };
 
-export default ken;
+export default junit;

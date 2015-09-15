@@ -1,12 +1,12 @@
-import ken from "../src";
+import junit from "../src";
 import yutils from "yaku/lib/utils";
 
-let it = ken();
+let it = junit();
 
 it.async([
 
     it("all passed", () => {
-        let test = ken({ isThrowOnFinal: false });
+        let test = junit({ isThrowOnFinal: false });
 
         // Async tests
         return test.async([
@@ -33,7 +33,7 @@ it.async([
     }),
 
     it("type check", () => {
-        let test = ken({ isThrowOnFinal: false });
+        let test = junit({ isThrowOnFinal: false });
 
         let tests = [
             "string",
@@ -51,7 +51,7 @@ it.async([
     }),
 
     it("failed", () => {
-        let test = ken({ isThrowOnFinal: false });
+        let test = junit({ isThrowOnFinal: false });
 
         // Async tests
         return test.async([
