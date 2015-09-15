@@ -2,11 +2,18 @@ import junit from "../src";
 import yutils from "yaku/lib/utils";
 
 let it = junit();
+let testOpts = { isThrowOnFinal: false, title: " sub >" };
 
 it.async([
 
+    it("msg", () => {
+        let test = junit(testOpts);
+
+        return it.eq(test("test msg").msg, "test msg");
+    }),
+
     it("all passed", () => {
-        let test = junit({ isThrowOnFinal: false });
+        let test = junit(testOpts);
 
         // Async tests
         return test.async([
@@ -33,10 +40,13 @@ it.async([
     }),
 
     it("type check", () => {
-        let test = junit({ isThrowOnFinal: false });
+        let test = junit(testOpts);
 
         let tests = [
             "string",
+            new Date(),
+            [1, 2],
+            0,
             1,
             undefined,
             null,
@@ -51,7 +61,7 @@ it.async([
     }),
 
     it("failed", () => {
-        let test = junit({ isThrowOnFinal: false });
+        let test = junit(testOpts);
 
         // Async tests
         return test.async([

@@ -8,13 +8,26 @@ import br from "./brush";
  * @param  {Object} opts Defaults:
  * ```js
  * {
- *  isBail: true,
- *  isFailOnUnhandled: true,
- *  isThrowOnFinal: true,
- *  timeout: 5000,
- *  logPass: (msg, span) => {},
- *  logFail: (msg, err, span) => {},
- *  logFinal: (passed, failed) => {}
+ *     // Stop test when error occurred.
+ *     isBail: true,
+ *
+ *     isFailOnUnhandled: true,
+ *
+ *     // If any test failed, when process finished, set exit code to failed number.
+ *     isExitWithFailed: true,
+ *
+ *     // Fail a test after timeout.
+ *     timeout: 5000,
+ *
+ *     // The log prompt.
+ *     title: "junit >"
+ *
+ *     // You can even use jsdiff here to generate more fancy error info.
+ *     formatAssertErr: (actual, expected, stack) => {},
+ *
+ *     logPass: (msg, span) => {},
+ *     logFail: (msg, err, span) => {},
+ *     logFinal: (total, passed, failed) => {}
  * }
  * ```
  * @return {Function} It has two members: `{ async, sync }`.
@@ -74,31 +87,47 @@ import br from "./brush";
  * ```
  */
 let junit = (opts = {}) => {
-    let title = br.underline(br.grey("junit >"));
+    let root = typeof window === "object" ? window : global;
 
     opts = utils.extend({
         isBail: true,
         isFailOnUnhandled: true,
-        isThrowOnFinal: true,
+        isExitWithFailed: true,
         timeout: 5000,
+        title: br.underline(br.grey("junit >")),
+
+        formatAssertErr: (actual, expected, stack) => (
+                `${br.red("\n<<<<<<< actual")}\n` +
+                `${actual}\n` +
+                `${br.red("=======")}\n` +
+                `${expected}\n` +
+                `${br.red(">>>>>>> expected")}\n\n` +
+                br.grey(stack)
+            ).replace(/^/mg, "  "),
+
         logPass: (msg, span) => {
-            console.log(title, br.green("o"), msg, br.grey(`(${span}ms)`));
+            console.log(opts.title, br.green("o"), msg, br.grey(`(${span}ms)`));
         },
+
         logFail: (msg, err, span) => {
             err = err instanceof Error ? err.stack : err;
             console.error(
-                title, br.red("x"), msg, br.grey(`(${span}ms)`),
-                "\n\n" + err + "\n"
+                `${opts.title} ${br.red("x")} ${msg} ` +
+                br.grey(`(${span}ms)`) + `\n${err}\n`
             );
         },
-        logFinal: (passed, failed) => {
-            console.log(`${title} ${br.cyan("passed")} ${br.green(passed)}\n` +
-                `${title} ${br.cyan("failed")} ${br.red(failed)}`);
+
+        logFinal: (total, passed, failed) => {
+            console.info(
+                `${opts.title} ${br.cyan(" total")} ${br.white(total)}\n` +
+                `${opts.title} ${br.cyan("passed")} ${br.green(passed)}\n` +
+                `${opts.title} ${br.cyan("failed")} ${br.red(failed)}`);
         }
     }, opts);
 
     let passed = 0;
     let failed = 0;
+    let total = 0;
     let isEnd = false;
 
     if (opts.isFailOnUnhandled) {
@@ -109,11 +138,8 @@ let junit = (opts = {}) => {
         };
     }
 
-    if (opts.isThrowOnFinal && failed) {
-        setTimeout(() => { throw new Error(`test_failed: ${failed}`); });
-    }
-
     function it (msg, fn) {
+        total++;
         function testFn () {
             let timeouter = null;
             let startTime = Date.now();
@@ -145,9 +171,15 @@ let junit = (opts = {}) => {
 
     function onFinal () {
         isEnd = true;
-        opts.logFinal(passed, failed);
+        opts.logFinal(total, passed, failed);
+
         return { passed, failed };
     }
+
+    if (opts.isExitWithFailed)
+        root.process.on("exit", () => {
+            process.exit(failed);
+        });
 
     return utils.extend(it, {
         async: function () {
@@ -160,7 +192,7 @@ let junit = (opts = {}) => {
             .then(onFinal, onFinal);
         },
 
-        eq: utils.eq
+        eq: utils.eq(opts.formatAssertErr)
 
     });
 };
