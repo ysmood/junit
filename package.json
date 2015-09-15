@@ -1,0 +1,74 @@
+{
+  "name": "ken",
+  "version": "0.0.1",
+  "description": "A simple promise based module for unit tests.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "no test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysmood/ken.git"
+  },
+  "keywords": [
+    "unit",
+    "test",
+    "promise",
+    "async",
+    "sync"
+  ],
+  "author": "http://ysmood.org",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ysmood/ken/issues"
+  },
+  "homepage": "https://github.com/ysmood/ken#readme",
+  "files": [
+    "lib"
+  ],
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "browserify": "^11.1.0",
+    "diff": "^2.1.1",
+    "nokit": "^0.13.0",
+    "yaku": "^0.7.4"
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "rules": {
+      "indent": [
+        2,
+        4
+      ],
+      "quotes": [
+        2,
+        "double"
+      ],
+      "linebreak-style": [
+        2,
+        "unix"
+      ],
+      "semi": [
+        2,
+        "always"
+      ],
+      "no-trailing-spaces": 2,
+      "space-before-function-paren": [
+        2,
+        "always"
+      ],
+      "eqeqeq": [
+        2,
+        "allow-null"
+      ],
+      "no-console": [
+        0
+      ]
+    },
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "extends": "eslint:recommended"
+  }
+}
