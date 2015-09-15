@@ -1,2 +1,6 @@
 node_modules
 lib
+dist
+.nokit
+.nobone
+readme.md

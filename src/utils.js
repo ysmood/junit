@@ -1,9 +1,6 @@
 "use strict";
 
 import br from "./brush";
-import { wordDiff } from "diff/lib/diff/word";
-
-
 
 function stringify (val) {
     if (typeof val === "undefined") {
@@ -42,17 +39,12 @@ export default {
         if (actual === expected)
             return Promise.resolve();
 
-        let diff = wordDiff.diff(actual, expected).reduce(
-            (s, p) => {
-                return s + (p.added ? br.bgGreen(p.value) : (
-                    p.removed ? br.bgRed(p.value) : br.white(p.value)
-                ));
-            },
-            ""
-        );
-
         return Promise.reject(newStack(
-            `${br.bgRed("actual")} ${br.bgGreen("expected")}\n\n${diff}`
+                `${br.red("<<<<<<< actual")}\n` +
+                `${actual}\n` +
+                `${br.red("=======")}\n` +
+                `${expected}\n` +
+                `${br.red(">>>>>>> expected")}`
         ));
     }
 };

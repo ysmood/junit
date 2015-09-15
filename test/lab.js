@@ -5,6 +5,6 @@ let it = ken({ isThrowOnFinal: false });
 // Async tests
 it.async([
     it("basic 2", () =>
-        it.eq(10, 20)
+        it.eq("10", undefined)
     )
 ]);
