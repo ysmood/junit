@@ -32,6 +32,24 @@ it.async([
         );
     }),
 
+    it("type check", () => {
+        let test = ken({ isThrowOnFinal: false });
+
+        let tests = [
+            "string",
+            1,
+            undefined,
+            null,
+            { a: { b: { c: "test" } } },
+            new Buffer("test")
+        ].map((v, i) => test(`type ${i}`, () => it.eq(v, v)));
+
+        return test.async(tests)
+        .then(({ passed }) =>
+            it.eq(tests.length, passed)
+        );
+    }),
+
     it("failed", () => {
         let test = ken({ isThrowOnFinal: false });
 
