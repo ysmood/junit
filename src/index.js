@@ -176,7 +176,7 @@ let junit = (opts = {}) => {
         return { passed, failed };
     }
 
-    if (opts.isExitWithFailed)
+    if (opts.isExitWithFailed && root.process)
         root.process.on("exit", () => {
             process.exit(failed);
         });
