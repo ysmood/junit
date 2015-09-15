@@ -1,4 +1,4 @@
-# Ken
+# JUnit
 
 A simple promise based module for unit tests.
 I believe we shouldn't waste time on learning, debugging and waiting the unit test framework itself,
@@ -6,6 +6,17 @@ that's why I created JUnit. It's just a curried function, everything inside is c
 will be fancy.
 
 [![NPM version](https://badge.fury.io/js/noflow.svg)](http://badge.fury.io/js/noflow) [![Build Status](https://travis-ci.org/ysmood/noflow.svg)](https://travis-ci.org/ysmood/noflow) [![Deps Up to Date](https://david-dm.org/ysmood/noflow.svg?style=flat)](https://david-dm.org/ysmood/noflow)
+
+
+# Install
+
+## Node.js
+
+`npm install junit`
+
+## Browser
+
+You have to use something like `browserify` or `webpack`.
 
 
 ### Features

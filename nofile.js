@@ -3,10 +3,6 @@ import kit from "nokit";
 export default (task) => {
     task("build", ["clean", "build-docs"], async () => {
         await kit.spawn("babel", ["src", "--out-dir", "lib"]);
-        await kit.spawn("webpack", [
-            "lib/index.js",
-            "dist/junit.js"
-        ]);
 
         await kit.spawn("webpack", [
             "--module-bind", "js=babel?stage=0",
