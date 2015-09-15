@@ -12,6 +12,10 @@ it.async([
         return it.eq(test("test msg").msg, "test msg");
     }),
 
+    it("order", () =>
+        it.eq({ a: 1, b: 2 }, { b: 2, a: 1 })
+    ),
+
     it("all passed", () => {
         let test = junit(testOpts);
 
