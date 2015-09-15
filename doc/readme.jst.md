@@ -5,6 +5,9 @@ I believe we shouldn't waste time on learning, debugging and waiting the unit te
 that's why I created JUnit. It's just a curried function, everything inside is controllable, nothing
 will be fancy.
 
+[![NPM version](https://badge.fury.io/js/noflow.svg)](http://badge.fury.io/js/noflow) [![Build Status](https://travis-ci.org/ysmood/noflow.svg)](https://travis-ci.org/ysmood/noflow) [![Deps Up to Date](https://david-dm.org/ysmood/noflow.svg?style=flat)](https://david-dm.org/ysmood/noflow)
+
+
 ### Features
 
 - Support on both Node.js and browser
