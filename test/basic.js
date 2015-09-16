@@ -84,6 +84,7 @@ it.async([
     }),
 
     it("failed", () => {
+        global.window = global;
         br.isEnabled = false;
         let test = junit(testOpts);
 
@@ -100,6 +101,7 @@ it.async([
             )
         ])
         .then(({ failed }) => {
+            delete global.window;
             br.isEnabled = true;
             return it.eq(failed, 1);
         });
@@ -108,7 +110,6 @@ it.async([
     it("isEnd", () => {
         let test = junit(testOpts);
 
-        // Async tests
         return test.async([
             test("isEnd resolve", () =>
                 new Promise((r) => setTimeout(r, 100))
@@ -123,6 +124,20 @@ it.async([
         .then(({ failed }) => {
             return it.eq(failed, 1);
         });
+    }),
+
+    it("error", () => {
+        let test = junit({
+            isFailOnUnhandled: false,
+            isBail: false,
+            isExitWithFailed: false
+        });
+
+        return test.async([
+            test("empty", () => {
+                throw new Error("fake err");
+            })
+        ]);
     }),
 
     it("unhandled", () => {

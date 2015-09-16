@@ -146,10 +146,8 @@ let junit = (opts = {}) => {
     }
 
     if (opts.isExitWithFailed && root.process)
-        root.process.on("exit", () => {
-            /* istanbul ignore next */
-            process.exit(failed);
-        });
+        /* istanbul ignore next */
+        root.process.on("exit", () => process.exit(failed));
 
     return utils.extend(it, {
         async: function () {

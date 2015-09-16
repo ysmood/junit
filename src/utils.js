@@ -26,6 +26,8 @@ export default {
             return Promise.resolve();
 
         let { stack } = new Error("Assertion");
+
+        /* istanbul ignore next */
         if (typeof __filename !== "undefined")
             stack = stack.replace(
                 new RegExp(`.+${__filename}.+\\n`, "g"), ""
