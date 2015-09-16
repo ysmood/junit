@@ -126,13 +126,13 @@ let junit = (opts = {}) => {
                 );
             }).then(() => {
                 clearTimeout(timeouter);
-                passed++;
                 if (isEnd) return;
+                passed++;
                 logPass(testFn.msg, Date.now() - startTime);
             }, (err) => {
                 clearTimeout(timeouter);
-                failed++;
                 if (isEnd) return;
+                failed++;
                 logFail(testFn.msg, err, Date.now() - startTime);
                 if (opts.isBail) return Promise.reject(err);
             });
@@ -152,6 +152,7 @@ let junit = (opts = {}) => {
 
     if (opts.isExitWithFailed && root.process)
         root.process.on("exit", () => {
+            /* istanbul ignore next */
             process.exit(failed);
         });
 

@@ -1,8 +1,10 @@
 import junit from "../src";
 import yutils from "yaku/lib/utils";
+import br from "../src/brush";
+import Promise from "yaku";
 
 let it = junit();
-let testOpts = { isThrowOnFinal: false, title: " sub >" };
+let testOpts = { title: " sub >" };
 
 it.async([
 
@@ -40,7 +42,23 @@ it.async([
             ])
         ])
         .then(({ passed }) =>
-            it.eq(4, passed)
+            it.eq(passed, 4)
+        );
+    }),
+
+    it("all passed sync", () => {
+        let test = junit(testOpts);
+
+        return test.sync([
+            test("basic 1", () =>
+                it.eq("ok", "ok")
+            ),
+            test("basic 2", () =>
+                it.eq({ a: 1, b: 2 }, { a: 1, b: 2 })
+            )
+        ])
+        .then(({ passed }) =>
+            it.eq(passed, 2)
         );
     }),
 
@@ -61,11 +79,12 @@ it.async([
 
         return test.async(tests)
         .then(({ passed }) =>
-            it.eq(tests.length, passed)
+            it.eq(passed, tests.length)
         );
     }),
 
     it("failed", () => {
+        br.isEnabled = false;
         let test = junit(testOpts);
 
         // Async tests
@@ -80,8 +99,44 @@ it.async([
                 it.eq({ a: 1, b: 2 }, { a: 1, b: 2 })
             )
         ])
-        .then(({ failed }) =>
-            it.eq(1, failed)
-        );
+        .then(({ failed }) => {
+            br.isEnabled = true;
+            return it.eq(failed, 1);
+        });
+    }),
+
+    it("isEnd", () => {
+        let test = junit(testOpts);
+
+        // Async tests
+        return test.async([
+            test("isEnd resolve", () =>
+                new Promise((r) => setTimeout(r, 100))
+            ),
+            test("isEnd reject", () =>
+                new Promise((r, rr) => setTimeout(rr, 100))
+            ),
+            test("empty", () =>
+                it.eq(1, 2)
+            )
+        ])
+        .then(({ failed }) => {
+            return it.eq(failed, 1);
+        });
+    }),
+
+    it("unhandled", () => {
+        let exit = process.exit;
+
+        process.exit = (v) => {
+            if (v === 1) {
+                exit(0);
+            } else {
+                exit(1);
+            }
+        };
+
+        Promise.reject("fake unhandled");
     })
+
 ]);
