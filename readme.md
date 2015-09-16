@@ -5,7 +5,7 @@ I believe we shouldn't waste time on learning, debugging and waiting the unit te
 that's why I created JUnit. It's just a curried function, everything inside is controllable, nothing
 will be fancy.
 
-[![NPM version](https://badge.fury.io/js/noflow.svg)](http://badge.fury.io/js/noflow) [![Build Status](https://travis-ci.org/ysmood/noflow.svg)](https://travis-ci.org/ysmood/noflow) [![Deps Up to Date](https://david-dm.org/ysmood/noflow.svg?style=flat)](https://david-dm.org/ysmood/noflow)
+[![NPM version](https://badge.fury.io/js/noflow.svg)](http://badge.fury.io/js/noflow) [![Build Status](https://travis-ci.org/ysmood/noflow.svg)](https://travis-ci.org/ysmood/noflow) [![Deps Up to Date](https://david-dm.org/ysmood/noflow.svg?style=flat)](https://david-dm.org/ysmood/noflow) [![Coverage Status](https://coveralls.io/repos/ysmood/junit/badge.svg?branch=master&service=github)](https://coveralls.io/github/ysmood/junit?branch=master)
 
 
 # Install
@@ -21,7 +21,7 @@ You have to use something like `browserify` or `webpack`.
 
 ### Features
 
-- Support on both Node.js and browser
+- Supports both Node.js and browser
 - Made for concurrent tests and async flow control, designed for `async-await`
 - Automatically garbage collect the unhandled error
 - Full customizable report sytle.
@@ -30,7 +30,7 @@ You have to use something like `browserify` or `webpack`.
 
 # API
 
-- ## **[let(opts)](src/index.js?source#L88)**
+- ## **[junit(opts)](src/index.js?source#L83)**
 
     A simple promise based module for unit tests.
 
@@ -76,6 +76,7 @@ You have to use something like `browserify` or `webpack`.
         // Async tests
         it.async([
             it("basic 1", =>
+                // We use `it.eq` to assert on both simple type and complex object.
                 it.eq("ok", "ok")
             ),
             it("basic 2", =>
@@ -96,7 +97,7 @@ You have to use something like `browserify` or `webpack`.
 
     - **<u>example</u>**:
 
-        Filter the tests, only it the odd ones.
+        Filter the tests, only the odd ones will be tested.
         ```js
         import junit from "junit";
         let it = junit();
@@ -104,15 +105,9 @@ You have to use something like `browserify` or `webpack`.
         // Async tests
         it.async(
             [
-                it("basic 1", =>
-                    it.eq("ok", "ok")
-                ),
-                it("basic 2", =>
-                    it.eq({ a: 1, b: 2 }, { a: 1, b: 2 })
-                ),
-                it("basic 3", =>
-                    it.eq(1, 1)
-                )
+                it("basic 1", => it.eq(1, 1)),
+                it("basic 2", => it.eq(1, 2)),
+                it("basic 3", => it.eq(2, 2))
             ]
             .filter((fn, index) => index % 2)
             .map((fn) => {

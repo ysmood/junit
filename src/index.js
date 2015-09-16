@@ -40,6 +40,7 @@ import reporter from "./reporter";
  * // Async tests
  * it.async([
  *     it("basic 1", =>
+ *         // We use `it.eq` to assert on both simple type and complex object.
  *         it.eq("ok", "ok")
  *     ),
  *     it("basic 2", =>
@@ -58,7 +59,7 @@ import reporter from "./reporter";
  * ]);
  * ```
  * @example
- * Filter the tests, only it the odd ones.
+ * Filter the tests, only the odd ones will be tested.
  * ```js
  * import junit from "junit";
  * let it = junit();
@@ -66,15 +67,9 @@ import reporter from "./reporter";
  * // Async tests
  * it.async(
  *     [
- *         it("basic 1", =>
- *             it.eq("ok", "ok")
- *         ),
- *         it("basic 2", =>
- *             it.eq({ a: 1, b: 2 }, { a: 1, b: 2 })
- *         ),
- *         it("basic 3", =>
- *             it.eq(1, 1)
- *         )
+ *         it("basic 1", => it.eq(1, 1)),
+ *         it("basic 2", => it.eq(1, 2)),
+ *         it("basic 3", => it.eq(2, 2))
  *     ]
  *     .filter((fn, index) => index % 2)
  *     .map((fn) => {
