@@ -24,7 +24,14 @@ export default (task) => {
     );
 
     task("test", ["lint"], async () => {
-        let { code } = await kit.spawn("babel-node", ["test/basic"]);
+        let { code } = await kit.spawn(
+            "babel-node",
+            [
+                "node_modules/.bin/babel-istanbul",
+                "cover",
+                "test/basic.js"
+            ]
+        );
         process.exit(code);
     });
 };
