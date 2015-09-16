@@ -64,7 +64,7 @@ You have to use something like `browserify` or `webpack`.
     - **<u>return</u>**: { _Function_ }
 
         It has two members: `{ async, sync }`.
-        Both of them will resolve `{ passed, failed }`.
+        Both of them will resolve `{ total, passed, failed }`.
         The function it generates has a string property `msg`.
 
     - **<u>example</u>**:

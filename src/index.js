@@ -30,7 +30,7 @@ import reporter from "./reporter";
  * }
  * ```
  * @return {Function} It has two members: `{ async, sync }`.
- * Both of them will resolve `{ passed, failed }`.
+ * Both of them will resolve `{ total, passed, failed }`.
  * The function it generates has a string property `msg`.
  * @example
  * ```js
@@ -142,7 +142,7 @@ let junit = (opts = {}) => {
         isEnd = true;
         logFinal(total, passed, failed);
 
-        return { passed, failed };
+        return { total, passed, failed };
     }
 
     if (opts.isExitWithFailed && root.process)
