@@ -30,7 +30,7 @@ You have to use something like `browserify` or `webpack`.
 
 # API
 
-- ## **[let(opts)](src/index.js?source#L89)**
+- ## **[let(opts)](src/index.js?source#L88)**
 
     A simple promise based module for unit tests.
 
@@ -50,15 +50,14 @@ You have to use something like `browserify` or `webpack`.
             // Fail a test after timeout.
             timeout: 5000,
 
-            // The log prompt.
-            title: "junit >"
+            reporter: {
+                // You can even use jsdiff here to generate more fancy error info.
+                formatAssertErr: (actual, expected, stack) => {},
 
-            // You can even use jsdiff here to generate more fancy error info.
-            formatAssertErr: (actual, expected, stack) => {},
-
-            logPass: (msg, span) => {},
-            logFail: (msg, err, span) => {},
-            logFinal: (total, passed, failed) => {}
+                logPass: (msg, span) => {},
+                logFail: (msg, err, span) => {},
+                logFinal: (total, passed, failed) => {}
+            }
         }
         ```
 
