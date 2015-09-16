@@ -1,7 +1,7 @@
 import Promise from "yaku";
 import yutils from "yaku/lib/utils";
 import utils from "./utils";
-import br from "./brush";
+import reporter from "./reporter";
 
 /**
  * A simple promise based module for unit tests.
@@ -19,15 +19,14 @@ import br from "./brush";
  *     // Fail a test after timeout.
  *     timeout: 5000,
  *
- *     // The log prompt.
- *     title: "junit >"
+ *     reporter: {
+ *         // You can even use jsdiff here to generate more fancy error info.
+ *         formatAssertErr: (actual, expected, stack) => {},
  *
- *     // You can even use jsdiff here to generate more fancy error info.
- *     formatAssertErr: (actual, expected, stack) => {},
- *
- *     logPass: (msg, span) => {},
- *     logFail: (msg, err, span) => {},
- *     logFinal: (total, passed, failed) => {}
+ *         logPass: (msg, span) => {},
+ *         logFail: (msg, err, span) => {},
+ *         logFinal: (total, passed, failed) => {}
+ *     }
  * }
  * ```
  * @return {Function} It has two members: `{ async, sync }`.
@@ -94,36 +93,11 @@ let junit = (opts = {}) => {
         isFailOnUnhandled: true,
         isExitWithFailed: true,
         timeout: 5000,
-        title: br.underline(br.grey("junit >")),
-
-        formatAssertErr: (actual, expected, stack) => (
-                `${br.red("\n<<<<<<< actual")}\n` +
-                `${actual}\n` +
-                `${br.red("=======")}\n` +
-                `${expected}\n` +
-                `${br.red(">>>>>>> expected")}\n\n` +
-                br.grey(stack)
-            ).replace(/^/mg, "  "),
-
-        logPass: (msg, span) => {
-            console.log(opts.title, br.green("o"), msg, br.grey(`(${span}ms)`));
-        },
-
-        logFail: (msg, err, span) => {
-            err = err instanceof Error ? err.stack : err;
-            console.error(
-                `${opts.title} ${br.red("x")} ${msg} ` +
-                br.grey(`(${span}ms)`) + `\n${err}\n`
-            );
-        },
-
-        logFinal: (total, passed, failed) => {
-            console.info(
-                `${opts.title} ${br.cyan(" total")} ${br.white(total)}\n` +
-                `${opts.title} ${br.cyan("passed")} ${br.green(passed)}\n` +
-                `${opts.title} ${br.cyan("failed")} ${br.red(failed)}`);
-        }
+        reporter: {}
     }, opts);
+
+    let { formatAssertErr, logPass, logFail, logFinal } =
+        utils.extend(reporter(), opts.reporter);
 
     let passed = 0;
     let failed = 0;
@@ -154,12 +128,12 @@ let junit = (opts = {}) => {
                 clearTimeout(timeouter);
                 passed++;
                 if (isEnd) return;
-                opts.logPass(testFn.msg, Date.now() - startTime);
+                logPass(testFn.msg, Date.now() - startTime);
             }, (err) => {
                 clearTimeout(timeouter);
                 failed++;
                 if (isEnd) return;
-                opts.logFail(testFn.msg, err, Date.now() - startTime);
+                logFail(testFn.msg, err, Date.now() - startTime);
                 if (opts.isBail) return Promise.reject(err);
             });
         }
@@ -171,7 +145,7 @@ let junit = (opts = {}) => {
 
     function onFinal () {
         isEnd = true;
-        opts.logFinal(total, passed, failed);
+        logFinal(total, passed, failed);
 
         return { passed, failed };
     }
@@ -192,7 +166,7 @@ let junit = (opts = {}) => {
             .then(onFinal, onFinal);
         },
 
-        eq: utils.eq(opts.formatAssertErr)
+        eq: utils.eq(formatAssertErr)
 
     });
 };
