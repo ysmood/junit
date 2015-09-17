@@ -22,6 +22,7 @@ You have to use something like `browserify` or `webpack`.
 ### Features
 
 - Supports both Node.js and browser
+- Should work well from ES3 to ES7
 - Made for concurrent tests and async flow control, designed for `async-await`
 - Automatically garbage collect the unhandled error
 - Full customizable report sytle.

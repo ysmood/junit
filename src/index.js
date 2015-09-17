@@ -39,20 +39,23 @@ import reporter from "./reporter";
  *
  * // Async tests
  * it.async([
- *     it("basic 1", =>
+ *     it("basic 1", () =>
  *         // We use `it.eq` to assert on both simple type and complex object.
  *         it.eq("ok", "ok")
  *     ),
- *     it("basic 2", =>
- *         it.eq({ a: 1, b: 2 }, { a: 1, b: 2 })
- *     ),
+ *     it("basic 2", async () => {
+ *         // No more callback hell while testing async functions.
+ *         await new junit.Promise(r => setTimeout(r, 1000));
+ *
+ *         return it.eq({ a: 1, b: 2 }, { a: 1, b: 2 });
+ *     }),
  *
  *     // Sync tests
  *     kit.flow([
- *         it("basic 3", =>
+ *         it("basic 3", () =>
  *             it.eq("ok", "ok")
  *         ),
- *         it("basic 4", =>
+ *         it("basic 4", () =>
  *             it.eq("ok", "ok")
  *         )
  *     ])
@@ -67,12 +70,12 @@ import reporter from "./reporter";
  * // Async tests
  * it.async(
  *     [
- *         it("basic 1", => it.eq(1, 1)),
- *         it("basic 2", => it.eq(1, 2)),
- *         it("basic 3", => it.eq(2, 2))
+ *         it("basic 1", () => it.eq(1, 1)),
+ *         it("basic 2", () => it.eq(1, 2)),
+ *         it("basic 3", () => it.eq(2, 2))
  *     ]
  *     .filter((fn, index) => index % 2)
- *     .map((fn) => {
+ *     .map(fn => {
  *         // prefix all the messages with current file path
  *         fn.msg = `${__filename} - ${fn.msg}`
  *         return fn
@@ -164,5 +167,17 @@ let junit = (opts = {}) => {
 
     });
 };
+
+/**
+ * The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
+ * @type {Object}
+ */
+junit.Promise = Promise;
+
+/**
+ * The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
+ * @type {Object}
+ */
+junit.yutils = yutils;
 
 export default junit;
