@@ -229,7 +229,7 @@ it.async([
                     },
                     a: 1
                 };
-                it.eq(data1, data2);
+                return it.eq(data1, data2);
             })
         ])
         .then(({ failed }) => {
@@ -257,7 +257,7 @@ it.async([
                         d: ["1", "2"]
                     }
                 };
-                it.eq(data1, data2);
+                return it.eq(data1, data2);
             })
         ])
         .then(({ failed }) => {
