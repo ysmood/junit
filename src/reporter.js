@@ -1,8 +1,6 @@
 import br from "./brush";
 
-export default () => {
-    let prompt = br.underline(br.grey("junit >"));
-
+export default (prompt) => {
     return {
         formatAssertErr: (actual, expected, stack) => (
                 `${br.red("\n<<<<<<< actual")}\n` +

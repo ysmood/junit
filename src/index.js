@@ -2,6 +2,8 @@ import Promise from "yaku";
 import yutils from "yaku/lib/utils";
 import utils from "./utils";
 import reporter from "./reporter";
+import br from "./brush";
+
 
 /**
  * A simple promise based module for unit tests.
@@ -29,9 +31,9 @@ import reporter from "./reporter";
  *     }
  * }
  * ```
- * @return {Function} It has two members: `{ async, sync }`.
- * Both of them will resolve `{ total, passed, failed }`.
- * The function it generates has a string property `msg`.
+ * @return {Function} `() => Function : { msg: String }` It has two members:
+ * `{ async: () => Promise, sync: () => Promise }`.
+ * Both of returned promises will resolve with `{ total, passed, failed }`.
  * @example
  * ```js
  * import junit from "junit";
@@ -67,20 +69,24 @@ import reporter from "./reporter";
  * import junit from "junit";
  * let it = junit();
  *
- * // Async tests
- * it.async(
- *     [
- *         it("basic 1", () => it.eq(1, 1)),
- *         it("basic 2", () => it.eq(1, 2)),
- *         it("basic 3", () => it.eq(2, 2))
- *     ]
- *     .filter((fn, index) => index % 2)
- *     .map(fn => {
- *         // prefix all the messages with current file path
- *         fn.msg = `${__filename} - ${fn.msg}`
- *         return fn
- *     })
- * );
+ * (async () => {
+ *     // Async tests
+ *     let { total, passed, failed } = await it.sync(
+ *         [
+ *             it("basic 1", () => it.eq(1, 1)),
+ *             it("basic 2", () => it.eq(1, 2)),
+ *             it("basic 3", () => it.eq(2, 2))
+ *         ]
+ *         .filter((fn, index) => index % 2)
+ *         .map(fn => {
+ *             // prefix all the messages with current file path
+ *             fn.msg = `${__filename} - ${fn.msg}`
+ *             return fn
+ *         })
+ *     );
+ *
+ *     console.log(total, passed, failed);
+ * })();
  * ```
  */
 let junit = (opts = {}) => {
@@ -95,7 +101,7 @@ let junit = (opts = {}) => {
     }, opts);
 
     let { formatAssertErr, logPass, logFail, logFinal } =
-        utils.extend(reporter(), opts.reporter);
+        utils.extend(reporter(br.underline(br.grey("junit >"))), opts.reporter);
 
     let passed = 0;
     let failed = 0;
@@ -167,6 +173,17 @@ let junit = (opts = {}) => {
 
     });
 };
+
+/**
+ * An example reporter for junit.
+ * @param {String} prompt The prompt prefix.
+ * @return {Function} `() => Object`.
+ * @example
+ * ```js
+ * let it = junit({ reporter: junit.reporter('my-prompt > ') });
+ * ```
+ */
+junit.reporter = reporter;
 
 /**
  * The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
