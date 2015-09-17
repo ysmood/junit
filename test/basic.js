@@ -4,18 +4,17 @@ import br from "../src/brush";
 import Promise from "yaku";
 
 let it = junit();
-let testOpts = { title: " sub >" };
 
 it.async([
 
     it("msg", () => {
-        let test = junit(testOpts);
+        let test = junit();
 
         return it.eq(test("test msg").msg, "test msg");
     }),
 
     it("all passed", () => {
-        let test = junit(testOpts);
+        let test = junit();
 
         // Async tests
         return test.async([
@@ -42,7 +41,7 @@ it.async([
     }),
 
     it("all passed sync", () => {
-        let test = junit(testOpts);
+        let test = junit();
 
         return test.sync([
             test("basic 1", () =>
@@ -58,7 +57,7 @@ it.async([
     }),
 
     it("type check", () => {
-        let test = junit(testOpts);
+        let test = junit();
 
         let tests = [
             "string",
@@ -69,7 +68,7 @@ it.async([
             undefined,
             null,
             { a: { b: { c: "test" } } },
-            new Buffer("test")
+            { 0: 1, 1: 2, length: 2 } // array like object
         ].map((v, i) => test(`type ${i}`, () => it.eq(v, v)));
 
         return test.async(tests)
@@ -79,9 +78,10 @@ it.async([
     }),
 
     it("failed", () => {
-        global.window = global;
         br.isEnabled = false;
-        let test = junit(testOpts);
+
+        global.window = global;
+        let test = junit();
 
         // Async tests
         return test.async([
@@ -96,14 +96,15 @@ it.async([
             )
         ])
         .then(({ failed }) => {
-            delete global.window;
-            br.isEnabled = true;
+            global.window = null;
+            if (typeof window === "undefined")
+                br.isEnabled = true;
             return it.eq(failed, 1);
         });
     }),
 
     it("isEnd", () => {
-        let test = junit(testOpts);
+        let test = junit();
 
         return test.async([
             test("isEnd resolve", () =>
@@ -175,7 +176,7 @@ it.async([
     }),
 
     it("max depth", () => {
-        let test = junit(testOpts);
+        let test = junit();
 
         return test.async([
             test("over max depth", () => {
@@ -195,7 +196,7 @@ it.async([
     }),
 
     it("undefined", () => {
-        let test = junit(testOpts);
+        let test = junit();
 
         return test.async([
             test("undefined & null", () =>
@@ -208,7 +209,7 @@ it.async([
     }),
 
     it("elements number", () => {
-        let test = junit(testOpts);
+        let test = junit();
 
         return test.async([
             test("elements number", () => {
@@ -233,7 +234,7 @@ it.async([
     }),
 
     it("attributes number", () => {
-        let test = junit(testOpts);
+        let test = junit();
 
         return test.async([
             test("attributes number", () => {
