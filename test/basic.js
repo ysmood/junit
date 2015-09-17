@@ -4,7 +4,10 @@ import br from "../src/brush";
 import Promise from "yaku";
 
 let it = junit();
-let testOpts = { reporter: junit.reporter(" sub >") };
+let testOpts = {
+    reporter: junit.reporter(" sub >"),
+    isExitWithFailed: false
+};
 
 
 it.async([
@@ -80,27 +83,27 @@ it.async([
     }),
 
     it("failed", () => {
-        br.isEnabled = false;
 
         global.window = global;
         let test = junit(testOpts);
 
         // Async tests
         return test.async([
-            test("basic 1", () =>
-                it.eq("ok", "ok")
-            ),
-            test("basic 2", () =>
-                it.eq("ok", "ok1")
-            ),
+            test("basic 1", () => {
+                br.isEnabled = false;
+                return it.eq("ok", "ok");
+            }),
+            test("basic 2", () => {
+                if (typeof document === "undefined")
+                    br.isEnabled = true;
+                return it.eq("ok", "ok1");
+            }),
             test("basic 3", () =>
                 it.eq({ a: 1, b: 2 }, { a: 1, b: 2 })
             )
         ])
         .then(({ failed }) => {
             global.window = null;
-            if (typeof window === "undefined")
-                br.isEnabled = true;
             return it.eq(failed, 1);
         });
     }),
