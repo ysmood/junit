@@ -34,7 +34,7 @@ You have to use something like `browserify` or `webpack`.
 
 - IE6?
 
-  > If you use webpack, you may need a `Object.defineProperty` polyfill to bundle your tests.
+  > If you use webpack, you may need an `Object.defineProperty` polyfill to bundle your tests.
   > You may also need to install a `reporter` designed for old browser, they don't support `console.log`.
 
 
