@@ -23,11 +23,20 @@ You have to use something like `browserify` or `webpack`.
 
 - Supports both Node.js and browser
 - Should work well from ES3 to ES7
-- Made for concurrent tests and async flow control, designed for `async-await`
+- Make it super easy to concurrently test async functions, designed for `async-await`
 - Automatically garbage collect the unhandled error
-- Full customizable report sytle.
+- Full customizable report sytle
 - Not a single global variable pollution
 - Only one dependency, light weight and behavior predictable
+
+
+# FAQ
+
+- IE6?
+
+  > If you use webpack, you may need a `Object.defineProperty` polyfill to bundle your tests.
+  > You may also need to install a `reporter` designed for old browser, they don't support `console.log`.
+
 
 # API
 
