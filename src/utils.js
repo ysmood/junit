@@ -10,16 +10,35 @@ function stringify (val) {
     }
 }
 
+let report = (formatAssertErr, actual, expected) => {
+    let { stack } = new Error("Assertion");
+    /* istanbul ignore next */
+    if (typeof __filename !== "undefined")
+        stack = stack.replace(
+            new RegExp(`.+${__filename}.+\\n`, "g"), ""
+        );
+
+    return Promise.reject(
+        formatAssertErr(stringify(actual), stringify(expected), stack)
+    );
+};
+
 var equal = () => {
     let maxDepth,
-        curDepth,
-        isArray = Array.isArray;
+        curDepth;
+    let isArray = (json) => json && typeof json === "object" && typeof json.length === "number";
+    let getNames = (json) => {
+        let names = [];
+        if(json && typeof json === "object") {
+            for (var name in json){
+                names.push(name);
+            }
+        }
+        return names;
+    };
 
     let isPureObj = (json) => json && typeof json === "object" && !isArray(json);
-    let getLen = (json) => {
-        if(isArray(json)) return json.length;
-        if(json && typeof json === "object") return Object.getOwnPropertyNames(json).length;
-    };
+    let getLen = (json) => isArray(json)? json.length: getNames(json).length;
     let nextPath = (path, next) => path === "" ? next : path + "." + next;
     let joinRes = (res, json1, json2, path) => res ? { pass: true } : { pass: false, path, json1, json2 };
 
@@ -56,7 +75,11 @@ var equal = () => {
     return (json1, json2, path, md) => {
         curDepth = 1;
         maxDepth = md || 7;
-        return eq(json1, json2, path);
+        try {
+            return eq(json1, json2, path);
+        } catch (err) {
+            return err;
+        }
     };
 }();
 
@@ -69,19 +92,13 @@ export default {
     },
 
     eq: (formatAssertErr) => (actual, expected) => {
-        if(equal(actual, expected).pass)
+        let eqRes = equal(actual, expected);
+        if(eqRes instanceof Error) {
+            return report(formatAssertErr, eqRes.toString(), eqRes.toString());
+        }
+        if(eqRes.pass)
             return Promise.resolve();
 
-        let { stack } = new Error("Assertion");
-
-        /* istanbul ignore next */
-        if (typeof __filename !== "undefined")
-            stack = stack.replace(
-                new RegExp(`.+${__filename}.+\\n`, "g"), ""
-            );
-
-        return Promise.reject(
-            formatAssertErr(stringify(actual), stringify(expected), stack)
-        );
+        return report(formatAssertErr, actual, expected);
     }
 };
