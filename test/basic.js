@@ -152,6 +152,117 @@ it.async([
         };
 
         Promise.reject("fake unhandled");
+    }),
+
+    it("nesting", () => {
+        let data1 = {
+            a: 1,
+            b: [1, 2, 3],
+            c: "ok",
+            d: null,
+            e: {
+                f: 2,
+                g: true
+            }
+        };
+        let data2 = {
+            b: [1, 2, 3],
+            a: 1,
+            c: "ok",
+            d: null,
+            e: {
+                f: 2,
+                g: true
+            }
+        };
+
+        it.eq(data1, data2);
+    }),
+
+    it("max depth", () => {
+        let test = junit(testOpts);
+
+        return test.async([
+            test("over max depth", () => {
+                    let data1 = {
+                        a: { b: { c: { d:{ e:{ f:{ g:{} } } } } } }
+                    };
+                    let data2 = {
+                        a: { b: { c: { d:{ e:{ f:{ g:{} } } } } } }
+                    };
+                    return it.eq(data1, data2);
+                }
+            )
+        ])
+        .then(({ failed }) => {
+            return it.eq(failed, 1);
+        });
+    }),
+
+    it("undefined", () => {
+        let test = junit(testOpts);
+
+        return test.async([
+            test("undefined & null", () =>
+                it.eq(undefined, null)
+            )
+        ])
+        .then(({ failed }) => {
+            return it.eq(failed, 1);
+        });
+    }),
+
+    it("elements number", () => {
+        let test = junit(testOpts);
+
+        return test.async([
+            test("elements number", () => {
+                let data1 = {
+                    a: 1,
+                    b: {
+                        d: ["1", "2"]
+                    }
+                };
+                let data2 = {
+                    b: {
+                        d: ["1", "2", "3"]
+                    },
+                    a: 1
+                };
+                it.eq(data1, data2);
+            })
+        ])
+        .then(({ failed }) => {
+            return it.eq(failed, 1);
+        });
+    }),
+
+    it("attributes number", () => {
+        let test = junit(testOpts);
+
+        return test.async([
+            test("attributes number", () => {
+                let data1 = {
+                    b: {
+                        d: ["1", "2"],
+                        c: "10-2",
+                        e: 5
+                    },
+                    a: 1
+                };
+                let data2 = {
+                    a: 1,
+                    b: {
+                        c: "10-2",
+                        d: ["1", "2"]
+                    }
+                };
+                it.eq(data1, data2);
+            })
+        ])
+        .then(({ failed }) => {
+            return it.eq(failed, 1);
+        });
     })
 
 ]);
