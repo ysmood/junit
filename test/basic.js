@@ -18,6 +18,22 @@ it.async([
         return it.eq(test("test msg").msg, "test msg");
     }),
 
+    it("global window", () => {
+        global.window = global;
+        let test = junit(testOpts);
+        global.window = null;
+
+        // Async tests
+        return test.async([
+            test("basic 1", () =>
+                it.eq("ok", "ok")
+            )
+        ])
+        .then(({ passed }) =>
+            it.eq(passed, 1)
+        );
+    }),
+
     it("all passed", () => {
         let test = junit(testOpts);
 
@@ -61,6 +77,25 @@ it.async([
         );
     }),
 
+    it("disable brush", () => {
+        let test = junit(testOpts);
+
+        return test.sync([
+            test("basic 1", () => {
+                br.isEnabled = false;
+                return it.eq("ok", "ok");
+            }),
+            test("basic 2", () => {
+                if (typeof document === "undefined")
+                    br.isEnabled = true;
+                return it.eq("ok", "ok");
+            })
+        ])
+        .then(({ passed }) =>
+            it.eq(passed, 2)
+        );
+    }),
+
     it("type check", () => {
         let test = junit(testOpts);
 
@@ -83,19 +118,14 @@ it.async([
     }),
 
     it("failed", () => {
-
-        global.window = global;
         let test = junit(testOpts);
 
         // Async tests
         return test.async([
             test("basic 1", () => {
-                br.isEnabled = false;
                 return it.eq("ok", "ok");
             }),
             test("basic 2", () => {
-                if (typeof document === "undefined")
-                    br.isEnabled = true;
                 return it.eq("ok", "ok1");
             }),
             test("basic 3", () =>
@@ -103,7 +133,6 @@ it.async([
             )
         ])
         .then(({ failed }) => {
-            global.window = null;
             return it.eq(failed, 1);
         });
     }),
