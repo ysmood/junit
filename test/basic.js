@@ -8,7 +8,7 @@ let testOpts = {
     reporter: junit.reporter(" sub >"),
     isExitWithFailed: false
 };
-
+let testPattern = new RegExp(process.env.pattern);
 
 it.async([
 
@@ -47,14 +47,15 @@ it.async([
             ),
 
             // Sync tests
-            yutils.flow([
-                test("basic 3", () =>
+            async () => {
+                await test("basic 3", () =>
                     it.eq("ok", "ok")
-                ),
-                test("basic 4", () =>
+                )();
+
+                await test("basic 4", () =>
                     it.eq("ok", "ok")
-                )
-            ])
+                )();
+            }
         ])
         .then(({ passed }) =>
             it.eq(passed, 4)
@@ -374,4 +375,4 @@ it.async([
         });
     })
 
-]);
+].filter(({ msg }) => testPattern.test(msg)));

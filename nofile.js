@@ -1,6 +1,6 @@
 import kit from "nokit";
 
-export default (task) => {
+export default (task, option) => {
     task("build", ["clean", "build-docs"], async () => {
         await kit.spawn("babel", ["src", "--out-dir", "lib"]);
 
@@ -23,14 +23,19 @@ export default (task) => {
         kit.spawn("eslint", ["src", "test", "nofile.js"])
     );
 
-    task("test", ["lint"], async () => {
+
+    option("-t <.*>", "unit test regex filter", ".*");
+    task("test", ["lint"], async (opts) => {
         return kit.spawn(
             "babel-node",
             [
                 "node_modules/.bin/babel-istanbul",
                 "cover",
                 "test/basic.js"
-            ]
+            ],
+            {
+                env: kit._.assign(process.env, { pattern: opts.T })
+            }
         ).catch(({ code }) => process.exit(code));
     });
 };
