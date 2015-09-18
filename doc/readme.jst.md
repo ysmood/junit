@@ -1,6 +1,6 @@
 # JUnit
 
-A simple promise based module for unit tests.
+A simple promise based function for unit tests.
 I believe we shouldn't waste time on learning, debugging and waiting the unit test framework itself,
 that's why I created JUnit. It's just a curried function, everything inside is controllable, nothing
 will be fancy.

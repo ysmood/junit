@@ -91,6 +91,7 @@ import br from "./brush";
  * You can even change the code style like this.
  * ```js
  * import junit from "junit";
+ * import assert from "assert";
  * let it = junit();
  *
  * (async () => {
@@ -104,6 +105,13 @@ import br from "./brush";
  *
  *         // Use return or await here are the same.
  *         await it.eq(1, 2);
+ *     })();
+ *
+ *     await it("test 2", async () => {
+ *         // You can use any assert tool you like.
+ *         // You only have to follow one rule, the async assertion should be
+ *         // returned within a promise.
+ *         assert.equal(1, 2);
  *     })();
  *
  *     return it.run();
@@ -206,7 +214,7 @@ let junit = (opts = {}) => {
         },
 
         /**
-         * An deep equality assertion helper function.
+         * A smart strict deep equality assertion helper function.
          * @param {Any} actual
          * @param {Any} expected
          * @param {Number = 7} maxDepth Optional. The max depth of the recursion check.

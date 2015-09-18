@@ -1,6 +1,6 @@
 # JUnit
 
-A simple promise based module for unit tests.
+A simple promise based function for unit tests.
 I believe we shouldn't waste time on learning, debugging and waiting the unit test framework itself,
 that's why I created JUnit. It's just a curried function, everything inside is controllable, nothing
 will be fancy.
@@ -43,7 +43,7 @@ You have to use something like `browserify` or `webpack`.
 
 # API
 
-- ## **[junit(opts)](src/index.js?source#L113)**
+- ## **[junit(opts)](src/index.js?source#L121)**
 
     A simple promise based module for unit tests.
 
@@ -142,6 +142,7 @@ You have to use something like `browserify` or `webpack`.
         You can even change the code style like this.
         ```js
         import junit from "junit";
+        import assert from "assert";
         let it = junit();
 
         (async () => {
@@ -157,11 +158,18 @@ You have to use something like `browserify` or `webpack`.
                 await it.eq(1, 2);
             })();
 
+            await it("test 2", async () => {
+                // You can use any assert tool you like.
+                // You only have to follow one rule, the async assertion should be
+                // returned within a promise.
+                assert.equal(1, 2);
+            })();
+
             return it.run();
         })();
         ```
 
-- ## **[run(limit, list, saveResults, progress)](src/index.js?source#L201)**
+- ## **[run(limit, list, saveResults, progress)](src/index.js?source#L209)**
 
     Almost the same with the `yutils.async`, additionally, it will
     monitor the result of the whole tests.
@@ -193,9 +201,9 @@ You have to use something like `browserify` or `webpack`.
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L215)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L223)**
 
-    An deep equality assertion helper function.
+    A smart strict deep equality assertion helper function.
 
     - **<u>param</u>**: `actual` { _Any_ }
 
@@ -207,7 +215,7 @@ You have to use something like `browserify` or `webpack`.
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L229)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L237)**
 
     An example reporter for junit.
 
@@ -225,13 +233,13 @@ You have to use something like `browserify` or `webpack`.
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L235)**
+- ## **[junit.Promise](src/index.js?source#L243)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L241)**
+- ## **[junit.yutils](src/index.js?source#L249)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 
