@@ -224,6 +224,16 @@ it.async([
                     return it.eq(data1, data2);
                 }
             ),
+            test("over max depth", () => {
+                    let data1 = {
+                        a: { b: { c: {} } }
+                    };
+                    let data2 = {
+                        a: { b: { c: {} } }
+                    };
+                    return it.eq(data1, data2, 2);
+                }
+            ),
             test("over max depth2", () => {
                     let data1 = {
                         a: [ [ [ [ [ [ [ [ ] ] ] ] ] ] ] ]
@@ -294,7 +304,7 @@ it.async([
             )
         ])
         .then(({ failed }) => {
-            return it.eq(failed, 2);
+            return it.eq(failed, 3);
         });
     }),
 

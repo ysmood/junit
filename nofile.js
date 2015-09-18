@@ -24,14 +24,13 @@ export default (task) => {
     );
 
     task("test", ["lint"], async () => {
-        let { code } = await kit.spawn(
+        return kit.spawn(
             "babel-node",
             [
                 "node_modules/.bin/babel-istanbul",
                 "cover",
                 "test/basic.js"
             ]
-        );
-        process.exit(code);
+        ).catch(({ code }) => process.exit(code));
     });
 };
