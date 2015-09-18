@@ -29,7 +29,7 @@ import br from "./brush";
  *
  *         logPass: (msg, span) => {},
  *         logFail: (msg, err, span) => {},
- *         logFinal: (total, passed, failed) => {}
+ *         logFinal: (total, tested, passed, failed) => {}
  *     }
  * }
  * ```
@@ -137,6 +137,7 @@ let junit = (opts = {}) => {
     let passed = 0;
     let failed = 0;
     let total = 0;
+    let tested = 0;
     let isEnd = false;
 
     if (opts.isFailOnUnhandled) {
@@ -150,6 +151,7 @@ let junit = (opts = {}) => {
     function it (msg, fn) {
         total++;
         function testFn () {
+            tested++;
             let timeouter = null;
             let startTime = Date.now();
             return new Promise((resolve, reject) => {
@@ -180,9 +182,9 @@ let junit = (opts = {}) => {
 
     function onFinal () {
         isEnd = true;
-        logFinal(total, passed, failed);
+        logFinal(total, tested, passed, failed);
 
-        return { total, passed, failed };
+        return { total, tested, passed, failed };
     }
 
     if (opts.isExitWithFailed && root.process)

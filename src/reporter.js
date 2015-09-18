@@ -1,35 +1,35 @@
 "use strict";
 
-import br from "./brush";
+import { red, grey, white, cyan, green } from "./brush";
 
-export default (prompt) => {
+export default (pt) => {
     return {
         formatAssertErr: (actual, expected, stack) => (
-                `${br.red("\n<<<<<<< actual")}\n` +
+                `${red("\n<<<<<<< actual")}\n` +
                 `${actual}\n` +
-                `${br.red("=======")}\n` +
+                `${red("=======")}\n` +
                 `${expected}\n` +
-                `${br.red(">>>>>>> expected")}\n\n` +
-                br.grey(stack)
+                `${red(">>>>>>> expected")}\n\n` +
+                grey(stack)
             ).replace(/^/mg, "  "),
 
         logPass: (msg, span) => {
-            console.log(prompt, br.green("o"), msg, br.grey(`(${span}ms)`));
+            console.log(pt, green("o"), msg, grey(`(${span}ms)`));
         },
 
         logFail: (msg, err, span) => {
             err = err instanceof Error ? err.stack : err;
             console.error(
-                `${prompt} ${br.red("x")} ${msg} ` +
-                br.grey(`(${span}ms)`) + `\n${err}\n`
+                `${pt} ${red("x")} ${msg} ` +
+                grey(`(${span}ms)`) + `\n${err}\n`
             );
         },
 
-        logFinal: (total, passed, failed) => {
+        logFinal: (total, tested, passed, failed) => {
             console.info(
-                `${prompt} ${br.cyan(" total")} ${br.white(total)}\n` +
-                `${prompt} ${br.cyan("passed")} ${br.green(passed)}\n` +
-                `${prompt} ${br.cyan("failed")} ${br.red(failed)}`);
+                `${pt} ${cyan("tested")} ${white(tested)} / ${white(total)}\n` +
+                `${pt} ${cyan("passed")} ${green(passed)}\n` +
+                `${pt} ${cyan("failed")} ${red(failed)}`);
         }
     };
 };
