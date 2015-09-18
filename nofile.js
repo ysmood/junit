@@ -23,6 +23,15 @@ export default (task, option) => {
         kit.spawn("eslint", ["src", "test", "nofile.js"])
     );
 
+    task("watch-test", (opts) => {
+        return kit.monitorApp({
+            bin: "babel-node",
+            args: ["test/basic.js"],
+            opts: {
+                env: kit._.assign(process.env, { pattern: opts.T })
+            }
+        });
+    });
 
     option("-t <.*>", "unit test regex filter", ".*");
     task("test", ["lint"], async (opts) => {
