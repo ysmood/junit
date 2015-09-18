@@ -1,3 +1,5 @@
+"use strict";
+
 import Promise from "yaku";
 import yutils from "yaku/lib/utils";
 import utils from "./utils";

@@ -1,3 +1,5 @@
+"use strict";
+
 import br from "./brush";
 
 export default (prompt) => {

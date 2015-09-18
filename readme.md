@@ -43,7 +43,7 @@ You have to use something like `browserify` or `webpack`.
 
 # API
 
-- ## **[junit(opts)](src/index.js?source#L121)**
+- ## **[junit(opts)](src/index.js?source#L123)**
 
     A simple promise based module for unit tests.
 
@@ -169,7 +169,7 @@ You have to use something like `browserify` or `webpack`.
         })();
         ```
 
-- ## **[run(limit, list, saveResults, progress)](src/index.js?source#L209)**
+- ## **[run(limit, list, saveResults, progress)](src/index.js?source#L211)**
 
     Almost the same with the `yutils.async`, additionally, it will
     monitor the result of the whole tests.
@@ -201,7 +201,7 @@ You have to use something like `browserify` or `webpack`.
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L223)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L225)**
 
     A smart strict deep equality assertion helper function.
 
@@ -215,7 +215,7 @@ You have to use something like `browserify` or `webpack`.
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L237)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L239)**
 
     An example reporter for junit.
 
@@ -233,13 +233,13 @@ You have to use something like `browserify` or `webpack`.
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L243)**
+- ## **[junit.Promise](src/index.js?source#L245)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L249)**
+- ## **[junit.yutils](src/index.js?source#L251)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 

@@ -1,3 +1,5 @@
+"use strict";
+
 var codes, genBrush, k, v;
 
 codes = {
