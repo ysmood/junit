@@ -41,6 +41,28 @@ You have to use something like `browserify` or `webpack`.
 
   > Replace all the await expresses with standard promise ones is enough.
 
+
+# CLI
+
+You always have to import `junit` in test files.
+
+Normal node way:
+
+```shell
+node test.js
+```
+
+JUnit also exposed a simple cli tool:
+
+```shell
+junit test/*.js
+
+junit -b babel-node test/**/*.js
+
+junit -b coffee test/*.coffee
+```
+
+
 # API
 
 - ## **[junit(opts)](src/index.js?source#L123)**

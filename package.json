@@ -3,6 +3,9 @@
   "version": "0.2.0",
   "description": "A simple promise based function for unit tests.",
   "main": "lib/index.js",
+  "bin": {
+    "junit": "bin/junit.js"
+  },
   "scripts": {
     "no": "no",
     "test": "no test",
@@ -26,7 +29,7 @@
   },
   "homepage": "https://github.com/ysmood/junit#readme",
   "files": [
-    "lib"
+    "bin", "lib"
   ],
   "dependencies": {
     "yaku": "0.7.5"
