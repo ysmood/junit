@@ -185,21 +185,21 @@ it.run([
         ]);
     }),
 
-    // TODO: This test will cause the whole test end with failed number 1,
-    // that's intended, don't panic.
-    // If a better test method is found, this code should be deleted.
     it("unhandled", () => {
-        let exit = process.exit;
+        return new Promise((resolve, reject) => {
+            let old = Promise.onUnhandledRejection;
 
-        process.exit = (v) => {
-            if (v === 1) {
-                exit(0);
-            } else {
-                exit(1);
-            }
-        };
+            Promise.onUnhandledRejection = (reason) => {
+                if (reason === "fake unhandled")
+                    resolve();
+                else
+                    reject();
 
-        Promise.reject("fake unhandled");
+                Promise.onUnhandledRejection = old;
+            };
+
+            Promise.reject("fake unhandled");
+        });
     }),
 
     it("nesting", () => {

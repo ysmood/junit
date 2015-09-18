@@ -142,8 +142,8 @@ let junit = (opts = {}) => {
     if (opts.isFailOnUnhandled) {
         let onUnhandledRejection = Promise.onUnhandledRejection;
         Promise.onUnhandledRejection = (reason, p) => {
-            onUnhandledRejection(reason, p);
             failed++;
+            onUnhandledRejection(reason, p);
         };
     }
 
