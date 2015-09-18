@@ -37,10 +37,13 @@ You have to use something like `browserify` or `webpack`.
   > If you use webpack, you may need an `Object.defineProperty` polyfill to bundle your tests.
   > You may also need to install a `reporter` designed for old browser, they don't support `console.log`.
 
+- No ES7?
+
+  > Replace all the await expresses with standard promise ones is enough.
 
 # API
 
-- ## **[junit(opts)](src/index.js?source#L92)**
+- ## **[junit(opts)](src/index.js?source#L113)**
 
     A simple promise based module for unit tests.
 
@@ -73,9 +76,7 @@ You have to use something like `browserify` or `webpack`.
 
     - **<u>return</u>**: { _Function_ }
 
-        `() => Function : { msg: String }` It has two members:
-        `{ async: () => Promise, sync: () => Promise }`.
-        Both of the returned promises will resolve with `{ total, passed, failed }`.
+        `() => Function : { msg: String }`
 
     - **<u>example</u>**:
 
@@ -83,8 +84,8 @@ You have to use something like `browserify` or `webpack`.
         import junit from "junit";
         let it = junit();
 
-        // Async tests
-        it.async([
+        // Async tests.
+        it.run([
             it("test 1", () =>
                 // We use `it.eq` to assert on both simple type and complex object.
                 it.eq("ok", "ok")
@@ -96,15 +97,16 @@ You have to use something like `browserify` or `webpack`.
                 return it.eq({ a: 1, b: 2 }, { a: 1, b: 2 });
             }),
 
-            // Sync tests
-            junit.yutils.flow([
-                it("test 3", () =>
+            // Run sync tests within the main async flow.
+            async () => {
+                await it("test 3", () =>
                     it.eq("ok", "ok")
-                ),
-                it("test 4", () =>
+                )();
+
+                await it("test 4", () =>
                     it.eq("ok", "ok")
-                )
-            ])
+                )();
+            }
         ]);
         ```
 
@@ -116,8 +118,8 @@ You have to use something like `browserify` or `webpack`.
         let it = junit();
 
         (async () => {
-            // Async tests
-            let { total, passed, failed } = await it.sync(
+            // Get the result of the test.
+            let { total, passed, failed } = await it.run(1,
                 [
                     it("test 1", () => it.eq(1, 1)),
                     it("test 2", () => it.eq(1, 2)),
@@ -135,7 +137,63 @@ You have to use something like `browserify` or `webpack`.
         })();
         ```
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L179)**
+    - **<u>example</u>**:
+
+        You can even change the code style like this.
+        ```js
+        import junit from "junit";
+        let it = junit();
+
+        (async () => {
+            await it("test 2", async () => {
+                await new junit.Promise(r => setTimeout(r, 1000));
+                return it.eq(1, 2);
+            })();
+
+            await it("test 2", async () => {
+                await new junit.Promise(r => setTimeout(r, 1000));
+
+                // Use return or await here are the same.
+                await it.eq(1, 2);
+            })();
+
+            return it.run();
+        })();
+        ```
+
+- ## **[run(limit, list, saveResults, progress)](src/index.js?source#L201)**
+
+    Almost the same with the `yutils.async`, additionally, it will
+    monitor the result of the whole tests.
+
+    - **<u>param</u>**: `limit` { _Int_ }
+
+        The max task to run at a time. It's optional.
+        Default is `Infinity`.
+
+    - **<u>param</u>**: `list` { _Array | Function_ }
+
+        If the list is an array, it should be a list of functions or promises,
+        and each function will return a promise.
+        If the list is a function, it should be a iterator that returns
+        a promise, when it returns `utils.end`, the iteration ends. Of course
+        it can never end.
+
+    - **<u>param</u>**: `saveResults` { _Boolean_ }
+
+        Optional. Whether to save each promise's result or
+        not. Default is true.
+
+    - **<u>param</u>**: `progress` { _Function_ }
+
+        Optional. If a task ends, the resolve value will be
+        passed to this function.
+
+    - **<u>return</u>**: { _Promise_ }
+
+        It will resolve `{ total, passed, failed }`
+
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L215)**
 
     An deep equality assertion helper function.
 
@@ -149,7 +207,7 @@ You have to use something like `browserify` or `webpack`.
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L193)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L229)**
 
     An example reporter for junit.
 
@@ -167,13 +225,13 @@ You have to use something like `browserify` or `webpack`.
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L199)**
+- ## **[junit.Promise](src/index.js?source#L235)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L205)**
+- ## **[junit.yutils](src/index.js?source#L241)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 

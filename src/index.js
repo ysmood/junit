@@ -87,8 +87,8 @@ import br from "./brush";
  *     console.log(total, passed, failed);
  * })();
  * ```
- * You can even change the code style like this.
  * @example
+ * You can even change the code style like this.
  * ```js
  * import junit from "junit";
  * let it = junit();

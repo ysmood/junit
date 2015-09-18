@@ -37,6 +37,9 @@ You have to use something like `browserify` or `webpack`.
   > If you use webpack, you may need an `Object.defineProperty` polyfill to bundle your tests.
   > You may also need to install a `reporter` designed for old browser, they don't support `console.log`.
 
+- No ES7?
+
+  > Replace all the await expresses with standard promise ones is enough.
 
 # API
 
