@@ -5,7 +5,7 @@ I believe we shouldn't waste time on learning, debugging and waiting the unit te
 that's why I created JUnit. It's just a curried function, everything inside is controllable, nothing
 will be fancy.
 
-[![NPM version](https://badge.fury.io/js/noflow.svg)](http://badge.fury.io/js/noflow) [![Build Status](https://travis-ci.org/ysmood/noflow.svg)](https://travis-ci.org/ysmood/noflow) [![Deps Up to Date](https://david-dm.org/ysmood/noflow.svg?style=flat)](https://david-dm.org/ysmood/noflow) [![Coverage Status](https://coveralls.io/repos/ysmood/junit/badge.svg?branch=master&service=github)](https://coveralls.io/github/ysmood/junit?branch=master)
+[![NPM version](https://badge.fury.io/js/junit.svg)](http://badge.fury.io/js/junit) [![Build Status](https://travis-ci.org/ysmood/junit.svg)](https://travis-ci.org/ysmood/junit) [![Deps Up to Date](https://david-dm.org/ysmood/junit.svg?style=flat)](https://david-dm.org/ysmood/junit) [![Coverage Status](https://coveralls.io/repos/ysmood/junit/badge.svg?branch=master&service=github)](https://coveralls.io/github/ysmood/junit?branch=master)
 
 
 # Install
@@ -25,7 +25,7 @@ You have to use something like `browserify` or `webpack`.
 - Should work well from ES3 to ES7
 - Make it super easy to concurrently test async functions, designed for `async-await`
 - Automatically garbage collect the unhandled error
-- Full customizable report sytle
+- Full customizable report style
 - Not a single global variable pollution
 - Only one dependency, light weight and behavior predictable
 
@@ -75,7 +75,7 @@ You have to use something like `browserify` or `webpack`.
 
         `() => Function : { msg: String }` It has two members:
         `{ async: () => Promise, sync: () => Promise }`.
-        Both of returned promises will resolve with `{ total, passed, failed }`.
+        Both of the returned promises will resolve with `{ total, passed, failed }`.
 
     - **<u>example</u>**:
 
@@ -85,11 +85,11 @@ You have to use something like `browserify` or `webpack`.
 
         // Async tests
         it.async([
-            it("basic 1", () =>
+            it("test 1", () =>
                 // We use `it.eq` to assert on both simple type and complex object.
                 it.eq("ok", "ok")
             ),
-            it("basic 2", async () => {
+            it("test 2", async () => {
                 // No more callback hell while testing async functions.
                 await new junit.Promise(r => setTimeout(r, 1000));
 
@@ -97,11 +97,11 @@ You have to use something like `browserify` or `webpack`.
             }),
 
             // Sync tests
-            kit.flow([
-                it("basic 3", () =>
+            junit.yutils.flow([
+                it("test 3", () =>
                     it.eq("ok", "ok")
                 ),
-                it("basic 4", () =>
+                it("test 4", () =>
                     it.eq("ok", "ok")
                 )
             ])
@@ -119,9 +119,9 @@ You have to use something like `browserify` or `webpack`.
             // Async tests
             let { total, passed, failed } = await it.sync(
                 [
-                    it("basic 1", () => it.eq(1, 1)),
-                    it("basic 2", () => it.eq(1, 2)),
-                    it("basic 3", () => it.eq(2, 2))
+                    it("test 1", () => it.eq(1, 1)),
+                    it("test 2", () => it.eq(1, 2)),
+                    it("test 3", () => it.eq(2, 2))
                 ]
                 .filter((fn, index) => index % 2)
                 .map(fn => {
@@ -135,7 +135,21 @@ You have to use something like `browserify` or `webpack`.
         })();
         ```
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L186)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L179)**
+
+    An deep equality assertion helper function.
+
+    - **<u>param</u>**: `actual` { _Any_ }
+
+    - **<u>param</u>**: `expected` { _Any_ }
+
+    - **<u>param</u>**: `maxDepth` { _Number = 7_ }
+
+        Optional. The max depth of the recursion check.
+
+    - **<u>return</u>**: { _Promise_ }
+
+- ## **[junit.reporter(prompt)](src/index.js?source#L193)**
 
     An example reporter for junit.
 
@@ -153,13 +167,13 @@ You have to use something like `browserify` or `webpack`.
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L192)**
+- ## **[junit.Promise](src/index.js?source#L199)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L198)**
+- ## **[junit.yutils](src/index.js?source#L205)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 

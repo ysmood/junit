@@ -45,12 +45,12 @@ let nextPath = (path, next) => path === "" ? next : path + "." + next;
 let joinRes = (res, json1, json2, path) => res ?
     { pass: true } : { pass: false, path, json1, json2 };
 
-// used as a unique object for exception
-let $maxDept = {};
+// used as an unique object for exception
+let $maxDepthErr = {};
 
 let eq = (json1, json2, depthCountdown, path = "") => {
     if (depthCountdown === 0) {
-        return $maxDept;
+        return $maxDepthErr;
     }
     let isBothArr = isArray(json1) && isArray(json2);
     let isBothObj = isPureObj(json1) && isPureObj(json2);
@@ -60,8 +60,8 @@ let eq = (json1, json2, depthCountdown, path = "") => {
         for (let i = 0; i < json.length; i++) {
             let eqRes = eq(json1[i], json2[i],
                 depthCountdown - 1, nextPath(path, i));
-            if ($maxDept === eqRes)
-                return $maxDept;
+            if ($maxDepthErr === eqRes)
+                return $maxDepthErr;
             if (!eqRes.pass)
                 return eqRes;
         }
@@ -69,8 +69,8 @@ let eq = (json1, json2, depthCountdown, path = "") => {
         for (let name in json) {
             let eqRes = eq(json1[name], json2[name],
                 depthCountdown - 1, nextPath(path, name));
-            if ($maxDept === eqRes)
-                return $maxDept;
+            if ($maxDepthErr === eqRes)
+                return $maxDepthErr;
             if (!eqRes.pass)
                 return eqRes;
         }
@@ -91,7 +91,7 @@ export default {
 
     eq: (formatAssertErr) => (actual, expected, depthCountdown = 7) => {
         let eqRes = eq(actual, expected, depthCountdown);
-        if (eqRes === $maxDept) {
+        if (eqRes === $maxDepthErr) {
             let errText = "exceed max Recursive depth :" + depthCountdown;
             return report(formatAssertErr, errText, errText);
         }

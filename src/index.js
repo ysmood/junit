@@ -33,7 +33,7 @@ import br from "./brush";
  * ```
  * @return {Function} `() => Function : { msg: String }` It has two members:
  * `{ async: () => Promise, sync: () => Promise }`.
- * Both of returned promises will resolve with `{ total, passed, failed }`.
+ * Both of the returned promises will resolve with `{ total, passed, failed }`.
  * @example
  * ```js
  * import junit from "junit";
@@ -41,11 +41,11 @@ import br from "./brush";
  *
  * // Async tests
  * it.async([
- *     it("basic 1", () =>
+ *     it("test 1", () =>
  *         // We use `it.eq` to assert on both simple type and complex object.
  *         it.eq("ok", "ok")
  *     ),
- *     it("basic 2", async () => {
+ *     it("test 2", async () => {
  *         // No more callback hell while testing async functions.
  *         await new junit.Promise(r => setTimeout(r, 1000));
  *
@@ -53,11 +53,11 @@ import br from "./brush";
  *     }),
  *
  *     // Sync tests
- *     kit.flow([
- *         it("basic 3", () =>
+ *     junit.yutils.flow([
+ *         it("test 3", () =>
  *             it.eq("ok", "ok")
  *         ),
- *         it("basic 4", () =>
+ *         it("test 4", () =>
  *             it.eq("ok", "ok")
  *         )
  *     ])
@@ -73,9 +73,9 @@ import br from "./brush";
  *     // Async tests
  *     let { total, passed, failed } = await it.sync(
  *         [
- *             it("basic 1", () => it.eq(1, 1)),
- *             it("basic 2", () => it.eq(1, 2)),
- *             it("basic 3", () => it.eq(2, 2))
+ *             it("test 1", () => it.eq(1, 1)),
+ *             it("test 2", () => it.eq(1, 2)),
+ *             it("test 3", () => it.eq(2, 2))
  *         ]
  *         .filter((fn, index) => index % 2)
  *         .map(fn => {
@@ -169,6 +169,13 @@ let junit = (opts = {}) => {
             .then(onFinal, onFinal);
         },
 
+        /**
+         * An deep equality assertion helper function.
+         * @param {Any} actual
+         * @param {Any} expected
+         * @param {Number = 7} maxDepth Optional. The max depth of the recursion check.
+         * @return {Promise}
+         */
         eq: utils.eq(formatAssertErr)
 
     });
