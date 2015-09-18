@@ -1,5 +1,4 @@
 import junit from "../src";
-import yutils from "yaku/lib/utils";
 import br from "../src/brush";
 import Promise from "yaku";
 
@@ -10,7 +9,7 @@ let testOpts = {
 };
 let testPattern = new RegExp(process.env.pattern);
 
-it.async([
+it.run([
 
     it("msg", () => {
         let test = junit(testOpts);
@@ -24,7 +23,7 @@ it.async([
         global.window = null;
 
         // Async tests
-        return test.async([
+        return test.run([
             test("basic 1", () =>
                 it.eq("ok", "ok")
             )
@@ -38,7 +37,7 @@ it.async([
         let test = junit(testOpts);
 
         // Async tests
-        return test.async([
+        return test.run([
             test("basic 1", () =>
                 it.eq("ok", "ok")
             ),
@@ -62,10 +61,24 @@ it.async([
         );
     }),
 
+    it("async await all", async () => {
+        let test = junit(testOpts);
+
+        await test("basic 1", () =>
+            it.eq("ok", "ok")
+        )();
+
+        await test("basic 2", () =>
+            it.eq({ a: 1, b: 2 }, { a: 1, b: 2 })
+        )();
+
+        return it.eq((await test.run()).passed, 2);
+    }),
+
     it("all passed sync", () => {
         let test = junit(testOpts);
 
-        return test.sync([
+        return test.run(1, [
             test("basic 1", () =>
                 it.eq("ok", "ok")
             ),
@@ -81,7 +94,7 @@ it.async([
     it("disable brush", () => {
         let test = junit(testOpts);
 
-        return test.sync([
+        return test.run(1, [
             test("basic 1", () => {
                 br.isEnabled = false;
                 return it.eq("ok", "ok");
@@ -112,7 +125,7 @@ it.async([
             { 0: 1, 1: 2, length: 2 } // array like object
         ].map((v, i) => test(`type ${i}`, () => it.eq(v, v)));
 
-        return test.async(tests)
+        return test.run(tests)
         .then(({ passed }) =>
             it.eq(passed, tests.length)
         );
@@ -122,7 +135,7 @@ it.async([
         let test = junit(testOpts);
 
         // Async tests
-        return test.async([
+        return test.run([
             test("basic 1", () => {
                 return it.eq("ok", "ok");
             }),
@@ -141,7 +154,7 @@ it.async([
     it("isEnd", () => {
         let test = junit(testOpts);
 
-        return test.async([
+        return test.run([
             test("isEnd resolve", () =>
                 new Promise((r) => setTimeout(r, 100))
             ),
@@ -165,13 +178,16 @@ it.async([
             reporter: junit.reporter(" sub >")
         });
 
-        return test.async([
+        return test.run([
             test("empty", () => {
                 throw new Error("fake err");
             })
         ]);
     }),
 
+    // TODO: This test will cause the whole test end with failed number 1,
+    // that's intended, don't panic.
+    // If a better test method is found, this code should be deleted.
     it("unhandled", () => {
         let exit = process.exit;
 
@@ -214,7 +230,7 @@ it.async([
     it("max depth", () => {
         let test = junit(testOpts);
 
-        return test.async([
+        return test.run([
             test("over max depth", () => {
                     let data1 = {
                         a: { b: { c: { d:{ e:{ f:{ g:{ h:{} } } } } } } }
@@ -312,7 +328,7 @@ it.async([
     it("undefined", () => {
         let test = junit(testOpts);
 
-        return test.async([
+        return test.run([
             test("undefined & null", () =>
                 it.eq(undefined, null)
             )
@@ -325,7 +341,7 @@ it.async([
     it("elements number", () => {
         let test = junit(testOpts);
 
-        return test.async([
+        return test.run([
             test("elements number", () => {
                 let data1 = {
                     a: 1,
@@ -350,7 +366,7 @@ it.async([
     it("attributes number", () => {
         let test = junit(testOpts);
 
-        return test.async([
+        return test.run([
             test("attributes number", () => {
                 let data1 = {
                     b: {

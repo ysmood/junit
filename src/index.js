@@ -31,16 +31,14 @@ import br from "./brush";
  *     }
  * }
  * ```
- * @return {Function} `() => Function : { msg: String }` It has two members:
- * `{ async: () => Promise, sync: () => Promise }`.
- * Both of the returned promises will resolve with `{ total, passed, failed }`.
+ * @return {Function} `() => Function : { msg: String }`
  * @example
  * ```js
  * import junit from "junit";
  * let it = junit();
  *
- * // Async tests
- * it.async([
+ * // Async tests.
+ * it.run([
  *     it("test 1", () =>
  *         // We use `it.eq` to assert on both simple type and complex object.
  *         it.eq("ok", "ok")
@@ -52,15 +50,16 @@ import br from "./brush";
  *         return it.eq({ a: 1, b: 2 }, { a: 1, b: 2 });
  *     }),
  *
- *     // Sync tests
- *     junit.yutils.flow([
- *         it("test 3", () =>
+ *     // Run sync tests within the main async flow.
+ *     async () => {
+ *         await it("test 3", () =>
  *             it.eq("ok", "ok")
- *         ),
- *         it("test 4", () =>
+ *         )();
+ *
+ *         await it("test 4", () =>
  *             it.eq("ok", "ok")
- *         )
- *     ])
+ *         )();
+ *     }
  * ]);
  * ```
  * @example
@@ -70,8 +69,8 @@ import br from "./brush";
  * let it = junit();
  *
  * (async () => {
- *     // Async tests
- *     let { total, passed, failed } = await it.sync(
+ *     // Get the result of the test.
+ *     let { total, passed, failed } = await it.run(1,
  *         [
  *             it("test 1", () => it.eq(1, 1)),
  *             it("test 2", () => it.eq(1, 2)),
@@ -86,6 +85,28 @@ import br from "./brush";
  *     );
  *
  *     console.log(total, passed, failed);
+ * })();
+ * ```
+ * You can even change the code style like this.
+ * @example
+ * ```js
+ * import junit from "junit";
+ * let it = junit();
+ *
+ * (async () => {
+ *     await it("test 2", async () => {
+ *         await new junit.Promise(r => setTimeout(r, 1000));
+ *         return it.eq(1, 2);
+ *     })();
+ *
+ *     await it("test 2", async () => {
+ *         await new junit.Promise(r => setTimeout(r, 1000));
+ *
+ *         // Use return or await here are the same.
+ *         await it.eq(1, 2);
+ *     })();
+ *
+ *     return it.run();
  * })();
  * ```
  */
@@ -159,13 +180,28 @@ let junit = (opts = {}) => {
         root.process.on("exit", () => process.exit(failed));
 
     return utils.extend(it, {
-        async: function () {
-            return yutils.async.apply(0, arguments)
-            .then(onFinal, onFinal);
-        },
 
-        sync: function () {
-            return yutils.flow.apply(0, arguments)()
+        /**
+         * Almost the same with the `yutils.async`, additionally, it will
+         * monitor the result of the whole tests.
+         * @param  {Int} limit The max task to run at a time. It's optional.
+         * Default is `Infinity`.
+         * @param  {Array | Function} list
+         * If the list is an array, it should be a list of functions or promises,
+         * and each function will return a promise.
+         * If the list is a function, it should be a iterator that returns
+         * a promise, when it returns `utils.end`, the iteration ends. Of course
+         * it can never end.
+         * @param {Boolean} saveResults Optional. Whether to save each promise's result or
+         * not. Default is true.
+         * @param {Function} progress Optional. If a task ends, the resolve value will be
+         * passed to this function.
+         * @return {Promise} It will resolve `{ total, passed, failed }`
+         */
+        run: function () {
+            var args = arguments.length === 0 ? [[]] : arguments;
+
+            return yutils.async.apply(0, args)
             .then(onFinal, onFinal);
         },
 
