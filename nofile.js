@@ -23,7 +23,7 @@ export default (task, option) => {
         kit.spawn("eslint", ["src", "test", "nofile.js"])
     );
 
-    task("watch-test", (opts) => {
+    task("watch-test", "auto watch & reload test", (opts) => {
         return kit.monitorApp({
             bin: "babel-node",
             args: ["test/basic.js"],

@@ -91,7 +91,7 @@ junit -b coffee test/*.coffee
 
                 logPass: (msg, span) => {},
                 logFail: (msg, err, span) => {},
-                logFinal: (total, passed, failed) => {}
+                logFinal: (total, tested, passed, failed) => {}
             }
         }
         ```
@@ -191,7 +191,7 @@ junit -b coffee test/*.coffee
         })();
         ```
 
-- ## **[run(limit, list, saveResults, progress)](src/index.js?source#L211)**
+- ## **[run(limit, list, saveResults, progress)](src/index.js?source#L213)**
 
     Almost the same with the `yutils.async`, additionally, it will
     monitor the result of the whole tests.
@@ -223,7 +223,7 @@ junit -b coffee test/*.coffee
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L225)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L227)**
 
     A smart strict deep equality assertion helper function.
 
@@ -237,7 +237,7 @@ junit -b coffee test/*.coffee
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L239)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L241)**
 
     An example reporter for junit.
 
@@ -255,16 +255,21 @@ junit -b coffee test/*.coffee
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L245)**
+- ## **[junit.Promise](src/index.js?source#L247)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L251)**
+- ## **[junit.yutils](src/index.js?source#L253)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 
     - **<u>type</u>**: { _Object_ }
 
 
+
+
+# Screenshot
+
+![junit-demo](doc/junit-demo.png)

@@ -66,3 +66,8 @@ junit -b coffee test/*.coffee
 # API
 
 <%= doc["src/index.js"] %>
+
+
+# Screenshot
+
+![junit-demo](doc/junit-demo.png)
