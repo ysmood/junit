@@ -197,23 +197,21 @@ let junit = (opts = {}) => {
          * Almost the same with the `yutils.async`, additionally, it will
          * monitor the result of the whole tests.
          * @param  {Int} limit The max task to run at a time. It's optional.
-         * Default is `Infinity`.
+         * Default is `Infinity`. Set it to 1 to run tests synchronously.
          * @param  {Array | Function} list
          * If the list is an array, it should be a list of functions or promises,
          * and each function will return a promise.
          * If the list is a function, it should be a iterator that returns
-         * a promise, when it returns `utils.end`, the iteration ends. Of course
+         * a promise, when it returns `yutils.end`, the iteration ends. Of course
          * it can never end.
-         * @param {Boolean} saveResults Optional. Whether to save each promise's result or
-         * not. Default is true.
-         * @param {Function} progress Optional. If a task ends, the resolve value will be
+         * @param {Function} progress Optional. If a task ends, the resolved value will be
          * passed to this function.
          * @return {Promise} It will resolve `{ total, passed, failed }`
          */
-        run: function () {
-            var args = arguments.length === 0 ? [[]] : arguments;
+        run: function (limit, list, progress) {
+            if (arguments.length === 0) limit = [];
 
-            return yutils.async.apply(0, args)
+            return yutils.async(limit, list, false, progress)
             .then(onFinal, onFinal);
         },
 
