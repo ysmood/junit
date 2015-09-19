@@ -191,7 +191,7 @@ junit -b coffee test/*.coffee
         })();
         ```
 
-- ## **[run(limit, list, saveResults, progress)](src/index.js?source#L213)**
+- ## **[run(limit, list, progress)](src/index.js?source#L211)**
 
     Almost the same with the `yutils.async`, additionally, it will
     monitor the result of the whole tests.
@@ -199,31 +199,26 @@ junit -b coffee test/*.coffee
     - **<u>param</u>**: `limit` { _Int_ }
 
         The max task to run at a time. It's optional.
-        Default is `Infinity`.
+        Default is `Infinity`. Set it to 1 to run tests synchronously.
 
     - **<u>param</u>**: `list` { _Array | Function_ }
 
         If the list is an array, it should be a list of functions or promises,
         and each function will return a promise.
         If the list is a function, it should be a iterator that returns
-        a promise, when it returns `utils.end`, the iteration ends. Of course
+        a promise, when it returns `yutils.end`, the iteration ends. Of course
         it can never end.
-
-    - **<u>param</u>**: `saveResults` { _Boolean_ }
-
-        Optional. Whether to save each promise's result or
-        not. Default is true.
 
     - **<u>param</u>**: `progress` { _Function_ }
 
-        Optional. If a task ends, the resolve value will be
+        Optional. If a task ends, the resolved value will be
         passed to this function.
 
     - **<u>return</u>**: { _Promise_ }
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L227)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L225)**
 
     A smart strict deep equality assertion helper function.
 
@@ -237,7 +232,7 @@ junit -b coffee test/*.coffee
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L241)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L239)**
 
     An example reporter for junit.
 
@@ -255,13 +250,13 @@ junit -b coffee test/*.coffee
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L247)**
+- ## **[junit.Promise](src/index.js?source#L245)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L253)**
+- ## **[junit.yutils](src/index.js?source#L251)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 
