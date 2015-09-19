@@ -204,14 +204,12 @@ let junit = (opts = {}) => {
          * If the list is a function, it should be a iterator that returns
          * a promise, when it returns `yutils.end`, the iteration ends. Of course
          * it can never end.
-         * @param {Function} progress Optional. If a task ends, the resolved value will be
-         * passed to this function.
          * @return {Promise} It will resolve `{ total, passed, failed }`
          */
-        run: function (limit, list, progress) {
+        run: function (limit, list) {
             if (arguments.length === 0) limit = [];
 
-            return yutils.async(limit, list, false, progress)
+            return yutils.async(limit, list, false)
             .then(onFinal, onFinal);
         },
 

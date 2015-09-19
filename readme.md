@@ -191,7 +191,7 @@ junit -b coffee test/*.coffee
         })();
         ```
 
-- ## **[run(limit, list, progress)](src/index.js?source#L211)**
+- ## **[run(limit, list)](src/index.js?source#L209)**
 
     Almost the same with the `yutils.async`, additionally, it will
     monitor the result of the whole tests.
@@ -209,16 +209,11 @@ junit -b coffee test/*.coffee
         a promise, when it returns `yutils.end`, the iteration ends. Of course
         it can never end.
 
-    - **<u>param</u>**: `progress` { _Function_ }
-
-        Optional. If a task ends, the resolved value will be
-        passed to this function.
-
     - **<u>return</u>**: { _Promise_ }
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L225)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L223)**
 
     A smart strict deep equality assertion helper function.
 
@@ -232,7 +227,7 @@ junit -b coffee test/*.coffee
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L239)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L237)**
 
     An example reporter for junit.
 
@@ -250,13 +245,13 @@ junit -b coffee test/*.coffee
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L245)**
+- ## **[junit.Promise](src/index.js?source#L243)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L251)**
+- ## **[junit.yutils](src/index.js?source#L249)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 

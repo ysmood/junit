@@ -92,7 +92,7 @@ export default {
     eq: (formatAssertErr) => (actual, expected, depthCountdown = 7) => {
         let eqRes = eq(actual, expected, depthCountdown);
         if (eqRes === $maxDepthErr) {
-            let errText = "exceed max Recursive depth :" + depthCountdown;
+            let errText = `Maximum recursion depth exceeded: ${depthCountdown}`;
             return report(formatAssertErr, errText, errText);
         }
         if (eqRes.pass)
