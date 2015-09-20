@@ -7,12 +7,12 @@ let testOpts = {
     isExitWithFailed: false
 };
 
-export default (it) => [
+export default ({ it, eq }) => [
 
     it("msg", () => {
         let test = junit();
 
-        return it.eq(test("test msg").msg, "test msg");
+        return eq(test("test msg").msg, "test msg");
     }),
 
     it("global window", () => {
@@ -23,11 +23,11 @@ export default (it) => [
         // Async tests
         return test.run([
             test("basic 1", () =>
-                it.eq("ok", "ok")
+                eq("ok", "ok")
             )
         ])
         .then(({ passed }) =>
-            it.eq(passed, 1)
+            eq(passed, 1)
         );
     }),
 
@@ -37,25 +37,25 @@ export default (it) => [
         // Async tests
         return test.run([
             test("basic 1", () =>
-                it.eq("ok", "ok")
+                eq("ok", "ok")
             ),
             test("basic 2", () =>
-                it.eq({ a: 1, b: 2 }, { a: 1, b: 2 })
+                eq({ a: 1, b: 2 }, { a: 1, b: 2 })
             ),
 
             // Sync tests
             async () => {
                 await test("basic 3", () =>
-                    it.eq("ok", "ok")
+                    eq("ok", "ok")
                 )();
 
                 await test("basic 4", () =>
-                    it.eq("ok", "ok")
+                    eq("ok", "ok")
                 )();
             }
         ])
         .then(({ passed }) =>
-            it.eq(passed, 4)
+            eq(passed, 4)
         );
     }),
 
@@ -63,14 +63,14 @@ export default (it) => [
         let test = junit(testOpts);
 
         await test("basic 1", () =>
-            it.eq("ok", "ok")
+            eq("ok", "ok")
         )();
 
         await test("basic 2", () =>
-            it.eq({ a: 1, b: 2 }, { a: 1, b: 2 })
+            eq({ a: 1, b: 2 }, { a: 1, b: 2 })
         )();
 
-        return it.eq((await test.run()).passed, 2);
+        return eq((await test.run()).passed, 2);
     }),
 
     it("all passed sync", () => {
@@ -78,14 +78,14 @@ export default (it) => [
 
         return test.run(1, [
             test("basic 1", () =>
-                it.eq("ok", "ok")
+                eq("ok", "ok")
             ),
             test("basic 2", () =>
-                it.eq({ a: 1, b: 2 }, { a: 1, b: 2 })
+                eq({ a: 1, b: 2 }, { a: 1, b: 2 })
             )
         ])
         .then(({ passed }) =>
-            it.eq(passed, 2)
+            eq(passed, 2)
         );
     }),
 
@@ -95,16 +95,16 @@ export default (it) => [
         return test.run(1, [
             test("basic 1", () => {
                 br.isEnabled = false;
-                return it.eq("ok", "ok");
+                return eq("ok", "ok");
             }),
             test("basic 2", () => {
                 if (typeof document === "undefined")
                     br.isEnabled = true;
-                return it.eq("ok", "ok");
+                return eq("ok", "ok");
             })
         ])
         .then(({ passed }) =>
-            it.eq(passed, 2)
+            eq(passed, 2)
         );
     }),
 
@@ -121,11 +121,11 @@ export default (it) => [
             null,
             { a: { b: { c: "test" } } },
             { 0: 1, 1: 2, length: 2 } // array like object
-        ].map((v, i) => test(`type ${i}`, () => it.eq(v, v)));
+        ].map((v, i) => test(`type ${i}`, () => eq(v, v)));
 
         return test.run(tests)
         .then(({ passed }) =>
-            it.eq(passed, tests.length)
+            eq(passed, tests.length)
         );
     }),
 
@@ -135,17 +135,17 @@ export default (it) => [
         // Async tests
         return test.run([
             test("basic 1", () => {
-                return it.eq("ok", "ok");
+                return eq("ok", "ok");
             }),
             test("basic 2", () => {
-                return it.eq("ok", "ok1");
+                return eq("ok", "ok1");
             }),
             test("basic 3", () =>
-                it.eq({ a: 1, b: 2 }, { a: 1, b: 2 })
+                eq({ a: 1, b: 2 }, { a: 1, b: 2 })
             )
         ])
         .then(({ failed }) => {
-            return it.eq(failed, 1);
+            return eq(failed, 1);
         });
     }),
 
@@ -160,11 +160,11 @@ export default (it) => [
                 new Promise((r, rr) => setTimeout(rr, 100))
             ),
             test("empty", () =>
-                it.eq(1, 2)
+                eq(1, 2)
             )
         ])
         .then(({ failed }) => {
-            return it.eq(failed, 1);
+            return eq(failed, 1);
         });
     }),
 
@@ -222,7 +222,7 @@ export default (it) => [
             }
         };
 
-        it.eq(data1, data2);
+        eq(data1, data2);
     }),
 
     it("max depth", () => {
@@ -236,7 +236,7 @@ export default (it) => [
                 let data2 = {
                     a: { b: { c: { d:{ e:{ f:{ g:{ h:{} } } } } } } }
                 };
-                return it.eq(data1, data2);
+                return eq(data1, data2);
             }),
             test("over max depth", () => {
                 let data1 = {
@@ -245,7 +245,7 @@ export default (it) => [
                 let data2 = {
                     a: { b: { c: {} } }
                 };
-                return it.eq(data1, data2, 2);
+                return eq(data1, data2, 2);
             }),
             test("over max depth2", () => {
                 let data1 = {
@@ -254,7 +254,7 @@ export default (it) => [
                 let data2 = {
                     a: [ [ [ [ [ [ [ [ ] ] ] ] ] ] ] ]
                 };
-                return it.eq(data1, data2);
+                return eq(data1, data2);
             }),
             test("not over max depth with complex data", () => {
                 let data1 = {
@@ -311,11 +311,11 @@ export default (it) => [
                         }
                     }
                 };
-                return it.eq(data1, data2);
+                return eq(data1, data2);
             })
         ])
         .then(({ failed }) => {
-            return it.eq(failed, 3);
+            return eq(failed, 3);
         });
     }),
 
@@ -324,11 +324,11 @@ export default (it) => [
 
         return test.run([
             test("undefined & null", () =>
-                it.eq(undefined, null)
+                eq(undefined, null)
             )
         ])
         .then(({ failed }) => {
-            return it.eq(failed, 1);
+            return eq(failed, 1);
         });
     }),
 
@@ -349,11 +349,11 @@ export default (it) => [
                     },
                     a: 1
                 };
-                return it.eq(data1, data2);
+                return eq(data1, data2);
             })
         ])
         .then(({ failed }) => {
-            return it.eq(failed, 1);
+            return eq(failed, 1);
         });
     }),
 
@@ -377,11 +377,11 @@ export default (it) => [
                         d: ["1", "2"]
                     }
                 };
-                return it.eq(data1, data2);
+                return eq(data1, data2);
             })
         ])
         .then(({ failed }) => {
-            return it.eq(failed, 1);
+            return eq(failed, 1);
         });
     })
 

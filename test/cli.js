@@ -5,10 +5,10 @@ async function spawn (bin, args, opts) {
     return code;
 }
 
-export default (it) => [
+export default ({ it, eq }) => [
 
     it("cli tool basic", async () => {
-        return it.eq(await spawn("babel-node", [
+        return eq(await spawn("babel-node", [
             "src/cli.js",
             "--", "test/cli-test/a.js", "-p", " sub >"
         ]), 0);
@@ -22,7 +22,7 @@ export default (it) => [
             ]);
             throw new Error("cli should report error");
         } catch ({ code }) {
-            return it.eq(code, 1);
+            return eq(code, 1);
         }
     })
 

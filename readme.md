@@ -194,7 +194,7 @@ For more documentation, run `junit -h`.
         })();
         ```
 
-- ## **[run(limit, list)](src/index.js?source#L209)**
+- ## **[run(limit, list)](src/index.js?source#L205)**
 
     Almost the same with the `yutils.async`, additionally, it will
     monitor the result of the whole tests.

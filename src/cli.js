@@ -20,6 +20,7 @@ if (subArgIndex > -1) {
 cmder
     .description("junit cli tool to run / watch tests automatically")
     .usage("[options] [file | pattern...]")
+    .option("-s, --suit <module>", "a 'it' transformer which will be required as an function [(it, path) => it]", null)
     .option("-r, --register <str>", "language try to register [babel]", "babel/register")
     .option("-l, --limit <num>", "concurrent test limit [Infinity]", parseInt)
     .option("-g, --grep <pattern>", "only run tests matching the pattern", "")
@@ -58,6 +59,7 @@ try {
 }
 
 let testReg = new RegExp(cmder.grep);
+let suit;
 
 function run () {
     let it = junit({
@@ -67,11 +69,24 @@ function run () {
         isFailOnUnhandled: cmder.isFailOnUnhandled,
         timeout: cmder.timeout || 5000
     });
+
+    // test suit hook
+    /* istanbul ignore else */
+    if (cmder.suit) {
+        try {
+            suit = require.resolve(cmder.suit);
+        } catch (err) {
+            suit = require(fsPath.resolve(cmder.suit));
+        }
+    } else {
+        suit = (it) => it;
+    }
+
     let tests = [];
     return fs.glob(cmder.args, {
-        iter: (f) => tests = tests.concat(require(
-            fsPath.resolve(f.path)
-        )(it))
+        iter: ({ path }) => tests = tests.concat(require(
+            fsPath.resolve(path)
+        )(suit(it, path)))
     }).then(() => {
         return it.run(
             cmder.limit || Infinity,
@@ -90,12 +105,17 @@ if (cmder.watch) {
         sep += "*";
     }
 
-    fs.watchFiles(cmder.args.concat(watchList), {
-        handler: (path) => {
-            process.stdout.write(br.yellow(sep));
-            console.log(cmder.prompt, br.cyan("file modified:"), path);
-            delete require.cache[fsPath.resolve(path)];
-            run();
-        }
-    });
+    let handler = (path) => {
+        process.stdout.write(br.yellow(sep));
+        console.log(cmder.prompt, br.cyan("file modified:"), path);
+        delete require.cache[fsPath.resolve(path)];
+        run();
+    };
+
+    let list = [];
+    fs.glob(cmder.args.concat(watchList), { iter: ({path}) => {
+        if (list.indexOf(path) > -1) return;
+        list.push(path);
+        fs.watchPath(path, { handler });
+    } });
 }

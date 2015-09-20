@@ -35,19 +35,21 @@ export default (task, option) => {
             args: [
                 "node_modules/.bin/babel-istanbul", "cover",
                 "src/cli.js", "--",
-                "-g", opts.T, "test/*.js"
+                "-s", "test/testSuit.js",
+                "-g", opts.grep, "test/*.js"
             ]
         });
     });
 
-    option("-t <.*>", "unit test regex filter", ".*");
+    option("-g, --grep <.*>", "unit test regex filter", ".*");
     task("test", ["lint"], async (opts) => {
         try {
             kit.spawn(
                 "babel-node", [
                     "node_modules/.bin/babel-istanbul", "cover",
                     "src/cli.js", "--",
-                    "-g", opts.T, "test/*.js"
+                    "-s", "test/testSuit.js",
+                    "-g", opts.grep, "test/*.js"
                 ]
             );
         } catch ({ code }) {

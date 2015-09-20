@@ -187,10 +187,6 @@ let junit = (opts = {}) => {
         return { total, tested, passed, failed };
     }
 
-    if (opts.isExitWithFailed && root.process)
-        /* istanbul ignore next */
-        root.process.on("exit", () => process.exit(failed));
-
     return utils.extend(it, {
 
         /**
@@ -207,6 +203,10 @@ let junit = (opts = {}) => {
          * @return {Promise} It will resolve `{ total, passed, failed }`
          */
         run: function (limit, list) {
+            if (opts.isExitWithFailed && root.process)
+                /* istanbul ignore next */
+                root.process.on("exit", () => root.process.exit(failed));
+
             if (arguments.length === 0) limit = [];
 
             return yutils.async(limit, list, false)
