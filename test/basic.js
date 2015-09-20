@@ -232,93 +232,89 @@ it.run([
 
         return test.run([
             test("over max depth", () => {
-                    let data1 = {
-                        a: { b: { c: { d:{ e:{ f:{ g:{ h:{} } } } } } } }
-                    };
-                    let data2 = {
-                        a: { b: { c: { d:{ e:{ f:{ g:{ h:{} } } } } } } }
-                    };
-                    return it.eq(data1, data2);
-                }
-            ),
+                let data1 = {
+                    a: { b: { c: { d:{ e:{ f:{ g:{ h:{} } } } } } } }
+                };
+                let data2 = {
+                    a: { b: { c: { d:{ e:{ f:{ g:{ h:{} } } } } } } }
+                };
+                return it.eq(data1, data2);
+            }),
             test("over max depth", () => {
-                    let data1 = {
-                        a: { b: { c: {} } }
-                    };
-                    let data2 = {
-                        a: { b: { c: {} } }
-                    };
-                    return it.eq(data1, data2, 2);
-                }
-            ),
+                let data1 = {
+                    a: { b: { c: {} } }
+                };
+                let data2 = {
+                    a: { b: { c: {} } }
+                };
+                return it.eq(data1, data2, 2);
+            }),
             test("over max depth2", () => {
-                    let data1 = {
-                        a: [ [ [ [ [ [ [ [ ] ] ] ] ] ] ] ]
-                    };
-                    let data2 = {
-                        a: [ [ [ [ [ [ [ [ ] ] ] ] ] ] ] ]
-                    };
-                    return it.eq(data1, data2);
-                }
-            ),
+                let data1 = {
+                    a: [ [ [ [ [ [ [ [ ] ] ] ] ] ] ] ]
+                };
+                let data2 = {
+                    a: [ [ [ [ [ [ [ [ ] ] ] ] ] ] ] ]
+                };
+                return it.eq(data1, data2);
+            }),
             test("not over max depth with complex data", () => {
-                    let data1 = {
-                        l1: {
-                            l2: {
-                                l3: {
-                                    l4: 12,
-                                    l5: 41
-                                },
-                                l6: null,
-                                l7: "12345",
-                                l8: [12356]
+                let data1 = {
+                    l1: {
+                        l2: {
+                            l3: {
+                                l4: 12,
+                                l5: 41
                             },
-                            l9: {
-                                l10: 1,
-                                l11: {
-                                    l12: "fly"
-                                },
-                                l13: {
-                                    l14: []
-                                },
-                                l15: {
-                                    l16: {
-                                        l17: null
-                                    }
+                            l6: null,
+                            l7: "12345",
+                            l8: [12356]
+                        },
+                        l9: {
+                            l10: 1,
+                            l11: {
+                                l12: "fly"
+                            },
+                            l13: {
+                                l14: []
+                            },
+                            l15: {
+                                l16: {
+                                    l17: null
                                 }
                             }
                         }
-                    };
-                    let data2 = {
-                        l1: {
-                            l2: {
-                                l3: {
-                                    l4: 12,
-                                    l5: 41
-                                },
-                                l6: null,
-                                l7: "12345",
-                                l8: [12356]
+                    }
+                };
+                let data2 = {
+                    l1: {
+                        l2: {
+                            l3: {
+                                l4: 12,
+                                l5: 41
                             },
-                            l9:  {
-                                l10: 1,
-                                l11: {
-                                    l12: "fly"
-                                },
-                                l13: {
-                                    l14: []
-                                },
-                                l15: {
-                                    l16: {
-                                        l17: null
-                                    }
+                            l6: null,
+                            l7: "12345",
+                            l8: [12356]
+                        },
+                        l9:  {
+                            l10: 1,
+                            l11: {
+                                l12: "fly"
+                            },
+                            l13: {
+                                l14: []
+                            },
+                            l15: {
+                                l16: {
+                                    l17: null
                                 }
                             }
                         }
-                    };
-                    return it.eq(data1, data2);
-                }
-            )
+                    }
+                };
+                return it.eq(data1, data2);
+            })
         ])
         .then(({ failed }) => {
             return it.eq(failed, 3);
