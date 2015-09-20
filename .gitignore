@@ -4,3 +4,4 @@ dist
 .nokit
 .nobone
 coverage
+*.sublime-*
