@@ -2,17 +2,15 @@ import junit from "../src";
 import br from "../src/brush";
 import Promise from "yaku";
 
-let it = junit();
 let testOpts = {
     reporter: junit.reporter(" sub >"),
     isExitWithFailed: false
 };
-let testPattern = new RegExp(process.env.pattern);
 
-it.run([
+export default (it) => [
 
     it("msg", () => {
-        let test = junit(testOpts);
+        let test = junit();
 
         return it.eq(test("test msg").msg, "test msg");
     }),
@@ -387,4 +385,4 @@ it.run([
         });
     })
 
-].filter(({ msg }) => testPattern.test(msg)));
+];

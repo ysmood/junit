@@ -30,25 +30,28 @@ export default (task, option) => {
     task("watch-test", "auto watch & reload test", (opts) => {
         return kit.monitorApp({
             bin: "babel-node",
-            args: ["test/basic.js"],
-            opts: {
-                env: kit._.assign(process.env, { pattern: opts.T })
-            }
+            isNodeDeps: false,
+            watchList: ["{src,test}/**/*.js"],
+            args: [
+                "node_modules/.bin/babel-istanbul", "cover",
+                "src/cli.js", "--",
+                "-g", opts.T, "test/*.js"
+            ]
         });
     });
 
     option("-t <.*>", "unit test regex filter", ".*");
     task("test", ["lint"], async (opts) => {
-        return kit.spawn(
-            "babel-node",
-            [
-                "node_modules/.bin/babel-istanbul",
-                "cover",
-                "test/basic.js"
-            ],
-            {
-                env: kit._.assign(process.env, { pattern: opts.T })
-            }
-        ).catch(({ code }) => process.exit(code));
+        try {
+            kit.spawn(
+                "babel-node", [
+                    "node_modules/.bin/babel-istanbul", "cover",
+                    "src/cli.js", "--",
+                    "-g", opts.T, "test/*.js"
+                ]
+            );
+        } catch ({ code }) {
+            process.exit(code);
+        }
     });
 };

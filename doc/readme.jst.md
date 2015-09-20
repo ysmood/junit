@@ -44,23 +44,22 @@ You have to use something like `browserify` or `webpack`.
 
 # CLI
 
-You always have to import `junit` in test files.
+Install junit globally: `npm i -g junit`.
 
-Normal node way:
+For example, created a file `test/fib-test.js`,
+it should export a function which will return an array of tests:
 
-```shell
-node test.js
+```js
+export default (it) => [
+    it("fib 01", => it.eq(1 + 1, 2)),
+    it("fib 02", => it.eq(1 + 2, 3)),
+    it("fib 03", => it.eq(2 + 3, 5))
+];
 ```
 
-JUnit also exposed a simple cli tool:
+Run the tests via `junit test/*.js`.
 
-```shell
-junit test/*.js
-
-junit -b babel-node test/**/*.js
-
-junit -b coffee test/*.coffee
-```
+For more info, run `junit -h`.
 
 
 # API

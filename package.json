@@ -32,7 +32,9 @@
     "bin", "lib"
   ],
   "dependencies": {
-    "yaku": "0.7.5"
+    "commander": "2.8.1",
+    "nofs": "0.10.3",
+    "yaku": "0.7.6"
   },
   "devDependencies": {
     "babel": "5.8.23",
