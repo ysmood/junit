@@ -63,12 +63,9 @@ Run the tests via `junit test/*.js`.
 
 For more documentation, run `junit -h`.
 
+![junit-demo](doc/junit-demo.gif)
+
 
 # API
 
 <%= doc["src/index.js"] %>
-
-
-# Screenshot
-
-![junit-demo](doc/junit-demo.png)

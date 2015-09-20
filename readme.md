@@ -63,6 +63,8 @@ Run the tests via `junit test/*.js`.
 
 For more documentation, run `junit -h`.
 
+![junit-demo](doc/junit-demo.gif)
+
 
 # API
 
@@ -259,8 +261,3 @@ For more documentation, run `junit -h`.
     - **<u>type</u>**: { _Object_ }
 
 
-
-
-# Screenshot
-
-![junit-demo](doc/junit-demo.png)
