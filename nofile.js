@@ -5,8 +5,12 @@ export default (task, option) => {
         await kit.spawn("babel", ["src", "--out-dir", "lib"]);
 
         await kit.spawn("webpack", [
+            "lib/browser.js", "dist/junit.js"
+        ]);
+
+        await kit.spawn("webpack", [
             "--module-bind", "js=babel?stage=0",
-            "test/basic.js", "dist/test-basic.js"
+            "test/browser/index.js", "dist/test-basic.js"
         ]);
     });
 
