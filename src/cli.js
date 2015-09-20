@@ -21,11 +21,11 @@ cmder
     .description("junit cli tool to run / watch tests automatically")
     .usage("[options] [file | pattern...]")
     .option("-r, --register <str>", "language try to register [babel]", "babel/register")
-    .option("-l, --limit <num>", "concurrent test limit", parseInt)
+    .option("-l, --limit <num>", "concurrent test limit [Infinity]", parseInt)
     .option("-g, --grep <pattern>", "only run tests matching the pattern", "")
     .option("-t, --timeout <num>", "case timeout in milliseconds [5000]", parseInt)
-    .option("-b, --isBail", "bail after first test failure")
-    .option("-f, --isFailOnUnhandled", "failed on unhandled exception")
+    .option("-b, --isBail", "bail after first test failure [true]")
+    .option("-f, --isFailOnUnhandled", "failed on unhandled exception [true]")
     .option(
         "-p, --prompt <str>", "the prompt string ['junit cli >']",
         br.underline(br.grey("junit cli >"))
