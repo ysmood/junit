@@ -45,6 +45,8 @@ You have to use something like `browserify` or `webpack`.
 # CLI
 
 Install junit globally: `npm i -g junit`.
+It will automatically take advantage of the `babel` if
+you have installed it globally.
 
 For example, created a file `test/fib-test.js`,
 it should export a function which will return an array of tests, such as:

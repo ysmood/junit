@@ -7,7 +7,7 @@ import br from "./brush";
 import reporter from "./reporter";
 import junit from "./";
 
-let watchList;
+let watchList = [];
 
 let subArgIndex = process.argv.indexOf("--");
 
@@ -20,7 +20,7 @@ if (subArgIndex > -1) {
 cmder
     .description("junit cli tool to run / watch tests automatically")
     .usage("[options] [file | pattern...]")
-    .option("-r, --register <str>", "language try to register [babel]", "babel")
+    .option("-r, --register <str>", "language try to register [babel]", "babel/register")
     .option("-l, --limit <num>", "concurrent test limit", parseInt)
     .option("-g, --grep <pattern>", "only run tests matching the pattern", "")
     .option("-t, --timeout <num>", "case timeout in milliseconds [5000]", parseInt)
@@ -30,10 +30,9 @@ cmder
         "-p, --prompt <str>", "the prompt string ['junit cli >']",
         br.underline(br.grey("junit cli >"))
     )
-    .option("-w, --watch <pattern>", "watch file pattern list",
+    .option("-w, --watch [pattern]", "watch file pattern list",
         /* istanbul ignore next */
         function (p) {
-            if (!watchList) watchList = [];
             watchList.push(p);
         }
     )
@@ -52,7 +51,7 @@ cmder
 .parse(process.argv);
 
 try {
-    require(`${cmder.register}/register`);
+    require(cmder.register);
 } catch (err) {
     /* istanbul ignore next */
     null;
@@ -62,7 +61,7 @@ let testReg = new RegExp(cmder.grep);
 
 function run () {
     let it = junit({
-        isExitWithFailed: !watchList,
+        isExitWithFailed: !cmder.watch,
         reporter: reporter(cmder.prompt),
         isBail: cmder.isBail,
         isFailOnUnhandled: cmder.isFailOnUnhandled,
@@ -84,17 +83,18 @@ function run () {
 run();
 
 /* istanbul ignore if */
-if (watchList) {
+if (cmder.watch) {
     let sep = "";
 
     for (let i = process.stdout.columns; i > 0; i--) {
         sep += "*";
     }
 
-    fs.watchFiles(watchList, {
+    fs.watchFiles(cmder.args.concat(watchList), {
         handler: (path) => {
             process.stdout.write(br.yellow(sep));
             console.log(cmder.prompt, br.cyan("file modified:"), path);
+            delete require.cache[fsPath.resolve(path)];
             run();
         }
     });
