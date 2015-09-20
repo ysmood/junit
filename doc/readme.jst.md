@@ -19,7 +19,7 @@ will be fancy.
 You have to use something like `browserify` or `webpack`.
 
 
-### Features
+# Features
 
 - Supports both Node.js and browser
 - Should work well from ES3 to ES7
