@@ -4,7 +4,6 @@ import cmder from "commander";
 import fs from "nofs";
 import fsPath from "path";
 import br from "./brush";
-import reporter from "./reporter";
 import junit from "./";
 
 let watchList = [];
@@ -21,6 +20,7 @@ cmder
     .description("junit cli tool to run / watch tests automatically")
     .usage("[options] [file | pattern...]")
     .option("-s, --suit <module>", "a 'it' transformer which will be required as an function [(it, path) => it]", null)
+    .option("-o --reporter <module>", "a reporter module [{ formatAssertErr, logPass, logFail, logFinal }]", null)
     .option("-r, --register <str>", "language try to register [babel]", "babel/register")
     .option("-l, --limit <num>", "concurrent test limit [Infinity]", parseInt)
     .option("-g, --grep <pattern>", "only run tests matching the pattern", "")
@@ -59,28 +59,40 @@ try {
 }
 
 let testReg = new RegExp(cmder.grep);
-let suit;
+let suit, reporter;
+
+function loadModule (name) {
+    try {
+        return require.resolve(name);
+    } catch (err) {
+        return require(fsPath.resolve(name));
+    }
+}
 
 function run () {
+    // test suit hook
+    /* istanbul ignore else */
+    if (cmder.suit) {
+        suit = loadModule(cmder.suit);
+    } else {
+        suit = (it) => it;
+    }
+
+    // reporter hook
+    /* istanbul ignore if */
+    if (cmder.reporter) {
+        reporter = loadModule(cmder.reporter);
+    } else {
+        reporter = require("./reporter")(cmder.prompt);
+    }
+
     let it = junit({
         isExitWithFailed: !cmder.watch,
-        reporter: reporter(cmder.prompt),
+        reporter: reporter,
         isBail: cmder.isBail,
         isFailOnUnhandled: cmder.isFailOnUnhandled,
         timeout: cmder.timeout || 5000
     });
-
-    // test suit hook
-    /* istanbul ignore else */
-    if (cmder.suit) {
-        try {
-            suit = require.resolve(cmder.suit);
-        } catch (err) {
-            suit = require(fsPath.resolve(cmder.suit));
-        }
-    } else {
-        suit = (it) => it;
-    }
 
     let tests = [];
     return fs.glob(cmder.args, {
