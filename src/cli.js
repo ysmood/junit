@@ -42,10 +42,10 @@ cmder
         function () {
             console.log(
                 "  Examples:\n\n" +
-                "    junit test.js\n" +
+                "    junit test/*.js\n" +
                 "    junit test.es7.js\n" +
                 "    junit -w 'test/**/*.js' -w 'src/*.js' test.js\n" +
-                "    junit -b coffee-script test.coffee\n"
+                "    junit -r coffee-script test.coffee\n"
             );
         }
     )

@@ -47,7 +47,7 @@ You have to use something like `browserify` or `webpack`.
 Install junit globally: `npm i -g junit`.
 
 For example, created a file `test/fib-test.js`,
-it should export a function which will return an array of tests:
+it should export a function which will return an array of tests, such as:
 
 ```js
 export default (it) => [
@@ -59,7 +59,7 @@ export default (it) => [
 
 Run the tests via `junit test/*.js`.
 
-For more info, run `junit -h`.
+For more documentation, run `junit -h`.
 
 
 # API
