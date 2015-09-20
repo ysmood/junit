@@ -12,11 +12,7 @@ function stringify (val) {
 
 let report = (formatAssertErr, actual, expected) => {
     let { stack } = new Error("Assertion");
-    /* istanbul ignore next */
-    if (typeof __filename !== "undefined")
-        stack = stack.replace(
-            new RegExp(`.+${__filename}.+\\n`, "g"), ""
-        );
+    stack = stack.replace(/^.+\/node_modules\/junit\/.+\n?/mg, "");
 
     return Promise.reject(
         formatAssertErr(stringify(actual), stringify(expected), stack)
