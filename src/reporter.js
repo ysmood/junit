@@ -64,7 +64,7 @@ export default (pt = underline(grey("junit >"))) => {
         },
 
         logFail: (msg, err, span) => {
-            err = err instanceof Error ? indent(err.stack) : err;
+            err = err instanceof Error ? indent(err.message || err.stack) : err;
             logFail(
                 `${pt} ${red("x")} ${msg} ` +
                 grey(`(${span}ms)`) + `\n${err}\n`
