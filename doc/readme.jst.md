@@ -38,6 +38,11 @@ or download the bundled [`junit.js`](https://github.com/ysmood/junit/releases).
 
   > No problem. Just replace all the await expresses with standard promise ones is enough.
 
+- IE6?
+
+  > The core framework of JUnit will work. But the default reporter only supports IE8>=, you may have to
+  > install & config to another reporter to support old browsers.
+
 
 # CLI
 

@@ -65,7 +65,7 @@ For more documentation, run `junit -h`.
 
 # API
 
-- ## **[junit(opts)](src/index.js?source#L123)**
+- ## **[junit(opts)](src/index.js?source#L122)**
 
     A simple promise based module for unit tests.
 
@@ -87,7 +87,7 @@ For more documentation, run `junit -h`.
 
             reporter: {
                 // You can even use jsdiff here to generate more fancy error info.
-                formatAssertErr: (actual, expected, stack) => {},
+                formatAssertErr: (actual, expected) => {},
 
                 logPass: (msg, span) => {},
                 logFail: (msg, err, span) => {},
