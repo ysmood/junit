@@ -18,6 +18,7 @@ will be fancy.
 
 You can to use something like `browserify` or `webpack`,
 or download the bundled [`junit.js`](https://github.com/ysmood/junit/releases).
+[A real world example](test/browser).
 
 
 # Features

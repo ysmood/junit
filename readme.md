@@ -18,6 +18,7 @@ will be fancy.
 
 You can to use something like `browserify` or `webpack`,
 or download the bundled [`junit.js`](https://github.com/ysmood/junit/releases).
+[A real world example](test/browser).
 
 
 # Features
@@ -37,6 +38,11 @@ or download the bundled [`junit.js`](https://github.com/ysmood/junit/releases).
 - I don't want to use `async-await`.
 
   > No problem. Just replace all the await expresses with standard promise ones is enough.
+
+- IE6?
+
+  > The core framework of JUnit will work. But the default reporter only supports IE8>=, you may have to
+  > install & config to another reporter to support old browsers.
 
 
 # CLI
@@ -79,8 +85,8 @@ For more documentation, run `junit -h`.
 
             isFailOnUnhandled: true,
 
-            // If any test failed, when process finished, set exit code to failed number.
-            isExitWithFailed: true,
+            // If any test failed, throw on final.
+            isThrowOnFinal: true,
 
             // Fail a test after timeout.
             timeout: 5000,
@@ -191,7 +197,7 @@ For more documentation, run `junit -h`.
         })();
         ```
 
-- ## **[run(limit, list)](src/index.js?source#L205)**
+- ## **[run(limit, list)](src/index.js?source#L209)**
 
     Almost the same with the `yutils.async`, additionally, it will
     monitor the result of the whole tests.
