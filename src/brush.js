@@ -1,35 +1,34 @@
 "use strict";
 
-var codes, genBrush, k, v;
+let codes, genBrush;
+let brush = {
+    isEnabled: true
+};
 
 codes = {
-    underline: [4, 24],
-    red: [31, 39],
-    green: [32, 39],
-    yellow: [33, 39],
-    cyan: [36, 39],
-    white: [37, 39],
-    grey: [90, 39]
+    underline: [`\u001b[4m`, `\u001b[24m`, `<span class="underline" style="text-decoration: underline;">`, `</span>`],
+    red: [`\u001b[31m`, `\u001b[39m`, `<span class="red" style="color: #E25757;">`, `</span>`],
+    green: [`\u001b[32m`, `\u001b[39m`, `<span class="green" style="color: #66B55E;">`, `</span>`],
+    yellow: [`\u001b[33m`, `\u001b[39m`, `<span class="yellow" style="color: #C7B414;">`, `</span>`],
+    cyan: [`\u001b[36m`, `\u001b[39m`, `<span class="cyan" style="color: #00B5B5;">`, `</span>`],
+    grey: [`\u001b[90m`, `\u001b[39m`, `<span class="grey" style="color: #A5A5A5;">`, `</span>`]
 };
 
 genBrush = function (code) {
     return function (str) {
-        if (module.exports.isEnabled) {
-            return code.open + str + code.close;
+        if (brush.isEnabled) {
+            if (typeof window === "object")
+                return code[2] + str + code[3];
+            else
+                return code[0] + str + code[1];
         } else {
             return str;
         }
     };
 };
 
-module.exports = {};
-
-for (k in codes) {
-    v = codes[k];
-    module.exports[k] = genBrush({
-        open: "\u001b[" + v[0] + "m",
-        close: "\u001b[" + v[1] + "m"
-    });
+for (let k in codes) {
+    brush[k] = genBrush(codes[k]);
 }
 
-module.exports.isEnabled = typeof window === "undefined";
+export default brush;

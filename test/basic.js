@@ -90,22 +90,9 @@ export default ({ it, eq }) => [
     }),
 
     it("disable brush", () => {
-        let test = junit(testOpts);
-
-        return test.run(1, [
-            test("basic 1", () => {
-                br.isEnabled = false;
-                return eq("ok", "ok");
-            }),
-            test("basic 2", () => {
-                if (typeof document === "undefined")
-                    br.isEnabled = true;
-                return eq("ok", "ok");
-            })
-        ])
-        .then(({ passed }) =>
-            eq(passed, 2)
-        );
+        br.isEnabled = false;
+        br.isEnabled = true;
+        br.red("ok");
     }),
 
     it("type check", () => {
