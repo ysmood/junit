@@ -4,4 +4,4 @@ import basic from "../basic";
 
 let it = junit();
 
-it.run(basic(it));
+it.run(basic({ it, eq: it.eq }));

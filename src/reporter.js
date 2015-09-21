@@ -2,13 +2,21 @@
 
 import { red, grey, white, cyan, green } from "./brush";
 
+function stringify (val) {
+    if (typeof val === "undefined") {
+        return "undefined";
+    } else {
+        return JSON.stringify(val, 0, 4);
+    }
+}
+
 export default (pt) => {
     return {
         formatAssertErr: (actual, expected, stack) => (
                 `${red("\n<<<<<<< actual")}\n` +
-                `${actual}\n` +
+                `${stringify(actual)}\n` +
                 `${red("=======")}\n` +
-                `${expected}\n` +
+                `${stringify(expected)}\n` +
                 `${red(">>>>>>> expected")}\n\n` +
                 grey(stack)
             ).replace(/^/mg, "  "),

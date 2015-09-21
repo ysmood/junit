@@ -2,20 +2,12 @@
 
 import Promise from "yaku";
 
-function stringify (val) {
-    if (typeof val === "undefined") {
-        return "undefined";
-    } else {
-        return JSON.stringify(val, 0, 4);
-    }
-}
-
 let report = (formatAssertErr, actual, expected) => {
     let { stack } = new Error("Assertion");
     stack = stack.replace(/^.+\/node_modules\/junit\/.+\n?/mg, "");
 
     return Promise.reject(
-        formatAssertErr(stringify(actual), stringify(expected), stack)
+        formatAssertErr(actual, expected, stack)
     );
 };
 
