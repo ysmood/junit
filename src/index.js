@@ -4,7 +4,6 @@ import Promise from "yaku";
 import yutils from "yaku/lib/utils";
 import utils from "./utils";
 import reporter from "./reporter";
-import br from "./brush";
 
 
 /**
@@ -132,7 +131,7 @@ let junit = (opts = {}) => {
     }, opts);
 
     let { formatAssertErr, logPass, logFail, logFinal } =
-        utils.extend(reporter(br.underline(br.grey("junit >"))), opts.reporter);
+        utils.extend(reporter(), opts.reporter);
 
     let passed = 0;
     let failed = 0;

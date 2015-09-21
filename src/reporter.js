@@ -1,6 +1,6 @@
 "use strict";
 
-import { red, grey, white, cyan, green } from "./brush";
+import { red, grey, white, cyan, green, underline } from "./brush";
 
 function stringify (val) {
     if (typeof val === "undefined") {
@@ -12,7 +12,7 @@ function stringify (val) {
 
 let regCleanStack = /^.+\/node_modules\/junit\/.+\n?/mg;
 
-export default (pt) => {
+export default (pt = underline(grey("junit >"))) => {
     return {
         formatAssertErr: (actual, expected) => {
             let { stack } = new Error("Assertion");
