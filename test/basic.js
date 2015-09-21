@@ -18,7 +18,7 @@ export default ({ it, eq }) => [
     it("global window", () => {
         global.window = global;
         let test = junit(testOpts);
-        global.window = null;
+        global.window = void 0;
 
         // Async tests
         return test.run([
@@ -91,8 +91,8 @@ export default ({ it, eq }) => [
 
     it("disable brush", () => {
         br.isEnabled = false;
-        br.isEnabled = true;
         br.red("ok");
+        br.isEnabled = true;
     }),
 
     it("type check", () => {
@@ -104,7 +104,7 @@ export default ({ it, eq }) => [
             [1, 2],
             0,
             1,
-            undefined,
+            void 0,
             null,
             { a: { b: { c: "test" } } },
             { 0: 1, 1: 2, length: 2 } // array like object
@@ -311,7 +311,7 @@ export default ({ it, eq }) => [
 
         return test.run([
             test("undefined & null", () =>
-                eq(undefined, null)
+                eq(void 0, null)
             )
         ])
         .then(({ failed }) => {
