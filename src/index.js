@@ -186,7 +186,7 @@ let junit = (opts = {}) => {
 
         /* istanbul ignore if */
         if (opts.isThrowOnFinal && failed)
-            yutils.throw(new Error(`junit test failed with ${failed}`));
+            yutils.throw(`junit test failed with ${failed}`);
 
         return { total, tested, passed, failed };
     }
