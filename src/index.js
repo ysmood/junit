@@ -120,6 +120,7 @@ import reporter from "./reporter";
  * ```
  */
 let junit = (opts = {}) => {
+    /* istanbul ignore next */
     let root = typeof window === "object" ? window : global;
 
     opts = utils.extend({

@@ -32,7 +32,11 @@ function log (type) { return function () {
 }; }
 
 function inspectObj (obj) {
-    return inspect(obj, { depth: 7, colors: typeof window === "undefined" });
+    /* istanbul ignore else */
+    if (typeof window === "undefined")
+        return inspect(obj, { depth: 7, colors: true });
+    else
+        return JSON.stringify(obj, 0, 4);
 }
 
 let logPass = log("log");

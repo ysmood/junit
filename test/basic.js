@@ -15,22 +15,6 @@ export default ({ it, eq }) => [
         return eq(test("test msg").msg, "test msg");
     }),
 
-    it("global window", () => {
-        global.window = global;
-        let test = junit(testOpts);
-        global.window = void 0;
-
-        // Async tests
-        return test.run([
-            test("basic 1", () =>
-                eq("ok", "ok")
-            )
-        ])
-        .then(({ passed }) =>
-            eq(passed, 1)
-        );
-    }),
-
     it("all passed", () => {
         let test = junit(testOpts);
 
