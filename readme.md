@@ -16,12 +16,13 @@ will be fancy.
 
 ## Browser
 
-You have to use something like `browserify` or `webpack`.
+You can to use something like `browserify` or `webpack`,
+or download the bundled [`junit.js`](https://github.com/ysmood/junit/releases).
 
 
 # Features
 
-- Supports both Node.js and browser
+- Supports both Node.js and old browsers
 - Should work well from ES3 to ES7
 - Make it super easy to concurrently test async functions, designed for `async-await`
 - Automatically garbage collect the unhandled error
@@ -32,14 +33,10 @@ You have to use something like `browserify` or `webpack`.
 
 # FAQ
 
-- IE6?
 
-  > If you use webpack, you may need an `Object.defineProperty` polyfill to bundle your tests.
-  > You may also need to install a `reporter` designed for old browser, they don't support `console.log`.
+- I don't want to use `async-await`.
 
-- No ES7?
-
-  > Replace all the await expresses with standard promise ones is enough.
+  > No problem. Just replace all the await expresses with standard promise ones is enough.
 
 
 # CLI
