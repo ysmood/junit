@@ -168,7 +168,10 @@ let junit = (opts = {}) => {
                 if (isEnd) return;
                 failed++;
                 logFail(testFn.msg, err, Date.now() - startTime);
-                if (opts.isBail) return Promise.reject(err);
+                if (opts.isBail) {
+                    isEnd = true;
+                    return Promise.reject();
+                }
             });
         }
 

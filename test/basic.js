@@ -209,7 +209,11 @@ export default ({ it, eq }) => [
     }),
 
     it("max depth", () => {
-        let test = junit(testOpts);
+        let test = junit({
+            reporter: junit.reporter(" sub >"),
+            isThrowOnFinal: false,
+            isBail: false
+        });
 
         return test.run([
             test("over max depth", () => {
