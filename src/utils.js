@@ -3,11 +3,8 @@
 import Promise from "yaku";
 
 let report = (formatAssertErr, actual, expected) => {
-    let { stack } = new Error("Assertion");
-    stack = stack.replace(/^.+\/node_modules\/junit\/.+\n?/mg, "");
-
     return Promise.reject(
-        formatAssertErr(actual, expected, stack)
+        formatAssertErr(actual, expected)
     );
 };
 

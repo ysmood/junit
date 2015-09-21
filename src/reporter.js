@@ -10,16 +10,23 @@ function stringify (val) {
     }
 }
 
+let regCleanStack = /^.+\/node_modules\/junit\/.+\n?/mg;
+
 export default (pt) => {
     return {
-        formatAssertErr: (actual, expected, stack) => (
+        formatAssertErr: (actual, expected) => {
+            let { stack } = new Error("Assertion");
+            stack = stack && stack.replace(regCleanStack, "");
+
+            return (
                 `${red("\n<<<<<<< actual")}\n` +
                 `${stringify(actual)}\n` +
                 `${red("=======")}\n` +
                 `${stringify(expected)}\n` +
                 `${red(">>>>>>> expected")}\n\n` +
                 grey(stack)
-            ).replace(/^/mg, "  "),
+            ).replace(/^/mg, "  ");
+        },
 
         logPass: (msg, span) => {
             console.log(pt, green("o"), msg, grey(`(${span}ms)`));
