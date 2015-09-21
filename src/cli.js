@@ -87,7 +87,7 @@ function run () {
     }
 
     let it = junit({
-        isExitWithFailed: !cmder.watch,
+        isThrowOnFinal: !cmder.watch,
         reporter: reporter,
         isBail: cmder.isBail,
         isFailOnUnhandled: cmder.isFailOnUnhandled,

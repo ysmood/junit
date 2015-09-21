@@ -16,8 +16,8 @@ import reporter from "./reporter";
  *
  *     isFailOnUnhandled: true,
  *
- *     // If any test failed, when process finished, set exit code to failed number.
- *     isExitWithFailed: true,
+ *     // If any test failed, throw on final.
+ *     isThrowOnFinal: true,
  *
  *     // Fail a test after timeout.
  *     timeout: 5000,
@@ -120,13 +120,10 @@ import reporter from "./reporter";
  * ```
  */
 let junit = (opts = {}) => {
-    /* istanbul ignore next */
-    let root = typeof window === "object" ? window : global;
-
     opts = utils.extend({
         isBail: true,
         isFailOnUnhandled: true,
-        isExitWithFailed: true,
+        isThrowOnFinal: true,
         timeout: 5000,
         reporter: {}
     }, opts);
@@ -184,6 +181,10 @@ let junit = (opts = {}) => {
         isEnd = true;
         logFinal(total, tested, passed, failed);
 
+        /* istanbul ignore if */
+        if (opts.isThrowOnFinal && failed)
+            yutils.throw(new Error(`junit test failed with ${failed}`));
+
         return { total, tested, passed, failed };
     }
 
@@ -203,10 +204,6 @@ let junit = (opts = {}) => {
          * @return {Promise} It will resolve `{ total, passed, failed }`
          */
         run: function (limit, list) {
-            if (opts.isExitWithFailed && root.process)
-                /* istanbul ignore next */
-                root.process.on("exit", () => root.process.exit(failed));
-
             if (arguments.length === 0) limit = [];
 
             return yutils.async(limit, list, false)

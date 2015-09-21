@@ -4,7 +4,7 @@ import Promise from "yaku";
 
 let testOpts = {
     reporter: junit.reporter(" sub >"),
-    isExitWithFailed: false
+    isThrowOnFinal: false
 };
 
 export default ({ it, eq }) => [
@@ -143,13 +143,25 @@ export default ({ it, eq }) => [
         let test = junit({
             isFailOnUnhandled: false,
             isBail: false,
-            isExitWithFailed: false,
+            isThrowOnFinal: false,
             reporter: junit.reporter(" sub >")
         });
 
         return test.run([
             test("empty", () => {
                 throw new Error("fake err");
+            })
+        ]);
+    }),
+
+    it("error with no stack", () => {
+        let test = junit(testOpts);
+
+        return test.run([
+            test("empty", () => {
+                let err = new Error("fake err");
+                err.stack = null;
+                throw err;
             })
         ]);
     }),

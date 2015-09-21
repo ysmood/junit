@@ -1,6 +1,6 @@
-import junit from "../src";
+import junit from "../../src";
 
-let it = junit({ isThrowOnFinal: false });
+let it = junit();
 
 // Async tests
 it.run([
@@ -14,7 +14,7 @@ it.run([
     ),
 
     it("test number", () =>
-        it.eq(1, 1)
+        it.eq(1, 2)
     )
 
 ]);
