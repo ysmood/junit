@@ -32,7 +32,7 @@ import reporter from "./reporter";
  *     }
  * }
  * ```
- * @return {Function} `() => Function : { msg: String }`
+ * @return {Function} `() => Function : { msg: Any }`
  * @example
  * ```js
  * import junit from "junit";
@@ -206,7 +206,7 @@ let junit = (opts = {}) => {
          * it can never end.
          * @return {Promise} It will resolve `{ total, passed, failed }`
          */
-        run: function (limit, list) {
+        run (limit, list) {
             if (arguments.length === 0) limit = [];
 
             return yutils.async(limit, list, false)
