@@ -198,7 +198,7 @@ let junit = (opts = {}) => {
          * monitor the result of the whole tests.
          * @param  {Int} limit The max task to run at a time. It's optional.
          * Default is `Infinity`. Set it to 1 to run tests synchronously.
-         * @param  {Array | Function} list
+         * @param  {Array} list A list of functions.
          * If the list is an array, it should be a list of functions or promises,
          * and each function will return a promise.
          * If the list is a function, it should be a iterator that returns
@@ -208,8 +208,23 @@ let junit = (opts = {}) => {
          */
         run (limit, list) {
             if (arguments.length === 0) limit = [];
+            if (limit instanceof Array) {
+                list = limit;
+                limit = Infinity;
+            }
 
-            return yutils.async(limit, list, false)
+            var iter = {
+                i: 0,
+                next: function () {
+                    var fn = list[this.i++];
+                    return {
+                        value: fn && fn(),
+                        done: !fn
+                    };
+                }
+            };
+
+            return yutils.async(limit, iter, false)
             .then(onFinal, onFinal);
         },
 

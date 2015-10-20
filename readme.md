@@ -104,7 +104,7 @@ For more documentation, run `junit -h`.
 
     - **<u>return</u>**: { _Function_ }
 
-        `() => Function : { msg: String }`
+        `() => Function : { msg: Any }`
 
     - **<u>example</u>**:
 
@@ -207,8 +207,9 @@ For more documentation, run `junit -h`.
         The max task to run at a time. It's optional.
         Default is `Infinity`. Set it to 1 to run tests synchronously.
 
-    - **<u>param</u>**: `list` { _Array | Function_ }
+    - **<u>param</u>**: `list` { _Array_ }
 
+        A list of functions.
         If the list is an array, it should be a list of functions or promises,
         and each function will return a promise.
         If the list is a function, it should be a iterator that returns
@@ -219,7 +220,7 @@ For more documentation, run `junit -h`.
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L223)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L238)**
 
     A smart strict deep equality assertion helper function.
 
@@ -233,7 +234,7 @@ For more documentation, run `junit -h`.
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L237)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L252)**
 
     An example reporter for junit.
 
@@ -251,13 +252,13 @@ For more documentation, run `junit -h`.
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L243)**
+- ## **[junit.Promise](src/index.js?source#L258)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L249)**
+- ## **[junit.yutils](src/index.js?source#L264)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 
