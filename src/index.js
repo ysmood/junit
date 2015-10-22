@@ -154,7 +154,9 @@ let junit = (opts = {}) => {
             let timeouter = null;
             let startTime = Date.now();
             return new Promise((resolve, reject) => {
-                it.tests.splice(it.tests.indexOf(testFn), 1);
+                let i = it.tests.indexOf(testFn);
+                if (i > -1)
+                    it.tests.splice(i, 1);
 
                 resolve(fn());
                 timeouter = setTimeout(
@@ -207,15 +209,21 @@ let junit = (opts = {}) => {
          * @return {Promise} It will resolve `{ total, passed, failed }`
          */
         run (limit) {
-            var iter = {
-                next: function () {
-                    var fn = it.tests.shift();
-                    return {
-                        value: fn && fn(),
-                        done: !fn
-                    };
-                }
-            };
+            let list;
+            if (limit instanceof Array) {
+                list = limit;
+                limit = Infinity;
+            } else {
+                list = it.tests;
+            }
+
+            let iter = { next () {
+                let fn = list.shift();
+                return {
+                    value: fn && fn(),
+                    done: !fn
+                };
+            } };
 
             return yutils.async(limit, iter, false)
             .then(onFinal, onFinal);

@@ -9,6 +9,7 @@ export default (task, option) => {
         ]);
 
         await kit.spawn("webpack", [
+            "-w",
             "--module-bind", "js=babel?stage=0&loose=all",
             "test/browser/index.js", "dist/test-basic.js"
         ]);

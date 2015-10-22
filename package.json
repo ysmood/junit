@@ -34,8 +34,8 @@
   ],
   "dependencies": {
     "commander": "2.9.0",
-    "nofs": "0.10.5",
-    "yaku": "0.11.0"
+    "nofs": "0.10.7",
+    "yaku": "0.11.1"
   },
   "devDependencies": {
     "babel": "5.8.23",
@@ -44,8 +44,8 @@
     "babel-loader": "5.3.2",
     "babel-core": "5.8.25",
     "coveralls": "2.11.4",
-    "eslint": "1.7.2",
-    "nokit": "0.14.7",
+    "eslint": "1.7.3",
+    "nokit": "0.14.9",
     "webpack": "1.12.2"
   },
   "eslintConfig": {
