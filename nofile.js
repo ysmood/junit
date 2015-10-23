@@ -1,18 +1,21 @@
 import kit from "nokit";
 
 export default (task, option) => {
-    task("build", ["clean", "build-docs"], async () => {
+    option("-w", "watch build");
+
+    task("build", ["clean", "build-docs"], async (opts) => {
         await kit.spawn("babel", ["src", "--loose", "all", "--out-dir", "lib"]);
 
         await kit.spawn("webpack", [
             "lib/browser.js", "dist/junit.js"
         ]);
 
-        await kit.spawn("webpack", [
-            "-w",
+        var webpackOpts = [
             "--module-bind", "js=babel?stage=0&loose=all",
             "test/browser/index.js", "dist/test-basic.js"
-        ]);
+        ];
+        if (opts.W) webpackOpts.push("-w");
+        await kit.spawn("webpack", webpackOpts);
     });
 
     task("clean", () => kit.remove("{dist,lib}"));
