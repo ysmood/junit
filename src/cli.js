@@ -100,10 +100,8 @@ function run () {
             fsPath.resolve(path)
         )(suit(it, path)))
     }).then(() => {
-        return it.run(
-            cmder.limit || Infinity,
-            tests.filter(({ msg }) => testReg.test(msg))
-        );
+        it.tests = it.tests.filter(({ msg }) => testReg.test(msg));
+        return it.run(cmder.limit);
     });
 }
 

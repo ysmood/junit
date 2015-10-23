@@ -32,7 +32,7 @@ import reporter from "./reporter";
  *     }
  * }
  * ```
- * @return {Function} `() => Function : { msg: Any, isOff: false }`
+ * @return {Function} `() => Function : { msg: Any }`
  * @example
  * ```js
  * import junit from "junit";
@@ -148,16 +148,15 @@ let junit = (opts = {}) => {
     function it (msg, fn) {
         total++;
         function testFn () {
-            if (testFn.isOff) return;
+            if (testFn.isTested)
+                return;
+            else
+                testFn.isTested = true;
 
             tested++;
             let timeouter = null;
             let startTime = Date.now();
             return new Promise((resolve, reject) => {
-                let i = it.tests.indexOf(testFn);
-                if (i > -1)
-                    it.tests.splice(i, 1);
-
                 resolve(fn());
                 timeouter = setTimeout(
                     reject,
@@ -181,7 +180,6 @@ let junit = (opts = {}) => {
             });
         }
 
-        testFn.isOff = false;
         testFn.msg = msg;
         it.tests.push(testFn);
 
@@ -202,23 +200,14 @@ let junit = (opts = {}) => {
     return utils.extend(it, {
 
         /**
-         * Almost the same with the `yutils.async`, additionally, it will
-         * monitor the result of the whole tests.
+         * Start the tests.
          * @param  {Int} limit The max task to run at a time. It's optional.
          * Default is `Infinity`. Set it to 1 to run tests synchronously.
          * @return {Promise} It will resolve `{ total, passed, failed }`
          */
-        run (limit) {
-            let list;
-            if (limit instanceof Array) {
-                list = limit;
-                limit = Infinity;
-            } else {
-                list = it.tests;
-            }
-
-            let iter = { next () {
-                let fn = list.shift();
+        run (limit = Infinity) {
+            let iter = { i: 0, next () {
+                let fn = it.tests[this.i++];
                 return {
                     value: fn && fn(),
                     done: !fn
