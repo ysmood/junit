@@ -139,6 +139,7 @@ let junit = (opts = {}) => {
 
     if (opts.isFailOnUnhandled) {
         let onUnhandledRejection = Promise.onUnhandledRejection;
+        /* istanbul ignore next */
         Promise.onUnhandledRejection = (reason, p) => {
             failed++;
             onUnhandledRejection(reason, p);
