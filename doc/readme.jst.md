@@ -52,14 +52,20 @@ It will automatically take advantage of the `babel` if
 you have installed it globally.
 
 For example, created a file `test/fib-test.js`,
-it should export a function which will return an array of tests, such as:
+it should export a function, if the function is async it should return a promise, such as:
 
 ```js
-export default (it) => [
-    it("fib 01", => it.eq(1 + 1, 2)),
-    it("fib 02", => it.eq(1 + 2, 3)),
-    it("fib 03", => it.eq(2 + 3, 5))
-];
+import sleep from "yaku/lib/sleep";
+
+export default async (it) => {
+    await sleep(3000);
+
+    it("fib 01", => it.eq(1 + 1, 2));
+
+    it("fib 02", => it.eq(1 + 2, 3));
+
+    it("fib 03", => it.eq(2 + 3, 5));
+};
 ```
 
 Run the tests via `junit test/*.js`.

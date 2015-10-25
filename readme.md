@@ -55,11 +55,13 @@ For example, created a file `test/fib-test.js`,
 it should export a function which will return an array of tests, such as:
 
 ```js
-export default (it) => [
-    it("fib 01", => it.eq(1 + 1, 2)),
-    it("fib 02", => it.eq(1 + 2, 3)),
-    it("fib 03", => it.eq(2 + 3, 5))
-];
+export default (it) => {
+    it("fib 01", => it.eq(1 + 1, 2));
+
+    it("fib 02", => it.eq(1 + 2, 3));
+
+    it("fib 03", => it.eq(2 + 3, 5));
+};
 ```
 
 Run the tests via `junit test/*.js`.
@@ -71,7 +73,7 @@ For more documentation, run `junit -h`.
 
 # API
 
-- ## **[junit(opts)](src/index.js?source#L122)**
+- ## **[junit(opts)](src/index.js?source#L84)**
 
     A simple promise based module for unit tests.
 
@@ -80,6 +82,8 @@ For more documentation, run `junit -h`.
         Defaults:
         ```js
         {
+            filter: (msg) => true
+
             // Stop test when error occurred.
             isBail: true,
 
@@ -104,114 +108,66 @@ For more documentation, run `junit -h`.
 
     - **<u>return</u>**: { _Function_ }
 
-        `() => Function : { msg: Any, isOff: false }`
+        `(msg, fn) => Function` The `msg` can be anything.
 
     - **<u>example</u>**:
 
         ```js
         import junit from "junit";
         let it = junit();
-
-        // Async tests.
-        it.run([
+        (async () => {
+            // Async tests.
             it("test 1", () =>
                 // We use `it.eq` to assert on both simple type and complex object.
                 it.eq("ok", "ok")
-            ),
+            );
+
             it("test 2", async () => {
                 // No more callback hell while testing async functions.
                 await new junit.Promise(r => setTimeout(r, 1000));
 
                 return it.eq({ a: 1, b: 2 }, { a: 1, b: 2 });
-            }),
+            });
 
             // Run sync tests within the main async flow.
-            async () => {
-                await it("test 3", () =>
-                    it.eq("ok", "ok")
-                )();
+            await it("test 3", () =>
+                it.eq("ok", "ok")
+            );
 
-                await it("test 4", () =>
-                    it.eq("ok", "ok")
-                )();
-            }
-        ]);
+            it.run();
+        })()
         ```
 
     - **<u>example</u>**:
 
-        Filter the tests, only the odd ones will be tested.
+        Filter the tests, only the message starts with "test" will be tested.
         ```js
         import junit from "junit";
-        let it = junit();
+        let it = junit({
+            filter: (msg) => msg.indexOf("test")
+        });
 
         (async () => {
+            it("basic 1", () => it.eq(1, 1));
+            it("test 1", () => it.eq(1, 1));
+            it("test 2", () => it.eq(1, 1));
+
             // Get the result of the test.
-            let { total, passed, failed } = await it.run(1,
-                [
-                    it("test 1", () => it.eq(1, 1)),
-                    it("test 2", () => it.eq(1, 2)),
-                    it("test 3", () => it.eq(2, 2))
-                ]
-                .filter((fn, index) => index % 2)
-                .map(fn => {
-                    // prefix all the messages with current file path
-                    fn.msg = `${__filename} - ${fn.msg}`
-                    return fn
-                })
-            );
+            let { total, passed, failed } = await it.run();
 
             console.log(total, passed, failed);
         })();
         ```
 
-    - **<u>example</u>**:
+- ## **[run()](src/index.js?source#L168)**
 
-        You can even change the code style like this.
-        ```js
-        import junit from "junit";
-        import assert from "assert";
-        let it = junit();
-
-        (async () => {
-            await it("test 2", async () => {
-                await new junit.Promise(r => setTimeout(r, 1000));
-                return it.eq(1, 2);
-            })();
-
-            await it("test 2", async () => {
-                await new junit.Promise(r => setTimeout(r, 1000));
-
-                // Use return or await here are the same.
-                await it.eq(1, 2);
-            })();
-
-            await it("test 2", async () => {
-                // You can use any assert tool you like.
-                // You only have to follow one rule, the async assertion should be
-                // returned within a promise.
-                assert.equal(1, 2);
-            })();
-
-            return it.run();
-        })();
-        ```
-
-- ## **[run(limit)](src/index.js?source#L209)**
-
-    Almost the same with the `yutils.async`, additionally, it will
-    monitor the result of the whole tests.
-
-    - **<u>param</u>**: `limit` { _Int_ }
-
-        The max task to run at a time. It's optional.
-        Default is `Infinity`. Set it to 1 to run tests synchronously.
+    Start the tests.
 
     - **<u>return</u>**: { _Promise_ }
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L237)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L179)**
 
     A smart strict deep equality assertion helper function.
 
@@ -225,14 +181,7 @@ For more documentation, run `junit -h`.
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[tests](src/index.js?source#L244)**
-
-    The all the test functions that are generated by `it`.
-    Use it to filter or map test cases.
-
-    - **<u>type</u>**: { _Array_ }
-
-- ## **[junit.reporter(prompt)](src/index.js?source#L258)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L192)**
 
     An example reporter for junit.
 
@@ -250,13 +199,13 @@ For more documentation, run `junit -h`.
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L264)**
+- ## **[junit.Promise](src/index.js?source#L198)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L270)**
+- ## **[junit.yutils](src/index.js?source#L204)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 
