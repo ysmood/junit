@@ -16,12 +16,6 @@ export default ({ it, eq }) => {
         return test.run();
     });
 
-    it("msg", () => {
-        let test = junit();
-
-        return eq(test("test msg").msg, "test msg");
-    });
-
     it("all passed", async () => {
         let test = junit(testOpts);
 
@@ -36,11 +30,11 @@ export default ({ it, eq }) => {
         // Sync tests
         await test("basic 3", () =>
             eq("ok", "ok")
-        )();
+        );
 
         await test("basic 4", () =>
             eq("ok", "ok")
-        )();
+        );
 
         let { passed } = await test.run();
         return eq(passed, 4);

@@ -22,7 +22,6 @@ cmder
     .option("-s, --suit <module>", "a 'it' transformer which will be required as an function [(it, path) => it]", null)
     .option("-o --reporter <module>", "a reporter module [{ formatAssertErr, logPass, logFail, logFinal }]", null)
     .option("-r, --register <str>", "language try to register [babel]", "babel/register")
-    .option("-l, --limit <num>", "concurrent test limit [Infinity]", parseInt)
     .option("-g, --grep <pattern>", "only run tests matching the pattern", "")
     .option("-t, --timeout <num>", "case timeout in milliseconds [5000]", parseInt)
     .option("-b, --isBail", "bail after first test failure [true]")
@@ -87,6 +86,7 @@ function run () {
     }
 
     let it = junit({
+        filter: msg => testReg.test(msg),
         isThrowOnFinal: !cmder.watch,
         reporter: reporter,
         isBail: cmder.isBail,
@@ -94,14 +94,10 @@ function run () {
         timeout: cmder.timeout || 5000
     });
 
-    let tests = [];
     return fs.glob(cmder.args, {
-        iter: ({ path }) => tests = tests.concat(require(
-            fsPath.resolve(path)
-        )(suit(it, path)))
+        iter: ({ path }) => { require(fsPath.resolve(path))(suit(it, path)); }
     }).then(() => {
-        it.tests = it.tests.filter(({ msg }) => testReg.test(msg));
-        return it.run(cmder.limit);
+        return it.run();
     });
 }
 

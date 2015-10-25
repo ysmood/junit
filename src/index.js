@@ -11,6 +11,8 @@ import reporter from "./reporter";
  * @param  {Object} opts Defaults:
  * ```js
  * {
+ *     filter: (msg) => true
+ *
  *     // Stop test when error occurred.
  *     isBail: true,
  *
@@ -32,90 +34,50 @@ import reporter from "./reporter";
  *     }
  * }
  * ```
- * @return {Function} `() => Function : { msg: Any }`
+ * @return {Function} `(msg, fn) => Function` The `msg` can be anything.
  * @example
  * ```js
  * import junit from "junit";
  * let it = junit();
- *
- * // Async tests.
- * it.run([
+ * (async () => {
+ *     // Async tests.
  *     it("test 1", () =>
  *         // We use `it.eq` to assert on both simple type and complex object.
  *         it.eq("ok", "ok")
- *     ),
+ *     );
+ *
  *     it("test 2", async () => {
  *         // No more callback hell while testing async functions.
  *         await new junit.Promise(r => setTimeout(r, 1000));
  *
  *         return it.eq({ a: 1, b: 2 }, { a: 1, b: 2 });
- *     }),
+ *     });
  *
  *     // Run sync tests within the main async flow.
- *     async () => {
- *         await it("test 3", () =>
- *             it.eq("ok", "ok")
- *         )();
- *
- *         await it("test 4", () =>
- *             it.eq("ok", "ok")
- *         )();
- *     }
- * ]);
- * ```
- * @example
- * Filter the tests, only the odd ones will be tested.
- * ```js
- * import junit from "junit";
- * let it = junit();
- *
- * (async () => {
- *     // Get the result of the test.
- *     let { total, passed, failed } = await it.run(1,
- *         [
- *             it("test 1", () => it.eq(1, 1)),
- *             it("test 2", () => it.eq(1, 2)),
- *             it("test 3", () => it.eq(2, 2))
- *         ]
- *         .filter((fn, index) => index % 2)
- *         .map(fn => {
- *             // prefix all the messages with current file path
- *             fn.msg = `${__filename} - ${fn.msg}`
- *             return fn
- *         })
+ *     await it("test 3", () =>
+ *         it.eq("ok", "ok")
  *     );
  *
- *     console.log(total, passed, failed);
- * })();
+ *     it.run();
+ * })()
  * ```
  * @example
- * You can even change the code style like this.
+ * Filter the tests, only the message starts with "test" will be tested.
  * ```js
  * import junit from "junit";
- * import assert from "assert";
- * let it = junit();
+ * let it = junit({
+ *     filter: (msg) => msg.indexOf("test")
+ * });
  *
  * (async () => {
- *     await it("test 2", async () => {
- *         await new junit.Promise(r => setTimeout(r, 1000));
- *         return it.eq(1, 2);
- *     })();
+ *     it("basic 1", () => it.eq(1, 1));
+ *     it("test 1", () => it.eq(1, 1));
+ *     it("test 2", () => it.eq(1, 1));
  *
- *     await it("test 2", async () => {
- *         await new junit.Promise(r => setTimeout(r, 1000));
+ *     // Get the result of the test.
+ *     let { total, passed, failed } = await it.run();
  *
- *         // Use return or await here are the same.
- *         await it.eq(1, 2);
- *     })();
- *
- *     await it("test 2", async () => {
- *         // You can use any assert tool you like.
- *         // You only have to follow one rule, the async assertion should be
- *         // returned within a promise.
- *         assert.equal(1, 2);
- *     })();
- *
- *     return it.run();
+ *     console.log(total, passed, failed);
  * })();
  * ```
  */
@@ -125,6 +87,7 @@ let junit = (opts = {}) => {
         isFailOnUnhandled: true,
         isThrowOnFinal: true,
         timeout: 5000,
+        filter: () => true,
         reporter: {}
     }, opts);
 
@@ -136,6 +99,7 @@ let junit = (opts = {}) => {
     let total = 0;
     let tested = 0;
     let isEnd = false;
+    let tests = [];
 
     if (opts.isFailOnUnhandled) {
         let onUnhandledRejection = Promise.onUnhandledRejection;
@@ -148,16 +112,13 @@ let junit = (opts = {}) => {
 
     function it (msg, fn) {
         total++;
-        function testFn () {
-            if (testFn.isTested)
-                return;
-            else
-                testFn.isTested = true;
 
+        var ret;
+        if (opts.filter(msg)) {
             tested++;
             let timeouter = null;
             let startTime = Date.now();
-            return new Promise((resolve, reject) => {
+            ret = new Promise((resolve, reject) => {
                 resolve(fn());
                 timeouter = setTimeout(
                     reject,
@@ -168,23 +129,23 @@ let junit = (opts = {}) => {
                 clearTimeout(timeouter);
                 if (isEnd) return;
                 passed++;
-                logPass(testFn.msg, Date.now() - startTime);
+                logPass(msg, Date.now() - startTime);
             }, (err) => {
                 clearTimeout(timeouter);
                 if (isEnd) return;
                 failed++;
-                logFail(testFn.msg, err, Date.now() - startTime);
+                logFail(msg, err, Date.now() - startTime);
                 if (opts.isBail) {
                     isEnd = true;
                     return Promise.reject();
                 }
             });
+        } else {
+            ret = Promise.resolve();
         }
 
-        testFn.msg = msg;
-        it.tests.push(testFn);
-
-        return testFn;
+        tests.push(ret);
+        return ret;
     }
 
     function onFinal () {
@@ -202,21 +163,10 @@ let junit = (opts = {}) => {
 
         /**
          * Start the tests.
-         * @param  {Int} limit The max task to run at a time. It's optional.
-         * Default is `Infinity`. Set it to 1 to run tests synchronously.
          * @return {Promise} It will resolve `{ total, passed, failed }`
          */
-        run (limit = Infinity) {
-            let iter = { i: 0, next () {
-                let fn = it.tests[this.i++];
-                return {
-                    value: fn && fn(),
-                    done: !fn
-                };
-            } };
-
-            return yutils.async(limit, iter, false)
-            .then(onFinal, onFinal);
+        run () {
+            return Promise.all(tests).then(onFinal, onFinal);
         },
 
         /**
@@ -226,15 +176,7 @@ let junit = (opts = {}) => {
          * @param {Number = 7} maxDepth Optional. The max depth of the recursion check.
          * @return {Promise}
          */
-        eq: utils.eq(formatAssertErr),
-
-        /**
-         * The all the test functions that are generated by `it`.
-         * Use it to filter or map test cases.
-         * @type {Array}
-         */
-        tests: []
-
+        eq: utils.eq(formatAssertErr)
     });
 };
 
