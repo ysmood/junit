@@ -357,4 +357,61 @@ export default ({ it, eq }) => {
         });
     });
 
+    it("describe error", () => {
+        let test = junit({
+            reporter: junit.reporter(" sub >"),
+            isThrowOnFinal: false
+        });
+
+        test("01", () => eq(1, 1));
+
+        test.describe("a", (it) => {
+            it("01", () => eq(1, 2));
+        });
+
+        return test.run().then(({ passed, failed }) => {
+            return eq([passed, failed], [1, 1]);
+        });
+    });
+
+    it("describe deep", () => {
+        let reporter = junit.reporter(" sub >");
+        let out = [];
+        reporter.logPass = (msg) => out.push(msg);
+
+        let test = junit({
+            reporter: reporter,
+            isThrowOnFinal: false
+        });
+
+        test("01", () => eq(1, 1));
+
+        test.describe("a", (it, describe) => {
+            it("01", () => eq(1, 1));
+            it("02", () => eq(1, 1));
+
+            describe("b", (it, describe) => {
+                it("01", () => eq(1, 1));
+                it("02", () => eq(1, 1));
+
+                describe("c", (it) => {
+                    it("01", () => eq(1, 1));
+                    it("02", () => eq(1, 1));
+                });
+            });
+        });
+
+        return test.run().then(() => {
+            return eq(out, [
+                "01",
+                ["a", "01"],
+                ["a", "02"],
+                ["a", "b", "01"],
+                ["a", "b", "02"],
+                ["a", "b", "c", "01"],
+                ["a", "b", "c", "02"]
+            ]);
+        });
+    });
+
 };
