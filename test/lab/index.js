@@ -1,20 +1,18 @@
 import junit from "../../src";
 
 let it = junit();
+let {eq} = it;
 
-// Async tests
-it.run([
+it.describe("level 01", (it, describe) => {
+    it("test 01", () => eq(1, 1));
 
-    it("sleep 1 sec", () =>
-        junit.yutils.sleep(1000)
-    ),
+    it("test 02", () => eq(1, 1));
 
-    it("sleep 1 sec", () =>
-        junit.yutils.sleep(1000)
-    ),
+    describe("level 02", it => {
+        it("test 01", () => eq(1, 1));
 
-    it("test number", () =>
-        it.eq(1, 2)
-    )
+        it("test 02", () => eq(1, 1));
+    });
+});
 
-]);
+it.run();
