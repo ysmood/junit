@@ -39,7 +39,6 @@ export default (task, option) => {
             args: [
                 "node_modules/.bin/babel-istanbul", "cover",
                 "src/cli.js", "--",
-                "-s", "test/testSuit.js",
                 "-g", opts.grep, "test/*.js"
             ]
         });
@@ -52,7 +51,6 @@ export default (task, option) => {
                 "babel-node", [
                     "node_modules/.bin/babel-istanbul", "cover",
                     "src/cli.js", "--",
-                    "-s", "test/testSuit.js",
                     "-g", opts.grep, "test/*.js"
                 ]
             );

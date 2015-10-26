@@ -7,7 +7,9 @@ let testOpts = {
     isThrowOnFinal: false
 };
 
-export default ({ it, eq }) => {
+export default (it) => it.describe("basic: ", it => {
+    let { eq } = it;
+
     it("basic", () => {
         let test = junit();
 
@@ -386,15 +388,15 @@ export default ({ it, eq }) => {
 
         test("01", () => eq(1, 1));
 
-        test.describe("a", (it, describe) => {
+        test.describe("a", (it) => {
             it("01", () => eq(1, 1));
             it("02", () => eq(1, 1));
 
-            describe("b", (it, describe) => {
+            it.describe("b", (it) => {
                 it("01", () => eq(1, 1));
                 it("02", () => eq(1, 1));
 
-                describe("c", (it) => {
+                it.describe("c", (it) => {
                     it("01", () => eq(1, 1));
                     it("02", () => eq(1, 1));
                 });
@@ -414,4 +416,4 @@ export default ({ it, eq }) => {
         });
     });
 
-};
+});

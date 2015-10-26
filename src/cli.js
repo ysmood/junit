@@ -19,7 +19,6 @@ if (subArgIndex > -1) {
 cmder
     .description("junit cli tool to run / watch tests automatically")
     .usage("[options] [file | pattern...]")
-    .option("-s, --suit <module>", "a 'it' transformer which will be required as an function [(it, path) => it]", null)
     .option("-o --reporter <module>", "a reporter module [{ formatAssertErr, logPass, logFail, logFinal }]", null)
     .option("-r, --register <str>", "language try to register [babel]", "babel/register")
     .option("-g, --grep <pattern>", "only run tests matching the pattern", "")
@@ -58,8 +57,9 @@ try {
 }
 
 let testReg = new RegExp(cmder.grep);
-let suit, reporter;
+let reporter;
 
+/* istanbul ignore next */
 function loadModule (name) {
     try {
         return require.resolve(name);
@@ -69,14 +69,6 @@ function loadModule (name) {
 }
 
 function run () {
-    // test suit hook
-    /* istanbul ignore else */
-    if (cmder.suit) {
-        suit = loadModule(cmder.suit);
-    } else {
-        suit = (it) => it;
-    }
-
     // reporter hook
     /* istanbul ignore if */
     if (cmder.reporter) {
@@ -95,7 +87,7 @@ function run () {
     });
 
     return fs.glob(cmder.args, {
-        iter: ({ path }) => { require(fsPath.resolve(path))(suit(it, path)); }
+        iter: ({ path }) => { require(fsPath.resolve(path))(it); }
     }).then(() => {
         return it.run();
     });

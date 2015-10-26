@@ -159,19 +159,21 @@ let junit = (opts = {}) => {
         return { total, tested, passed, failed };
     }
 
-    let describe = (msg, fn, notInit) => Promise.resolve(
-        fn(
-            (subMsg, fn) => Promise.resolve(it(
-                notInit ? msg.concat([subMsg]) : [msg, subMsg],
-                fn
-            )),
-            (subMsg, fn) => Promise.resolve(describe(
-                notInit ? msg.concat([subMsg]) : [msg, subMsg],
-                fn,
-                true
-            ))
-        )
-    );
+    let describe = (msg, fn, notInit) => {
+        let subIt = (subMsg, fn) => Promise.resolve(it(
+            notInit ? msg.concat([subMsg]) : [msg, subMsg],
+            fn
+        ));
+
+        extend(subIt, it);
+        subIt.describe = (subMsg, fn) => Promise.resolve(describe(
+            notInit ? msg.concat([subMsg]) : [msg, subMsg],
+            fn,
+            true
+        ));
+
+        return Promise.resolve(fn(subIt));
+    };
 
     return extend(it, {
 
