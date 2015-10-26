@@ -163,7 +163,7 @@ For more documentation, run `junit -h`.
         })();
         ```
 
-- ## **[run()](src/index.js?source#L168)**
+- ## **[run()](src/index.js?source#L182)**
 
     Start the tests.
 
@@ -171,7 +171,7 @@ For more documentation, run `junit -h`.
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L179)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L193)**
 
     A smart strict deep equality assertion helper function.
 
@@ -185,7 +185,44 @@ For more documentation, run `junit -h`.
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L192)**
+- ## **[describe(msg, fn)](src/index.js?source#L222)**
+
+    Extend the msg of the test with a new test closure.
+
+    - **<u>param</u>**: `msg` { _Any_ }
+
+        The msg object of the test.
+
+    - **<u>param</u>**: `fn` { _Function_ }
+
+        `(it, describe) => Promise` The new msg closure.
+
+    - **<u>return</u>**: { _Promise_ }
+
+    - **<u>example</u>**:
+
+        ```js
+        import junit from "junit";
+
+        let it = junit();
+        let { eq } = it;
+
+        it.describe("level 01", (it, describe) => {
+            it("test 01", () => eq(1, 1));
+
+            it("test 02", () => eq(1, 1));
+
+            describe("level 02", it => {
+                it("test 01", () => eq(1, 1));
+
+                it("test 02", () => eq(1, 1));
+            });
+        });
+
+        it.run();
+        ```
+
+- ## **[junit.reporter(prompt)](src/index.js?source#L235)**
 
     An example reporter for junit.
 
@@ -203,13 +240,13 @@ For more documentation, run `junit -h`.
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L198)**
+- ## **[junit.Promise](src/index.js?source#L241)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L204)**
+- ## **[junit.yutils](src/index.js?source#L247)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 
