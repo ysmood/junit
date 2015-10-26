@@ -2,7 +2,7 @@
 
 import Promise from "yaku";
 import yutils from "yaku/lib/utils";
-import utils from "./utils";
+import { extend, eq } from "./utils";
 import reporter from "./reporter";
 
 
@@ -82,7 +82,7 @@ import reporter from "./reporter";
  * ```
  */
 let junit = (opts = {}) => {
-    opts = utils.extend({
+    opts = extend({
         isBail: true,
         isFailOnUnhandled: true,
         isThrowOnFinal: true,
@@ -92,7 +92,7 @@ let junit = (opts = {}) => {
     }, opts);
 
     let { formatAssertErr, logPass, logFail, logFinal } =
-        utils.extend(reporter(), opts.reporter);
+        extend(reporter(), opts.reporter);
 
     let passed = 0;
     let failed = 0;
@@ -159,14 +159,21 @@ let junit = (opts = {}) => {
         return { total, tested, passed, failed };
     }
 
-    let describe = (msg, fn) => Promise.resolve(
+    let describe = (msg, fn, notInit) => Promise.resolve(
         fn(
-            (subMsg, fn) => Promise.resolve(it([msg, subMsg], fn)),
-            (subMsg, fn) => Promise.resolve(describe([msg, subMsg], fn))
+            (subMsg, fn) => Promise.resolve(it(
+                notInit ? msg.concat([subMsg]) : [msg, subMsg],
+                fn
+            )),
+            (subMsg, fn) => Promise.resolve(describe(
+                notInit ? msg.concat([subMsg]) : [msg, subMsg],
+                fn,
+                true
+            ))
         )
     );
 
-    return utils.extend(it, {
+    return extend(it, {
 
         /**
          * Start the tests.
@@ -183,7 +190,7 @@ let junit = (opts = {}) => {
          * @param {Number = 7} maxDepth Optional. The max depth of the recursion check.
          * @return {Promise}
          */
-        eq: utils.eq(formatAssertErr),
+        eq: eq(formatAssertErr),
 
         /**
          * Extend the msg of the test with a new test closure.

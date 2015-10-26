@@ -74,6 +74,8 @@ export default {
         return obj;
     },
 
+    isArray: isArray,
+
     eq: (formatAssertErr) => (actual, expected, depthCountdown = 7) => {
         let eqRes = eq(actual, expected, depthCountdown);
         if (eqRes === $maxDepthErr) {

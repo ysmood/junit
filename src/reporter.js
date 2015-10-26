@@ -2,6 +2,7 @@
 
 import { red, grey, cyan, green, underline } from "./brush";
 import { inspect } from "util";
+import { isArray } from "./utils";
 
 let regCleanStack = /^.+\/node_modules\/junit\/.+\n?/mg;
 let regIndent = /^/mg;
@@ -39,6 +40,13 @@ function inspectObj (obj) {
         return JSON.stringify(obj, 0, 4);
 }
 
+function formatMsg (msg) {
+    if (isArray(msg))
+        return msg.join(grey(" - "));
+    else
+        return msg;
+}
+
 let logPass = log("log");
 let logFail = log("error");
 let logFinal = log("info");
@@ -60,7 +68,7 @@ export default (pt = underline(grey("junit >"))) => {
         },
 
         logPass: (msg, span) => {
-            logPass(pt, green("o"), msg, grey(`(${span}ms)`));
+            logPass(pt, green("o"), formatMsg(msg), grey(`(${span}ms)`));
         },
 
         logFail: (msg, err, span) => {
@@ -68,7 +76,7 @@ export default (pt = underline(grey("junit >"))) => {
                 indent(err.stack ? err.stack : err.message) : err;
 
             logFail(
-                `${pt} ${red("x")} ${msg} ` +
+                `${pt} ${red("x")} ${formatMsg(msg)} ` +
                 grey(`(${span}ms)`) + `\n${err}\n`
             );
         },
