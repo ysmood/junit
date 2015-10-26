@@ -159,6 +159,13 @@ let junit = (opts = {}) => {
         return { total, tested, passed, failed };
     }
 
+    let describe = (msg, fn) => Promise.resolve(
+        fn(
+            (subMsg, fn) => Promise.resolve(it([msg, subMsg], fn)),
+            (subMsg, fn) => Promise.resolve(describe([msg, subMsg], fn))
+        )
+    );
+
     return utils.extend(it, {
 
         /**
@@ -176,7 +183,36 @@ let junit = (opts = {}) => {
          * @param {Number = 7} maxDepth Optional. The max depth of the recursion check.
          * @return {Promise}
          */
-        eq: utils.eq(formatAssertErr)
+        eq: utils.eq(formatAssertErr),
+
+        /**
+         * Extend the msg of the test with a new test closure.
+         * @param {Any} msg The msg object of the test.
+         * @param {Function} fn `(it, describe) => Promise` The new msg closure.
+         * @return {Promise}
+         * @example
+         * ```js
+         * import junit from "junit";
+         *
+         * let it = junit();
+         * let { eq } = it;
+         *
+         * it.describe("level 01", (it, describe) => {
+         *     it("test 01", () => eq(1, 1));
+         *
+         *     it("test 02", () => eq(1, 1));
+         *
+         *     describe("level 02", it => {
+         *         it("test 01", () => eq(1, 1));
+         *
+         *         it("test 02", () => eq(1, 1));
+         *     });
+         * });
+         *
+         * it.run();
+         * ```
+         */
+        describe: describe
     });
 };
 
