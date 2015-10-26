@@ -1,6 +1,7 @@
-- v0.7.0
+- v0.8.1
 
   - **API CHANGE** The flow control is changed
+  - **API CHANGE** removed the `test suite` cli option
   - add: `describe` api
 
 - v0.6.1

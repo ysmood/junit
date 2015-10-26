@@ -1,6 +1,6 @@
 {
   "name": "junit",
-  "version": "0.7.0",
+  "version": "0.8.1",
   "description": "A simple promise based function for unit tests.",
   "main": "lib/index.js",
   "bin": {

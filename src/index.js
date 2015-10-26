@@ -197,7 +197,7 @@ let junit = (opts = {}) => {
         /**
          * Extend the msg of the test with a new test closure.
          * @param {Any} msg The msg object of the test.
-         * @param {Function} fn `(it, describe) => Promise` The new msg closure.
+         * @param {Function} fn `(it) => Promise` The new msg closure.
          * @return {Promise}
          * @example
          * ```js
@@ -206,12 +206,12 @@ let junit = (opts = {}) => {
          * let it = junit();
          * let { eq } = it;
          *
-         * it.describe("level 01", (it, describe) => {
+         * it.describe("level 01", it => {
          *     it("test 01", () => eq(1, 1));
          *
          *     it("test 02", () => eq(1, 1));
          *
-         *     describe("level 02", it => {
+         *     it.describe("level 02", it => {
          *         it("test 01", () => eq(1, 1));
          *
          *         it("test 02", () => eq(1, 1));

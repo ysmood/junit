@@ -163,7 +163,7 @@ For more documentation, run `junit -h`.
         })();
         ```
 
-- ## **[run()](src/index.js?source#L182)**
+- ## **[run()](src/index.js?source#L184)**
 
     Start the tests.
 
@@ -171,7 +171,7 @@ For more documentation, run `junit -h`.
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L193)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L195)**
 
     A smart strict deep equality assertion helper function.
 
@@ -185,7 +185,7 @@ For more documentation, run `junit -h`.
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[describe(msg, fn)](src/index.js?source#L222)**
+- ## **[describe(msg, fn)](src/index.js?source#L224)**
 
     Extend the msg of the test with a new test closure.
 
@@ -195,7 +195,7 @@ For more documentation, run `junit -h`.
 
     - **<u>param</u>**: `fn` { _Function_ }
 
-        `(it, describe) => Promise` The new msg closure.
+        `(it) => Promise` The new msg closure.
 
     - **<u>return</u>**: { _Promise_ }
 
@@ -207,12 +207,12 @@ For more documentation, run `junit -h`.
         let it = junit();
         let { eq } = it;
 
-        it.describe("level 01", (it, describe) => {
+        it.describe("level 01", it => {
             it("test 01", () => eq(1, 1));
 
             it("test 02", () => eq(1, 1));
 
-            describe("level 02", it => {
+            it.describe("level 02", it => {
                 it("test 01", () => eq(1, 1));
 
                 it("test 02", () => eq(1, 1));
@@ -222,7 +222,7 @@ For more documentation, run `junit -h`.
         it.run();
         ```
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L235)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L237)**
 
     An example reporter for junit.
 
@@ -240,13 +240,13 @@ For more documentation, run `junit -h`.
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L241)**
+- ## **[junit.Promise](src/index.js?source#L243)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L247)**
+- ## **[junit.yutils](src/index.js?source#L249)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 
