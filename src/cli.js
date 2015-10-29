@@ -87,7 +87,7 @@ function run () {
     });
 
     return fs.glob(cmder.args, {
-        iter: ({ path }) => { require(fsPath.resolve(path))(it); }
+        iter: ({ path }) => require(fsPath.resolve(path))(it)
     }).then(() => {
         return it.run();
     });

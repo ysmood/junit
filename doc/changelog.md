@@ -1,3 +1,7 @@
+- v0.8.2
+
+  - fix: a cli sync test bug
+
 - v0.8.1
 
   - **API CHANGE** The flow control is changed
