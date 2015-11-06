@@ -59,7 +59,7 @@ import reporter from "./reporter";
  *     );
  *
  *     it.run();
- * })()
+ * })();
  * ```
  * @example
  * Filter the tests, only the message starts with "test" will be tested.
