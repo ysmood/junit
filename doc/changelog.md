@@ -1,6 +1,7 @@
-- v0.8.2
+- v0.8.3
 
   - fix: a cli sync test bug
+  - opt: the error handling
 
 - v0.8.1
 

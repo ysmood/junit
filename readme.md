@@ -77,7 +77,7 @@ For more documentation, run `junit -h`.
 
 # API
 
-- ## **[junit(opts)](src/index.js?source#L84)**
+- ## **[junit(opts)](src/index.js?source#L86)**
 
     A simple promise based module for unit tests.
 
@@ -124,7 +124,9 @@ For more documentation, run `junit -h`.
             it("test 1", () =>
                 // We use `it.eq` to assert on both simple type and complex object.
                 it.eq("ok", "ok")
-            );
+            ).then(() => {
+                // do some clean work after the test
+            });
 
             it("test 2", async () => {
                 // No more callback hell while testing async functions.
@@ -163,7 +165,7 @@ For more documentation, run `junit -h`.
         })();
         ```
 
-- ## **[run()](src/index.js?source#L184)**
+- ## **[run()](src/index.js?source#L187)**
 
     Start the tests.
 
@@ -171,7 +173,7 @@ For more documentation, run `junit -h`.
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L195)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L198)**
 
     A smart strict deep equality assertion helper function.
 
@@ -185,7 +187,7 @@ For more documentation, run `junit -h`.
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[describe(msg, fn)](src/index.js?source#L224)**
+- ## **[describe(msg, fn)](src/index.js?source#L227)**
 
     Extend the msg of the test with a new test closure.
 
@@ -222,7 +224,7 @@ For more documentation, run `junit -h`.
         it.run();
         ```
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L237)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L240)**
 
     An example reporter for junit.
 
@@ -240,13 +242,13 @@ For more documentation, run `junit -h`.
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L243)**
+- ## **[junit.Promise](src/index.js?source#L246)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L249)**
+- ## **[junit.yutils](src/index.js?source#L252)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 
