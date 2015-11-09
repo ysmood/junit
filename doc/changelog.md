@@ -1,3 +1,7 @@
+- v0.9.1
+
+  - add: after hook api
+
 - v0.8.3
 
   - fix: a cli sync test bug

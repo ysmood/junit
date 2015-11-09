@@ -77,7 +77,7 @@ For more documentation, run `junit -h`.
 
 # API
 
-- ## **[junit(opts)](src/index.js?source#L86)**
+- ## **[junit(opts)](src/index.js?source#L90)**
 
     A simple promise based module for unit tests.
 
@@ -113,6 +113,8 @@ For more documentation, run `junit -h`.
     - **<u>return</u>**: { _Function_ }
 
         `(msg, fn) => Function` The `msg` can be anything.
+        The `fn`'s first param is a function `(after) =>`, you can pass a after hook
+        to it.
 
     - **<u>example</u>**:
 
@@ -124,9 +126,7 @@ For more documentation, run `junit -h`.
             it("test 1", () =>
                 // We use `it.eq` to assert on both simple type and complex object.
                 it.eq("ok", "ok")
-            ).then(() => {
-                // do some clean work after the test
-            });
+            );
 
             it("test 2", async () => {
                 // No more callback hell while testing async functions.
@@ -136,7 +136,11 @@ For more documentation, run `junit -h`.
             });
 
             // Run sync tests within the main async flow.
-            await it("test 3", () =>
+            await it("test 3", (after) =>
+                after(() => {
+                    // do some clean work after the test
+                });
+
                 it.eq("ok", "ok")
             );
 
@@ -165,7 +169,7 @@ For more documentation, run `junit -h`.
         })();
         ```
 
-- ## **[run()](src/index.js?source#L187)**
+- ## **[run()](src/index.js?source#L201)**
 
     Start the tests.
 
@@ -173,7 +177,7 @@ For more documentation, run `junit -h`.
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L198)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L212)**
 
     A smart strict deep equality assertion helper function.
 
@@ -187,7 +191,7 @@ For more documentation, run `junit -h`.
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[describe(msg, fn)](src/index.js?source#L227)**
+- ## **[describe(msg, fn)](src/index.js?source#L241)**
 
     Extend the msg of the test with a new test closure.
 
@@ -224,7 +228,7 @@ For more documentation, run `junit -h`.
         it.run();
         ```
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L240)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L254)**
 
     An example reporter for junit.
 
@@ -242,13 +246,13 @@ For more documentation, run `junit -h`.
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L246)**
+- ## **[junit.Promise](src/index.js?source#L260)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L252)**
+- ## **[junit.yutils](src/index.js?source#L266)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 

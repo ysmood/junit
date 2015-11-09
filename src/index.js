@@ -149,9 +149,14 @@ let junit = (opts = {}) => {
                     isEnd = true;
                 }
                 logFail(msg, err, Date.now() - startTime);
-            });
-
-            ret.then(() => afterHook && afterHook());
+            })
+            .then(
+                () => afterHook && afterHook(),
+                err => {
+                    afterHook && afterHook();
+                    return Promise.reject(err);
+                }
+            );
         } else {
             ret = Promise.resolve();
         }
