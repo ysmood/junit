@@ -42,6 +42,22 @@ export default (it) => it.describe("basic: ", it => {
         return eq(passed, 4);
     });
 
+    it("sync bail", async () => {
+        let test = junit(testOpts);
+
+        // Sync tests
+        await test("basic 1", () =>
+            eq("ok", "ok1")
+        );
+
+        await test("basic 1", () =>
+            eq("ok", "ok")
+        );
+
+        let { tested, failed, total } = await test.run();
+        return eq([tested, failed, total], [1, 1, 2]);
+    });
+
     it("all passed sync", async () => {
         let test = junit(testOpts);
 

@@ -44,7 +44,9 @@ import reporter from "./reporter";
  *     it("test 1", () =>
  *         // We use `it.eq` to assert on both simple type and complex object.
  *         it.eq("ok", "ok")
- *     );
+ *     ).then(() => {
+ *         // do some clean work after the test
+ *     });
  *
  *     it("test 2", async () => {
  *         // No more callback hell while testing async functions.
@@ -113,6 +115,8 @@ let junit = (opts = {}) => {
     function it (msg, fn) {
         total++;
 
+        if (isEnd) return;
+
         var ret;
         if (opts.filter(msg)) {
             tested++;
@@ -134,11 +138,10 @@ let junit = (opts = {}) => {
                 clearTimeout(timeouter);
                 if (isEnd) return;
                 failed++;
-                logFail(msg, err, Date.now() - startTime);
                 if (opts.isBail) {
                     isEnd = true;
-                    return Promise.reject();
                 }
+                logFail(msg, err, Date.now() - startTime);
             });
         } else {
             ret = Promise.resolve();
@@ -182,7 +185,7 @@ let junit = (opts = {}) => {
          * @return {Promise} It will resolve `{ total, passed, failed }`
          */
         run () {
-            return Promise.all(tests).then(onFinal, onFinal);
+            return Promise.all(tests).then(onFinal);
         },
 
         /**
