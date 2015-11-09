@@ -10,12 +10,50 @@ let testOpts = {
 export default (it) => it.describe("basic: ", it => {
     let { eq } = it;
 
-    it("basic", () => {
+    it("empty option", () => {
         let test = junit();
 
         test("test", () => eq(1, 1));
 
         return test.run();
+    });
+
+    it("after hook", async () => {
+        let test = junit(testOpts);
+
+        let queue = [];
+
+        test("test", (after) => {
+            after(() => {
+                queue.push(2);
+            });
+
+            queue.push(1);
+            return eq(1, 1);
+        });
+
+        await test.run();
+
+        return eq(queue, [1, 2]);
+    });
+
+    it("after hook when error", async () => {
+        let test = junit(testOpts);
+
+        let queue = [];
+
+        test("test", (after) => {
+            after(() => {
+                queue.push(2);
+            });
+
+            queue.push(1);
+            return eq(1, 2);
+        });
+
+        await test.run().catch(() => {});
+
+        return eq(queue, [1, 2]);
     });
 
     it("all passed", async () => {

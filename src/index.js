@@ -35,6 +35,8 @@ import reporter from "./reporter";
  * }
  * ```
  * @return {Function} `(msg, fn) => Function` The `msg` can be anything.
+ * The `fn`'s first param is a function `(after) =>`, you can pass a after hook
+ * to it.
  * @example
  * ```js
  * import junit from "junit";
@@ -44,9 +46,7 @@ import reporter from "./reporter";
  *     it("test 1", () =>
  *         // We use `it.eq` to assert on both simple type and complex object.
  *         it.eq("ok", "ok")
- *     ).then(() => {
- *         // do some clean work after the test
- *     });
+ *     );
  *
  *     it("test 2", async () => {
  *         // No more callback hell while testing async functions.
@@ -56,7 +56,11 @@ import reporter from "./reporter";
  *     });
  *
  *     // Run sync tests within the main async flow.
- *     await it("test 3", () =>
+ *     await it("test 3", (after) =>
+ *         after(() => {
+ *             // do some clean work after the test
+ *         });
+ *
  *         it.eq("ok", "ok")
  *     );
  *
@@ -122,8 +126,11 @@ let junit = (opts = {}) => {
             tested++;
             let timeouter = null;
             let startTime = Date.now();
+            let afterHook;
+
             ret = new Promise((resolve, reject) => {
-                resolve(fn());
+                resolve(fn(h => afterHook = h));
+
                 timeouter = setTimeout(
                     reject,
                     opts.timeout,
@@ -143,6 +150,8 @@ let junit = (opts = {}) => {
                 }
                 logFail(msg, err, Date.now() - startTime);
             });
+
+            ret.then(() => afterHook && afterHook());
         } else {
             ret = Promise.resolve();
         }
