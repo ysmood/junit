@@ -56,6 +56,31 @@ export default (it) => it.describe("basic: ", it => {
         return eq(queue, [1, 2]);
     });
 
+    it("after hook when log error", async () => {
+        let reporter = junit.reporter(" sub >");
+        reporter.logFail = () => { throw "err"; };
+
+        let test = junit({
+            reporter: reporter,
+            isThrowOnFinal: false
+        });
+
+        let queue = [];
+
+        test("test", (after) => {
+            after(() => {
+                queue.push(2);
+            });
+
+            queue.push(1);
+            return eq(1, 2);
+        });
+
+        await test.run().catch(() => {});
+
+        return eq(queue, [1, 2]);
+    });
+
     it("all passed", async () => {
         let test = junit(testOpts);
 
