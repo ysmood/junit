@@ -77,7 +77,7 @@ For more documentation, run `junit -h`.
 
 # API
 
-- ## **[junit(opts)](src/index.js?source#L90)**
+- ## **[junit(opts)](src/index.js?source#L91)**
 
     A simple promise based module for unit tests.
 
@@ -169,7 +169,7 @@ For more documentation, run `junit -h`.
         })();
         ```
 
-- ## **[run()](src/index.js?source#L201)**
+- ## **[run()](src/index.js?source#L202)**
 
     Start the tests.
 
@@ -177,7 +177,7 @@ For more documentation, run `junit -h`.
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L212)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L213)**
 
     A smart strict deep equality assertion helper function.
 
@@ -191,7 +191,7 @@ For more documentation, run `junit -h`.
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[describe(msg, fn)](src/index.js?source#L241)**
+- ## **[describe(msg, fn)](src/index.js?source#L242)**
 
     Extend the msg of the test with a new test closure.
 
@@ -228,7 +228,7 @@ For more documentation, run `junit -h`.
         it.run();
         ```
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L254)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L255)**
 
     An example reporter for junit.
 
@@ -246,13 +246,13 @@ For more documentation, run `junit -h`.
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L260)**
+- ## **[junit.Promise](src/index.js?source#L261)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L266)**
+- ## **[junit.yutils](src/index.js?source#L267)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 
