@@ -1,4 +1,4 @@
-import "babel/polyfill";
+import "babel-polyfill";
 import junit from "../../src";
 import basic from "../basic";
 

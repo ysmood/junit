@@ -5,6 +5,7 @@ import fs from "nofs";
 import fsPath from "path";
 import br from "./brush";
 import junit from "./";
+import defaultReporter from "./reporter";
 
 let watchList = [];
 
@@ -20,7 +21,7 @@ cmder
     .description("junit cli tool to run / watch tests automatically")
     .usage("[options] [file | pattern...]")
     .option("-o --reporter <module>", "a reporter module [{ formatAssertErr, logPass, logFail, logFinal }]", null)
-    .option("-r, --register <str>", "language try to register [babel]", "babel/register")
+    .option("-r, --requires <str>", "pre-require modules [babel-core/register,babel-polyfill]", "babel-core/register,babel-polyfill")
     .option("-g, --grep <pattern>", "only run tests matching the pattern", "")
     .option("-t, --timeout <num>", "case timeout in milliseconds [5000]", parseInt)
     .option("-b, --isBail", "bail after first test failure [true]")
@@ -50,7 +51,7 @@ cmder
 .parse(process.argv);
 
 try {
-    require(cmder.register);
+    cmder.requires.split(",").map(require);
 } catch (err) {
     /* istanbul ignore next */
     null;
@@ -64,7 +65,9 @@ function loadModule (name) {
     try {
         return require.resolve(name);
     } catch (err) {
-        return require(fsPath.resolve(name));
+        let mod = require(fsPath.resolve(name));
+        mod = mod && mod.default;
+        return mod;
     }
 }
 
@@ -74,7 +77,7 @@ function run () {
     if (cmder.reporter) {
         reporter = loadModule(cmder.reporter);
     } else {
-        reporter = require("./reporter")(cmder.prompt);
+        reporter = defaultReporter(cmder.prompt);
     }
 
     let it = junit({
@@ -87,7 +90,10 @@ function run () {
     });
 
     return fs.glob(cmder.args, {
-        iter: ({ path }) => require(fsPath.resolve(path))(it)
+        iter: ({ path }) => {
+            let mod = require(fsPath.resolve(path));
+            return (mod && mod.default)(it);
+        }
     }).then(() => {
         return it.run();
     });

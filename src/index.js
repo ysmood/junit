@@ -2,9 +2,10 @@
 
 import Promise from "yaku";
 import yutils from "yaku/lib/utils";
-import { extend, eq } from "./utils";
+import utils from "./utils";
 import reporter from "./reporter";
 
+let { extend, eq } = utils;
 
 /**
  * A simple promise based module for unit tests.

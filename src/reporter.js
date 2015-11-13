@@ -1,8 +1,12 @@
 "use strict";
 
-import { red, grey, cyan, green, underline } from "./brush";
-import { inspect } from "util";
-import { isArray } from "./utils";
+import brush from "./brush";
+import util from "util";
+import utils from "./utils";
+
+let { red, grey, cyan, green, underline } = brush;
+let { inspect } = util;
+let { isArray } = utils;
 
 let regCleanStack = /^.+\/node_modules\/junit\/.+\n?/mg;
 let regIndent = /^/mg;

@@ -11,7 +11,7 @@ export default (task, option) => {
         ]);
 
         var webpackOpts = [
-            "--module-bind", "js=babel?stage=0&loose=all",
+            "--module-bind", "js=babel",
             "test/browser/index.js", "dist/test-basic.js"
         ];
         if (opts.W) webpackOpts.push("-w");
