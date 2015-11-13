@@ -16,7 +16,7 @@ function indent (str) {
 }
 
 function log (type) { return function () {
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (typeof window === "object") {
         let mainElem = window["junit-reporter"];
         if (mainElem) {

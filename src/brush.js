@@ -17,7 +17,7 @@ codes = {
 genBrush = function (code) {
     return function (str) {
         if (brush.isEnabled) {
-            /* istanbul ignore if */
+            /* istanbul ignore next */
             if (typeof window === "object")
                 return code[2] + str + code[3];
             else
