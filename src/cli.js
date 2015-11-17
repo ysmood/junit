@@ -66,7 +66,7 @@ function loadModule (name) {
         return require.resolve(name);
     } catch (err) {
         let mod = require(fsPath.resolve(name));
-        mod = mod && mod.default;
+        mod = typeof mod === "function" ? mod : mod.default;
         return mod;
     }
 }
