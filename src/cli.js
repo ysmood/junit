@@ -66,7 +66,7 @@ function loadModule (name) {
         return require.resolve(name);
     } catch (err) {
         let mod = require(fsPath.resolve(name));
-        mod = mod && mod.default;
+        mod = typeof mod === "function" ? mod : mod.default;
         return mod;
     }
 }
@@ -92,7 +92,7 @@ function run () {
     return fs.glob(cmder.args, {
         iter: ({ path }) => {
             let mod = require(fsPath.resolve(path));
-            return (mod && mod.default)(it);
+            return (typeof mod === "function" ? mod : mod.default)(it);
         }
     }).then(() => {
         return it.run();

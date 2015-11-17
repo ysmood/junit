@@ -1,4 +1,4 @@
-- v0.9.2
+- v0.9.5
 
   - add: after hook api
   - add: support babel 6
