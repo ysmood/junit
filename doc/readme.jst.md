@@ -72,6 +72,12 @@ Run the tests via `junit test/*.js`.
 
 For more documentation, run `junit -h`.
 
+To watch and auto-rerun test please use [`noe`](https://github.com/ysmood/nokit#the-noe-comamnd):
+
+```bash
+noe -b junit -w 'test/*.js' -- 'test/*.js'
+```
+
 ![junit-demo](doc/junit-demo.gif)
 
 

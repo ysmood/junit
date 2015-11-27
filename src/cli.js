@@ -7,8 +7,6 @@ import br from "./brush";
 import junit from "./";
 import defaultReporter from "./reporter";
 
-let watchList = [];
-
 let subArgIndex = process.argv.indexOf("--");
 
 /* istanbul ignore if */
@@ -18,7 +16,7 @@ if (subArgIndex > -1) {
 }
 
 cmder
-    .description("junit cli tool to run / watch tests automatically")
+    .description("junit cli tool to run tests automatically")
     .usage("[options] [file | pattern...]")
     .option("-o --reporter <module>", "a reporter module [{ formatAssertErr, logPass, logFail, logFinal }]", null)
     .option("-r, --requires <str>", "pre-require modules [babel-core/register,babel-polyfill]", "babel-core/register,babel-polyfill")
@@ -30,12 +28,6 @@ cmder
         "-p, --prompt <str>", "the prompt string ['junit cli >']",
         br.underline(br.grey("junit cli >"))
     )
-    .option("-w, --watch [pattern]", "watch file pattern list",
-        /* istanbul ignore next */
-        function (p) {
-            watchList.push(p);
-        }
-    )
     .on("--help",
         /* istanbul ignore next */
         function () {
@@ -43,8 +35,8 @@ cmder
                 "  Examples:\n\n" +
                 "    junit test/*.js\n" +
                 "    junit test.es7.js\n" +
-                "    junit -w 'test/**/*.js' -w 'src/*.js' test.js\n" +
-                "    junit -r coffee-script test.coffee\n"
+                "    junit -r coffee-script test.coffee\n" +
+                "    noe -b junit -w '*.js' -- test.js\n"
             );
         }
     )
@@ -82,7 +74,6 @@ function run () {
 
     let it = junit({
         filter: msg => testReg.test(msg),
-        isThrowOnFinal: !cmder.watch,
         reporter: reporter,
         isBail: cmder.isBail,
         isFailOnUnhandled: cmder.isFailOnUnhandled,
@@ -100,26 +91,3 @@ function run () {
 }
 
 run();
-
-/* istanbul ignore if */
-if (cmder.watch) {
-    let sep = "";
-
-    for (let i = process.stdout.columns; i > 0; i--) {
-        sep += "*";
-    }
-
-    let handler = (path) => {
-        process.stdout.write(br.yellow(sep));
-        console.log(cmder.prompt, br.cyan("file modified:"), path);
-        delete require.cache[fsPath.resolve(path)];
-        run();
-    };
-
-    let list = [];
-    fs.glob(cmder.args.concat(watchList), { iter: ({path}) => {
-        if (list.indexOf(path) > -1) return;
-        list.push(path);
-        fs.watchPath(path, { handler });
-    } });
-}
