@@ -205,6 +205,8 @@ let junit = (opts = {}) => {
 
         /**
          * A smart strict deep equality assertion helper function.
+         * If any of the arguments is promise, it will be auto-resolved before
+         * comparision.
          * @param {Any} actual
          * @param {Any} expected
          * @param {Number = 7} maxDepth Optional. The max depth of the recursion check.

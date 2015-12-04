@@ -66,6 +66,18 @@ let eq = (json1, json2, depthCountdown, path = "") => {
     return joinRes(true);
 };
 
+function spread (fn) {
+    return function (args) {
+        return fn.apply(null, args);
+    };
+}
+
+function asyncWrap (fn) {
+    return function () {
+        return Promise.all(arguments).then(spread(fn));
+    };
+}
+
 export default {
     extend: (obj, src) => {
         for (var key in src) {
@@ -76,7 +88,7 @@ export default {
 
     isArray: isArray,
 
-    eq: (formatAssertErr) => (actual, expected, depthCountdown = 7) => {
+    eq: (formatAssertErr) => asyncWrap((actual, expected, depthCountdown = 7) => {
         let eqRes = eq(actual, expected, depthCountdown);
         if (eqRes === $maxDepthErr) {
             let errText = `Maximum recursion depth exceeded: ${depthCountdown}`;
@@ -86,5 +98,5 @@ export default {
             return Promise.resolve();
 
         return report(formatAssertErr, actual, expected);
-    }
+    })
 };

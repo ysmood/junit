@@ -183,9 +183,11 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L213)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L215)**
 
     A smart strict deep equality assertion helper function.
+    If any of the arguments is promise, it will be auto-resolved before
+    comparision.
 
     - **<u>param</u>**: `actual` { _Any_ }
 
@@ -197,7 +199,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[describe(msg, fn)](src/index.js?source#L242)**
+- ## **[describe(msg, fn)](src/index.js?source#L244)**
 
     Extend the msg of the test with a new test closure.
 
@@ -234,7 +236,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         it.run();
         ```
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L255)**
+- ## **[junit.reporter(prompt)](src/index.js?source#L257)**
 
     An example reporter for junit.
 
@@ -252,13 +254,13 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         let it = junit({ reporter: junit.reporter('my-prompt > ') });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L261)**
+- ## **[junit.Promise](src/index.js?source#L263)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L267)**
+- ## **[junit.yutils](src/index.js?source#L269)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 

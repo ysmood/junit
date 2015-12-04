@@ -101,8 +101,12 @@ export default (it) => it.describe("basic: ", it => {
             eq("ok", "ok")
         );
 
+        await test("basic 5", () =>
+            eq(Promise.resolve("ok"), "ok")
+        );
+
         let { passed } = await test.run();
-        return eq(passed, 4);
+        return eq(passed, 5);
     });
 
     it("sync bail", async () => {

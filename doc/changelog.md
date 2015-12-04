@@ -1,3 +1,7 @@
+- v1.1.0
+
+  - **API CHANGE** now `it.eq` will auto-resolve promise arguments by default.
+
 - v0.9.5
 
   - add: after hook api
