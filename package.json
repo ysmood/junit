@@ -1,6 +1,6 @@
 {
   "name": "junit",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A simple promise based function for unit tests.",
   "main": "lib/index.js",
   "bin": {
@@ -35,21 +35,21 @@
   "dependencies": {
     "commander": "2.9.0",
     "nofs": "0.10.9",
-    "yaku": "0.11.4"
+    "yaku": "0.11.6"
   },
   "devDependencies": {
-    "babel-cli": "6.1.18",
-    "babel-core": "6.1.21",
-    "babel-eslint": "4.1.5",
-    "babel-istanbul": "0.5.8",
-    "babel-loader": "6.1.0",
-    "babel-polyfill": "6.1.19",
-    "babel-preset-es2015": "6.1.18",
-    "babel-preset-stage-2": "6.1.18",
+    "babel-cli": "6.3.13",
+    "babel-core": "6.3.13",
+    "babel-eslint": "4.1.6",
+    "babel-istanbul": "0.5.9",
+    "babel-loader": "6.2.0",
+    "babel-polyfill": "6.3.14",
+    "babel-preset-es2015": "6.3.13",
+    "babel-preset-stage-2": "6.3.13",
     "coveralls": "2.11.4",
-    "eslint": "1.9.0",
-    "nokit": "0.16.2",
-    "webpack": "1.12.6"
+    "eslint": "1.10.3",
+    "nokit": "0.16.12",
+    "webpack": "1.12.9"
   },
   "babel": {
     "presets": [

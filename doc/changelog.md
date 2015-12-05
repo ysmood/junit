@@ -1,6 +1,7 @@
-- v1.1.0
+- v1.1.1
 
   - **API CHANGE** now `it.eq` will auto-resolve promise arguments by default.
+  - upd: deps
 
 - v0.9.5
 
