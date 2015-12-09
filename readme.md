@@ -12,7 +12,7 @@ will be fancy.
 
 ## Node.js
 
-`npm install junit`
+`npm install junit` then you can `var junit = require("junit").default` or `import junit from "junit"`.
 
 ## Browser
 
@@ -86,6 +86,16 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
 
 # API
+
+  - [junit(opts)](#junitopts)
+  - [run()](#run)
+  - [eq(actual, expected, maxDepth)](#eqactual-expected-maxdepth)
+  - [describe(msg, fn)](#describemsg-fn)
+  - [junit.reporter(prompt)](#junitreporterprompt)
+  - [junit.Promise](#junitpromise)
+  - [junit.yutils](#junityutils)
+
+---------------------------------------
 
 - ## **[junit(opts)](src/index.js?source#L91)**
 

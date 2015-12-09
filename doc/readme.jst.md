@@ -12,7 +12,7 @@ will be fancy.
 
 ## Node.js
 
-`npm install junit`
+`npm install junit` then you can `var junit = require("junit").default` or `import junit from "junit"`.
 
 ## Browser
 
@@ -86,5 +86,9 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
 
 # API
+
+<%= doc["src/index.js-toc"] %>
+
+---------------------------------------
 
 <%= doc["src/index.js"] %>

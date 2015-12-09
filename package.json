@@ -48,7 +48,7 @@
     "babel-preset-stage-2": "6.3.13",
     "coveralls": "2.11.4",
     "eslint": "1.10.3",
-    "nokit": "0.16.12",
+    "nokit": "0.16.15",
     "webpack": "1.12.9"
   },
   "babel": {
