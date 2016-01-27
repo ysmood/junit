@@ -1,7 +1,8 @@
-- v1.1.1
+- v1.1.2
 
   - **API CHANGE** now `it.eq` will auto-resolve promise arguments by default.
   - upd: deps
+  - opt: reporter format
 
 - v0.9.5
 
