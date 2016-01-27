@@ -8,7 +8,7 @@ let { red, grey, cyan, green, underline } = brush;
 let { inspect } = util;
 let { isArray } = utils;
 
-let regCleanStack = /^.+\/node_modules\/junit\/.+\n?/mg;
+let regCleanStack = /^.+(\/node_modules\/|(node\.js:\d+:\d+)).+\n?/mg;
 let regIndent = /^/mg;
 
 function indent (str) {
@@ -37,6 +37,9 @@ function log (type) { return function () {
 }; }
 
 function inspectObj (obj) {
+    if (typeof obj === "string")
+        return obj;
+
     /* istanbul ignore else */
     if (typeof window === "undefined")
         return inspect(obj, { depth: 7, colors: true });
@@ -77,7 +80,7 @@ export default (pt = underline(grey("junit >"))) => {
 
         logFail: (msg, err, span) => {
             err = err instanceof Error ?
-                indent(err.stack ? err.stack : err.message) : err;
+                indent(err.stack ? err.stack : err.message) : inspectObj(err);
 
             logFail(
                 `${pt} ${red("x")} ${formatMsg(msg)} ` +

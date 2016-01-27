@@ -18,6 +18,16 @@ export default (it) => it.describe("basic: ", it => {
         return test.run();
     });
 
+    it("error object", () => {
+        let test = junit(testOpts);
+
+        test("test", () => Promise.reject({ a: 10 }));
+
+        return test.run().catch(({ failed }) => {
+            return eq(failed, 1);
+        });
+    });
+
     it("after hook", async () => {
         let test = junit(testOpts);
 
