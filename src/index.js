@@ -82,9 +82,9 @@ let { extend, eq } = utils;
  *     it("test 2", () => it.eq(1, 1));
  *
  *     // Get the result of the test.
- *     let { total, passed, failed } = await it.run();
+ *     let { total, tested, passed, failed } = await it.run();
  *
- *     console.log(total, passed, failed);
+ *     console.log(total, tested, passed, failed);
  * })();
  * ```
  */

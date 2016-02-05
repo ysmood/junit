@@ -76,6 +76,7 @@ function run () {
         filter: msg => testReg.test(msg),
         reporter: reporter,
         isBail: cmder.isBail,
+        isThrowOnFinal: false,
         isFailOnUnhandled: cmder.isFailOnUnhandled,
         timeout: cmder.timeout || 5000
     });
@@ -85,8 +86,9 @@ function run () {
             let mod = require(fsPath.resolve(path));
             return (typeof mod === "function" ? mod : mod.default)(it);
         }
-    }).then(() => {
-        return it.run();
+    }).then(it.run).then(({ failed }) => {
+        /* istanbul ignore next */
+        if (failed) process.exit(1);
     });
 }
 
