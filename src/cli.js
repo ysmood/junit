@@ -70,7 +70,7 @@ function run () {
     if (cmder.reporter) {
         reporter = loadModule(cmder.reporter);
     } else {
-        reporter = defaultReporter(cmder.prompt);
+        reporter = defaultReporter({ prompt: cmder.prompt });
     }
 
     let it = junit({

@@ -48,16 +48,22 @@ export default (task, option) => {
 
     option("-g, --grep <.*>", "unit test regex filter", ".*");
     task("test", ["lint"], async (opts) => {
-        try {
-            kit.spawn(
-                "babel-node", [
-                    "node_modules/.bin/babel-istanbul", "cover",
-                    "src/cli.js", "--",
-                    "-g", opts.grep, "test/*.js"
-                ]
-            );
-        } catch ({ code }) {
-            process.exit(code);
-        }
+        // Test phantomjs
+        await kit.spawn("webpack", [
+            "--module-bind", "js=babel",
+            "--output-pathinfo",
+            "test/browser/phantom.js", "dist/test-phantom-basic.js"
+        ]);
+
+        await kit.spawn("phantomjs", ["dist/test-phantom-basic.js"]);
+
+        await kit.spawn(
+            "babel-node", [
+                "node_modules/.bin/babel-istanbul", "cover",
+                "src/cli.js", "--",
+                "-t", "30000",
+                "-g", opts.grep, "test/*.js"
+            ]
+        );
     });
 };
