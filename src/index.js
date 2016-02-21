@@ -246,11 +246,17 @@ let junit = (opts = {}) => {
 
 /**
  * An example reporter for junit.
- * @param {String} prompt The prompt prefix.
+ * @param {Object} opts Defaults:
+ * ```js
+ * {
+ *     prompt: String, // The prompt prefix
+ *     mode: "console" // "console", "browser" or "none"
+ * }
+ * ```
  * @return {Function} `() => Object`.
  * @example
  * ```js
- * let it = junit({ reporter: junit.reporter('my-prompt > ') });
+ * let it = junit({ reporter: junit.reporter({ prompt: 'my-prompt > ' }) });
  * ```
  */
 junit.reporter = reporter;

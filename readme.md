@@ -91,7 +91,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
   - [run()](#run)
   - [eq(actual, expected, maxDepth)](#eqactual-expected-maxdepth)
   - [describe(msg, fn)](#describemsg-fn)
-  - [junit.reporter(prompt)](#junitreporterprompt)
+  - [junit.reporter(opts)](#junitreporteropts)
   - [junit.Promise](#junitpromise)
   - [junit.yutils](#junityutils)
 
@@ -189,7 +189,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         })();
         ```
 
-- ## **[run()](src/index.js?source#L202)**
+- ## **[run()](src/index.js?source#L201)**
 
     Start the tests.
 
@@ -197,7 +197,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L215)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L214)**
 
     A smart strict deep equality assertion helper function.
     If any of the arguments is promise, it will be auto-resolved before
@@ -213,7 +213,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[describe(msg, fn)](src/index.js?source#L244)**
+- ## **[describe(msg, fn)](src/index.js?source#L243)**
 
     Extend the msg of the test with a new test closure.
 
@@ -250,13 +250,19 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         it.run();
         ```
 
-- ## **[junit.reporter(prompt)](src/index.js?source#L257)**
+- ## **[junit.reporter(opts)](src/index.js?source#L262)**
 
     An example reporter for junit.
 
-    - **<u>param</u>**: `prompt` { _String_ }
+    - **<u>param</u>**: `opts` { _Object_ }
 
-        The prompt prefix.
+        Defaults:
+        ```js
+        {
+            prompt: String, // The prompt prefix
+            mode: "console" // "console", "browser" or "none"
+        }
+        ```
 
     - **<u>return</u>**: { _Function_ }
 
@@ -265,16 +271,16 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
     - **<u>example</u>**:
 
         ```js
-        let it = junit({ reporter: junit.reporter('my-prompt > ') });
+        let it = junit({ reporter: junit.reporter({ prompt: 'my-prompt > ' }) });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L263)**
+- ## **[junit.Promise](src/index.js?source#L268)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L269)**
+- ## **[junit.yutils](src/index.js?source#L274)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 

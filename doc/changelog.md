@@ -1,3 +1,8 @@
+- v1.2
+
+  - **API CHANGE** `junit.reporter` now accpet an object as argument
+  - add: better support for phantomjs now
+
 - v1.1.2
 
   - **API CHANGE** now `it.eq` will auto-resolve promise arguments by default.
