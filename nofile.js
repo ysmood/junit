@@ -7,11 +7,13 @@ export default (task, option) => {
         await kit.spawn("babel", ["src", "--loose", "all", "--out-dir", "lib"]);
 
         await kit.spawn("webpack", [
+            "--output-pathinfo",
             "lib/browser.js", "dist/junit.js"
         ]);
 
         var webpackOpts = [
             "--module-bind", "js=babel",
+            "--output-pathinfo",
             "test/browser/index.js", "dist/test-basic.js"
         ];
         if (opts.W) webpackOpts.push("-w");
