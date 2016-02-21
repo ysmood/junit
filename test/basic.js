@@ -2,12 +2,15 @@ import junit from "../src";
 import br from "../src/brush";
 import Promise from "yaku";
 
-let testOpts = {
-    reporter: junit.reporter(" sub >"),
-    isThrowOnFinal: false
-};
+export default (it, mode) => it.describe("basic: ", it => {
+    let testOpts = {
+        reporter: junit.reporter({
+            prompt: " sub >",
+            mode: mode
+        }),
+        isThrowOnFinal: false
+    };
 
-export default (it) => it.describe("basic: ", it => {
     let { eq } = it;
 
     it("empty option", () => {
@@ -67,7 +70,7 @@ export default (it) => it.describe("basic: ", it => {
     });
 
     it("after hook when log error", async () => {
-        let reporter = junit.reporter(" sub >");
+        let reporter = junit.reporter({ prompt: " sub >" });
         reporter.logFail = () => { throw "err"; };
 
         let test = junit({
@@ -155,7 +158,7 @@ export default (it) => it.describe("basic: ", it => {
     it("filter", () => {
         let test = junit({
             filter: (msg) => msg.indexOf("test") === 0,
-            reporter: junit.reporter(" sub >"),
+            reporter: junit.reporter({ prompt: " sub >" }),
             isThrowOnFinal: false
         });
 
@@ -171,9 +174,8 @@ export default (it) => it.describe("basic: ", it => {
     });
 
     it("disable brush", () => {
-        br.isEnabled = false;
-        br.red("ok");
-        br.isEnabled = true;
+        let { red } = br({ mode: "none" });
+        eq(red("ok"), "ok");
     });
 
     it("type check", () => {
@@ -240,7 +242,7 @@ export default (it) => it.describe("basic: ", it => {
             isFailOnUnhandled: true,
             isBail: false,
             isThrowOnFinal: false,
-            reporter: junit.reporter(" sub >")
+            reporter: junit.reporter({ prompt: " sub >" })
         });
 
         test("empty", () => {
@@ -290,7 +292,7 @@ export default (it) => it.describe("basic: ", it => {
 
     it("max depth", () => {
         let test = junit({
-            reporter: junit.reporter(" sub >"),
+            reporter: junit.reporter({ prompt: " sub >" }),
             isThrowOnFinal: false,
             isBail: false
         });
@@ -454,7 +456,7 @@ export default (it) => it.describe("basic: ", it => {
 
     it("describe error", () => {
         let test = junit({
-            reporter: junit.reporter(" sub >"),
+            reporter: junit.reporter({ prompt: " sub >" }),
             isThrowOnFinal: false
         });
 
@@ -470,7 +472,7 @@ export default (it) => it.describe("basic: ", it => {
     });
 
     it("describe deep", () => {
-        let reporter = junit.reporter(" sub >");
+        let reporter = junit.reporter({ prompt: " sub >" });
         let out = [];
         reporter.logPass = (msg) => out.push(msg);
 

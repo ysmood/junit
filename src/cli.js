@@ -3,11 +3,12 @@
 import cmder from "commander";
 import fs from "nofs";
 import fsPath from "path";
-import br from "./brush";
+import brush from "./brush";
 import junit from "./";
 import defaultReporter from "./reporter";
 
 let subArgIndex = process.argv.indexOf("--");
+let br = brush();
 
 /* istanbul ignore if */
 if (subArgIndex > -1) {

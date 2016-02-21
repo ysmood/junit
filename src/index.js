@@ -95,11 +95,10 @@ let junit = (opts = {}) => {
         isThrowOnFinal: true,
         timeout: 5000,
         filter: () => true,
-        reporter: {}
+        reporter: reporter()
     }, opts);
 
-    let { formatAssertErr, logPass, logFail, logFinal } =
-        extend(reporter(), opts.reporter);
+    let { formatAssertErr, logPass, logFail, logFinal } = opts.reporter;
 
     let passed = 0;
     let failed = 0;

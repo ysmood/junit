@@ -4,7 +4,6 @@ import brush from "./brush";
 import util from "util";
 import utils from "./utils";
 
-let { red, grey, cyan, green, underline } = brush;
 let { inspect } = util;
 let { isArray } = utils;
 
@@ -15,10 +14,12 @@ function indent (str) {
     return (str + "").replace(regIndent, "  ");
 }
 
-function log (type) { return function () {
+function log (type, mode) { return function () {
+    switch (mode) {
+
     /* istanbul ignore next */
-    if (typeof window === "object") {
-        let mainElem = window["junit-reporter"];
+    case "browser":
+        var mainElem = window["junit-reporter"];
         if (mainElem) {
             let pre = document.createElement("pre");
             pre.style.fontFamily = `Monaco, "Lucida Console", Courier`;
@@ -31,8 +32,11 @@ function log (type) { return function () {
         } else {
             alert(`JUnit: You must add a '<div id="junit-reporter"></div>' element to the DOM`);
         }
-    } else {
+        break;
+
+    default:
         console[type].apply(console, arguments);
+        break;
     }
 }; }
 
@@ -47,18 +51,29 @@ function inspectObj (obj) {
         return JSON.stringify(obj, 0, 4);
 }
 
-function formatMsg (msg) {
-    if (isArray(msg))
-        return msg.join(grey(" - "));
-    else
-        return msg;
-}
+export default (opts) => {
+    opts = utils.extend({
+        mode: "console"
+    }, opts);
 
-let logPass = log("log");
-let logFail = log("error");
-let logFinal = log("info");
+    let mode = opts.mode;
+    let { red, grey, cyan, green, underline } = brush({ mode: mode });
+    let logPass = log("log", mode);
+    let logFail = log("error", mode);
+    let logFinal = log("info", mode);
 
-export default (pt = underline(grey("junit >"))) => {
+    opts = utils.extend({
+        prompt: underline(grey("junit >"))
+    }, opts);
+    let pt = opts.prompt;
+
+    function formatMsg (msg) {
+        if (isArray(msg))
+            return msg.join(grey(" - "));
+        else
+            return msg;
+    }
+
     return {
         formatAssertErr: (actual, expected) => {
             let { stack } = new Error("Assertion");
