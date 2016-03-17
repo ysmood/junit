@@ -6,7 +6,5 @@ let it = junit();
 
 basic(it);
 
-it.run().then(({ failed }) => {
-    phantom.exit(failed === 0 ? 0 : 1); // eslint-disable-line
-});
+it.run();
 
