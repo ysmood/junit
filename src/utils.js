@@ -74,8 +74,8 @@ function spread (fn) {
 
 function asyncWrap (fn) {
     fn = spread(fn);
-    return function () {
-        return Promise.all(arguments).then(fn);
+    return (...args) => {
+        return Promise.all(args).then(fn);
     };
 }
 
