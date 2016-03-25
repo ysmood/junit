@@ -1,12 +1,13 @@
-import kit from "nokit";
+var kit = require("nokit");
+var async = kit.async;
 
-export default (task, option) => {
+module.exports = (task, option) => {
     option("-w", "watch build");
 
-    task("build", ["clean", "build-docs"], async (opts) => {
-        await kit.spawn("babel", ["src", "--loose", "all", "--out-dir", "lib"]);
+    task("build", ["clean", "build-docs"], async(function * (opts) {
+        yield kit.spawn("babel", ["src", "--loose", "all", "--out-dir", "lib"]);
 
-        await kit.spawn("webpack", [
+        yield kit.spawn("webpack", [
             "--output-pathinfo",
             "lib/browser.js", "dist/junit.js"
         ]);
@@ -17,8 +18,8 @@ export default (task, option) => {
             "test/browser/index.js", "dist/test-basic.js"
         ];
         if (opts.W) webpackOpts.push("-w");
-        await kit.spawn("webpack", webpackOpts);
-    });
+        yield kit.spawn("webpack", webpackOpts);
+    }));
 
     task("clean", () => kit.remove("{dist,lib}"));
 
@@ -47,17 +48,17 @@ export default (task, option) => {
     });
 
     option("-g, --grep <.*>", "unit test regex filter", ".*");
-    task("test", ["lint"], async (opts) => {
+    task("test", ["lint"], async(function * (opts) {
         // Test phantomjs
-        await kit.spawn("webpack", [
+        yield kit.spawn("webpack", [
             "--module-bind", "js=babel",
             "--output-pathinfo",
             "test/browser/phantom.js", "dist/test-phantom-basic.js"
         ]);
 
-        await kit.spawn("phantomjs", ["dist/test-phantom-basic.js"]);
+        yield kit.spawn("phantomjs", ["dist/test-phantom-basic.js"]);
 
-        await kit.spawn(
+        yield kit.spawn(
             "babel-node", [
                 "node_modules/.bin/babel-istanbul", "cover",
                 "src/cli.js", "--",
@@ -65,5 +66,5 @@ export default (task, option) => {
                 "-g", opts.grep, "test/*.js"
             ]
         );
-    });
+    }));
 };

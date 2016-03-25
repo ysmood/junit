@@ -34,8 +34,8 @@
   ],
   "dependencies": {
     "commander": "2.9.0",
-    "nofs": "0.11.2",
-    "yaku": "0.13.7"
+    "nofs": "0.11.3",
+    "yaku": "0.14.1"
   },
   "devDependencies": {
     "babel-cli": "6.5.1",
@@ -48,7 +48,7 @@
     "babel-preset-stage-2": "6.5.0",
     "coveralls": "2.11.6",
     "eslint": "2.1.0",
-    "nokit": "0.17.2",
+    "nokit": "0.20.0",
     "phantomjs-prebuilt": "2.1.4",
     "webpack": "1.12.13"
   },

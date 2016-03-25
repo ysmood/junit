@@ -20,7 +20,7 @@ cmder
     .description("junit cli tool to run tests automatically")
     .usage("[options] [file | pattern...]")
     .option("-o --reporter <module>", "a reporter module [{ formatAssertErr, logPass, logFail, logFinal }]", null)
-    .option("-r, --requires <str>", "pre-require modules [babel-core/register,babel-polyfill]", "babel-core/register,babel-polyfill")
+    .option("-r, --requires <str>", "pre-require modules", "")
     .option("-g, --grep <pattern>", "only run tests matching the pattern", "")
     .option("-t, --timeout <num>", "case timeout in milliseconds [5000]", parseInt)
     .option("-b, --isBail", "bail after first test failure [true]")
