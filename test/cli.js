@@ -39,4 +39,16 @@ export default (it) => it.describe("cli: ", it => {
         }
     });
 
+    it("cli err", async () => {
+        try {
+            await spawn("babel-node", [
+                "src/cli.js",
+                "--", "test/cli-test/err.js",
+                "-o", "test/cli/custom-reporter.js"
+            ]);
+        } catch ({ code }) {
+            return eq(code, 1);
+        }
+    });
+
 });

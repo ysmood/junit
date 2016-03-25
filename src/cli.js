@@ -90,6 +90,9 @@ function run () {
     }).then(it.run).then(({ failed }) => {
         /* istanbul ignore next */
         if (failed) process.exit(1);
+    }, function (err) {
+        /* istanbul ignore next */
+        setTimeout(() => { throw err; }, 0);
     });
 }
 
