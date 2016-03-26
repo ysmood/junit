@@ -82,7 +82,8 @@ function asyncWrap (fn) {
 export default {
     extend: (obj, src) => {
         for (var key in src) {
-            obj[key] = src[key];
+            if (src[key] !== undefined)
+                obj[key] = src[key];
         }
         return obj;
     },

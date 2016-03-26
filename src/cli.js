@@ -92,7 +92,12 @@ function run () {
         if (failed) process.exit(1);
     }, function (err) {
         /* istanbul ignore next */
-        setTimeout(() => { throw err; }, 0);
+        if (err && err.stack)
+            console.error(err.stack);
+        else
+            console.error(err);
+
+        process.exit(1);
     });
 }
 
