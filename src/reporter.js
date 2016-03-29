@@ -69,7 +69,7 @@ export default (opts) => {
 
     function formatMsg (msg) {
         if (isArray(msg))
-            return msg.join(grey(" - "));
+            return msg.join(" - ");
         else
             return msg;
     }
