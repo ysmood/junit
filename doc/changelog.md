@@ -1,3 +1,7 @@
+- v1.3
+
+  - add: junit-debug command for `node debug`
+
 - v1.2
 
   - **API CHANGE** `junit.reporter` now accpet an object as argument
