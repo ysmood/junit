@@ -3,7 +3,7 @@ var kit = require("nokit");
 module.exports = function (task, option) {
     option("-w", "watch build");
 
-    task("build", ["clean", "build-docs"], function (opts) {
+    task("build", ["lint", "clean", "build-docs"], function (opts) {
         return kit.spawn("babel", ["src", "--loose", "all", "--out-dir", "lib"])
         .then(function () {
             return kit.spawn("webpack", [
@@ -50,7 +50,7 @@ module.exports = function (task, option) {
     });
 
     option("-g, --grep <.*>", "unit test regex filter", ".*");
-    task("test", ["lint"], function (opts) {
+    task("test", function (opts) {
         // Test phantomjs
         return kit.spawn("webpack", [
             "--module-bind", "js=babel",

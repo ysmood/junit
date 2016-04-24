@@ -25,6 +25,7 @@ cmder
     .option("-t, --timeout <num>", "case timeout in milliseconds [5000]", parseInt)
     .option("-b, --bail <on|off>", "bail after first test failure [off]", "off")
     .option("-f, --failOnUnhandled <on|off>", "failed on unhandled exception [on]", "on")
+    .option("-m, --mode <console|browser|none>", "the log mode [console]", "console")
     .option(
         "-p, --prompt <str>", "the prompt string ['junit cli >']",
         br.underline(br.grey("junit cli >"))
@@ -70,7 +71,7 @@ function run () {
     if (cmder.reporter) {
         reporter = loadModule(cmder.reporter);
     } else {
-        reporter = defaultReporter({ prompt: cmder.prompt });
+        reporter = defaultReporter({ prompt: cmder.prompt, mode: cmder.mode });
     }
 
     let it = junit({
