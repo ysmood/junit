@@ -83,16 +83,15 @@ function run () {
         timeout: cmder.timeout || 5000
     });
 
+    /* istanbul ignore next */
     return fs.glob(cmder.args, {
         iter: ({ path }) => {
             let mod = require(fsPath.resolve(path));
             return (typeof mod === "function" ? mod : mod.default)(it);
         }
     }).then(it.run).then(({ failed }) => {
-        /* istanbul ignore next */
         if (failed) process.exit(1);
     }, function (err) {
-        /* istanbul ignore next */
         if (err && err.stack)
             console.error(err.stack);
         else

@@ -3,14 +3,14 @@ import { spawnSync } from "child_process";
 
 export default (it) => it.describe("cli: ", it => {
 
-    it("cli tool basic", async () => {
+    it("cli tool basic", () => {
         return it.eq(spawnSync("babel-node", [
             "src/cli.js",
             "--", "test/cli-test/a.js", "-p", " sub >"
         ]).status, 0);
     });
 
-    it("cli tool reports err", async () => {
+    it("cli tool reports err", () => {
         let { status } = spawnSync("babel-node", [
             "src/cli.js",
             "--", "test/cli-test/*", "-p", " sub >"
@@ -18,7 +18,7 @@ export default (it) => it.describe("cli: ", it => {
         return it.eq(status, 1);
     });
 
-    it("cli custom reporter", async () => {
+    it("cli custom reporter", () => {
         let { status } = spawnSync("babel-node", [
             "src/cli.js",
             "--", "test/cli-test/a.js",
@@ -27,7 +27,7 @@ export default (it) => it.describe("cli: ", it => {
         return it.eq(status, 0);
     });
 
-    it("cli err", async () => {
+    it("cli err", () => {
         let { status } = spawnSync("babel-node", [
             "src/cli.js",
             "--", "test/cli-test/err.js",
@@ -36,7 +36,7 @@ export default (it) => it.describe("cli: ", it => {
         return it.eq(status, 1);
     });
 
-    it("cli report", async () => {
+    it("cli report", () => {
         let { stdout } = spawnSync("babel-node", [
             "src/cli.js",
             "-m", "none",
@@ -45,7 +45,7 @@ export default (it) => it.describe("cli: ", it => {
         return it.eq(!!stdout.match(/passed 3[\s\S]+failed 1/), true);
     });
 
-    it("cli bail", async () => {
+    it("cli bail", () => {
         let { stdout } = spawnSync("babel-node", [
             "src/cli.js",
             "-m", "none",
@@ -55,7 +55,7 @@ export default (it) => it.describe("cli: ", it => {
         return it.eq(!!stdout.match(/passed 0[\s\S]+failed 1/), true);
     });
 
-    it("cli grep", async () => {
+    it("cli grep", () => {
         let { stdout } = spawnSync("babel-node", [
             "src/cli.js",
             "-m", "none",
@@ -65,7 +65,7 @@ export default (it) => it.describe("cli: ", it => {
         return it.eq(!!stdout.match(/passed 1[\s\S]+failed 0/), true);
     });
 
-    it("cli failOnUnhandled", async () => {
+    it("cli failOnUnhandled", () => {
         let { status } = spawnSync("babel-node", [
             "src/cli.js",
             "--failOnUnhandled", "off",
