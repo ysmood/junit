@@ -23,8 +23,8 @@ cmder
     .option("-r, --requires <str>", "pre-require modules", "")
     .option("-g, --grep <pattern>", "only run tests matching the pattern", "")
     .option("-t, --timeout <num>", "case timeout in milliseconds [5000]", parseInt)
-    .option("-b, --isBail", "bail after first test failure [true]")
-    .option("-f, --isFailOnUnhandled", "failed on unhandled exception [true]")
+    .option("-b, --bail <on|off>", "bail after first test failure [off]", "off")
+    .option("-f, --failOnUnhandled <on|off>", "failed on unhandled exception [on]", "on")
     .option(
         "-p, --prompt <str>", "the prompt string ['junit cli >']",
         br.underline(br.grey("junit cli >"))
@@ -76,9 +76,9 @@ function run () {
     let it = junit({
         filter: msg => testReg.test(msg),
         reporter: reporter,
-        isBail: cmder.isBail,
+        isBail: cmder.bail === "on",
         isThrowOnFinal: false,
-        isFailOnUnhandled: cmder.isFailOnUnhandled,
+        isFailOnUnhandled: cmder.failOnUnhandled === "on",
         timeout: cmder.timeout || 5000
     });
 
