@@ -21,6 +21,14 @@ export default (it, mode) => it.describe("basic: ", it => {
         return test.run();
     });
 
+    it("no message", () => {
+        let test = junit();
+
+        test(() => eq(1, 1));
+
+        return test.run();
+    });
+
     it("error object", () => {
         let test = junit(testOpts);
 
@@ -488,7 +496,7 @@ export default (it, mode) => it.describe("basic: ", it => {
             it("02", () => eq(1, 1));
 
             it.describe("b", (it) => {
-                it("01", () => eq(1, 1));
+                it(() => eq(1, 1));
                 it("02", () => eq(1, 1));
 
                 it.describe("c", (it) => {
@@ -503,7 +511,7 @@ export default (it, mode) => it.describe("basic: ", it => {
                 "01",
                 ["a", "01"],
                 ["a", "02"],
-                ["a", "b", "01"],
+                ["a", "b", ""],
                 ["a", "b", "02"],
                 ["a", "b", "c", "01"],
                 ["a", "b", "c", "02"]

@@ -117,6 +117,11 @@ let junit = (opts = {}) => {
     }
 
     function it (msg, fn) {
+        if (typeof msg === 'function') {
+            fn = msg;
+            msg = '';
+        }
+
         total++;
 
         if (isEnd) return;
@@ -177,10 +182,17 @@ let junit = (opts = {}) => {
     }
 
     let describe = (msg, fn, notInit) => {
-        let subIt = (subMsg, fn) => Promise.resolve(it(
-            notInit ? msg.concat([subMsg]) : [msg, subMsg],
-            fn
-        ));
+        let subIt = (subMsg, fn) => {
+            if (typeof subMsg === 'function') {
+                fn = subMsg;
+                subMsg = '';
+            }
+
+            return Promise.resolve(it(
+                notInit ? msg.concat([subMsg]) : [msg, subMsg],
+                fn
+            ));
+        };
 
         extend(subIt, it);
         subIt.describe = (subMsg, fn) => Promise.resolve(describe(
