@@ -1,5 +1,6 @@
 - v1.4
 
+  - opt: Default test message now is empty
   - **API CHANGE** cli `--isBailed` and `--isFailOnUnhandled` are replaced by `--bail`, `failOnUnhandled`
 
 - v1.3

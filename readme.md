@@ -97,7 +97,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
 ---------------------------------------
 
-- ## **[junit(opts)](src/index.js?source#L92)**
+- ## **[junit(opts)](lib/index.js?source#L92)**
 
     A simple promise based module for unit tests.
 
@@ -189,7 +189,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         })();
         ```
 
-- ## **[run()](src/index.js?source#L212)**
+- ## **[run()](lib/index.js?source#L212)**
 
     Start the tests.
 
@@ -197,7 +197,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L226)**
+- ## **[eq(actual, expected, maxDepth)](lib/index.js?source#L226)**
 
     A smart strict deep equality assertion helper function.
     If any of the arguments is promise, it will be auto-resolved before
@@ -213,7 +213,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[describe(msg, fn)](src/index.js?source#L255)**
+- ## **[describe(msg, fn)](lib/index.js?source#L255)**
 
     Extend the msg of the test with a new test closure.
 
@@ -250,7 +250,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         it.run();
         ```
 
-- ## **[junit.reporter(opts)](src/index.js?source#L274)**
+- ## **[junit.reporter(opts)](lib/index.js?source#L274)**
 
     An example reporter for junit.
 
@@ -274,13 +274,13 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         var it = junit({ reporter: junit.reporter({ prompt: 'my-prompt > ' }) });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L280)**
+- ## **[junit.Promise](lib/index.js?source#L280)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L286)**
+- ## **[junit.yutils](lib/index.js?source#L286)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 

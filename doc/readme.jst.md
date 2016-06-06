@@ -87,8 +87,8 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
 # API
 
-<%= doc["src/index.js-toc"] %>
+<%= doc["lib/index.js-toc"] %>
 
 ---------------------------------------
 
-<%= doc["src/index.js"] %>
+<%= doc["lib/index.js"] %>

@@ -52,7 +52,7 @@ module.exports = function (task, option) {
             "--output-pathinfo",
             "test/browser/phantom.js", "dist/test-phantom-basic.js"
         ]).then(function () {
-            // return kit.spawn("phantomjs", ["dist/test-phantom-basic.js"]);
+            return kit.spawn("phantomjs", ["dist/test-phantom-basic.js"]);
         }).then(function () {
             return kit.spawn(
                 "istanbul", [
