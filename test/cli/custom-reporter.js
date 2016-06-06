@@ -1,9 +1,9 @@
-export default {
-    logPass: (msg, span) => {
+module.exports = {
+    logPass: function (msg, span) {
         console.log(msg, span);
     },
 
-    logFinal: (total, tested, passed, failed) => {
+    logFinal: function (total, tested, passed, failed) {
         console.log(total, tested, passed, failed);
     }
 };

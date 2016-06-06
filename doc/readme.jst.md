@@ -61,7 +61,7 @@ it should export a function, if the function is async it should return a promise
 ```js
 import sleep from "yaku/lib/sleep";
 
-export default async it => {
+module.exports = async it => {
     await sleep(3000);
 
     it("fib 01", () => eq(1 + 1, 2));

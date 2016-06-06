@@ -1,11 +1,12 @@
-import "babel-polyfill";
-import junit from "../../src";
-import basic from "../basic";
+var junit = require("../../lib");
+var basic = require("../basic");
 
-let it = junit();
+var it = junit();
 
 basic(it);
 
-it.run().then(({ failed }) => {
+it.run().then(function (_ref) {
+    var failed = _ref.failed;
+
     phantom.exit(failed === 0 ? 0 : 1); // eslint-disable-line
 });

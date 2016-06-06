@@ -61,7 +61,7 @@ it should export a function, if the function is async it should return a promise
 ```js
 import sleep from "yaku/lib/sleep";
 
-export default async it => {
+module.exports = async it => {
     await sleep(3000);
 
     it("fib 01", () => eq(1 + 1, 2));
@@ -97,7 +97,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
 ---------------------------------------
 
-- ## **[junit(opts)](src/index.js?source#L91)**
+- ## **[junit(opts)](src/index.js?source#L92)**
 
     A simple promise based module for unit tests.
 
@@ -140,7 +140,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
         ```js
         import junit from "junit";
-        let it = junit();
+        var it = junit();
         (async () => {
             // Async tests.
             it("test 1", () =>
@@ -173,7 +173,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         Filter the tests, only the message starts with "test" will be tested.
         ```js
         import junit from "junit";
-        let it = junit({
+        var it = junit({
             filter: (msg) => msg.indexOf("test")
         });
 
@@ -183,13 +183,13 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
             it("test 2", () => it.eq(1, 1));
 
             // Get the result of the test.
-            let { total, tested, passed, failed } = await it.run();
+            var { total, tested, passed, failed } = await it.run();
 
             console.log(total, tested, passed, failed);
         })();
         ```
 
-- ## **[run()](src/index.js?source#L206)**
+- ## **[run()](src/index.js?source#L212)**
 
     Start the tests.
 
@@ -197,7 +197,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
         It will resolve `{ total, passed, failed }`
 
-- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L219)**
+- ## **[eq(actual, expected, maxDepth)](src/index.js?source#L226)**
 
     A smart strict deep equality assertion helper function.
     If any of the arguments is promise, it will be auto-resolved before
@@ -213,7 +213,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
 
     - **<u>return</u>**: { _Promise_ }
 
-- ## **[describe(msg, fn)](src/index.js?source#L248)**
+- ## **[describe(msg, fn)](src/index.js?source#L255)**
 
     Extend the msg of the test with a new test closure.
 
@@ -232,8 +232,8 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         ```js
         import junit from "junit";
 
-        let it = junit();
-        let { eq } = it;
+        var it = junit();
+        var { eq } = it;
 
         it.describe("level 01", it => {
             it("test 01", () => eq(1, 1));
@@ -250,7 +250,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         it.run();
         ```
 
-- ## **[junit.reporter(opts)](src/index.js?source#L267)**
+- ## **[junit.reporter(opts)](src/index.js?source#L274)**
 
     An example reporter for junit.
 
@@ -271,16 +271,16 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
     - **<u>example</u>**:
 
         ```js
-        let it = junit({ reporter: junit.reporter({ prompt: 'my-prompt > ' }) });
+        var it = junit({ reporter: junit.reporter({ prompt: 'my-prompt > ' }) });
         ```
 
-- ## **[junit.Promise](src/index.js?source#L273)**
+- ## **[junit.Promise](src/index.js?source#L280)**
 
     The promise class that junit uses: [Yaku](https://github.com/ysmood/yaku)
 
     - **<u>type</u>**: { _Object_ }
 
-- ## **[junit.yutils](src/index.js?source#L279)**
+- ## **[junit.yutils](src/index.js?source#L286)**
 
     The promise helpers: [Yaku Utils](https://github.com/ysmood/yaku#utils)
 

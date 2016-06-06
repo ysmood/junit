@@ -1,8 +1,7 @@
-import "babel-polyfill";
-import junit from "../../src";
-import basic from "../basic";
+var junit = require("../../lib");
+var basic = require("../basic");
 
-let it = junit();
+var it = junit();
 
 basic(it);
 
