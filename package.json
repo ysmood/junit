@@ -1,6 +1,6 @@
 {
   "name": "junit",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "description": "A simple promise based function for unit tests.",
   "main": "lib/index.js",
   "bin": {
@@ -35,16 +35,16 @@
   ],
   "dependencies": {
     "commander": "2.9.0",
-    "nofs": "0.11.18",
-    "yaku": "0.16.7"
+    "nofs": "0.11.19",
+    "yaku": "0.17.3"
   },
   "devDependencies": {
-    "coveralls": "2.11.14",
-    "eslint": "3.6.1",
+    "coveralls": "2.11.15",
+    "eslint": "3.12.0",
     "istanbul": "0.4.5",
-    "nokit": "0.22.29",
-    "phantomjs-prebuilt": "2.1.12",
-    "webpack": "1.13.2"
+    "nokit": "0.23.4",
+    "phantomjs-prebuilt": "2.1.14",
+    "webpack": "1.14.0"
   },
   "eslintConfig": {
     "rules": {
