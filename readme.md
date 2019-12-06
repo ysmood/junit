@@ -143,10 +143,10 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         var it = junit();
         (async () => {
             // Async tests.
-            it("test 1", () => {
+            it("test 1", () =>
                 // We use `it.eq` to assert on both simple type and complex object.
-                it.eq("ok", "ok");
-            });
+                it.eq("ok", "ok")
+            );
  
             it("test 2", async () => {
                 // No more callback hell while testing async functions.
@@ -161,7 +161,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
                     // do some clean work after the test
                 });
  
-                it.eq("ok", "ok");
+                return it.eq("ok", "ok");
             });
  
             it.run();
