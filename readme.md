@@ -143,27 +143,27 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         var it = junit();
         (async () => {
             // Async tests.
-            it("test 1", () =>
+            it("test 1", () => {
                 // We use `it.eq` to assert on both simple type and complex object.
-                it.eq("ok", "ok")
-            );
- 
+                return it.eq("ok", "ok");
+            });
+
             it("test 2", async () => {
                 // No more callback hell while testing async functions.
                 await new junit.Promise(r => setTimeout(r, 1000));
- 
+
                 return it.eq({ a: 1, b: 2 }, { a: 1, b: 2 });
             });
- 
+
             // Run sync tests within the main async flow.
             await it("test 3", (after) => {
                 after(() => {
                     // do some clean work after the test
                 });
- 
-                return it.eq("ok", "ok");
+
+                return it.eq("ok", "ok")
             });
- 
+
             it.run();
         })();
         ```
@@ -174,7 +174,7 @@ noe -b junit -w 'test/*.js' -- 'test/*.js'
         ```js
         import junit from "junit";
         var it = junit({
-            filter: (msg) => msg.indexOf("test");
+            filter: (msg) => msg.indexOf("test")
         });
 
         (async () => {
