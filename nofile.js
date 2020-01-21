@@ -23,9 +23,9 @@ module.exports = function (task, option) {
 
     task("build-docs", "build readme.md", function () {
         return kit.warp("lib/**/*.js")
-        .load(
-            kit.drives.comment2md({ h: 2, tpl: "doc/readme.jst.md" })
-        ).run();
+            .load(
+                kit.drives.comment2md({ h: 2, tpl: "doc/readme.jst.md" })
+            ).run();
     });
 
     task("lint", function () {
